@@ -1,0 +1,53 @@
+version: '3'
+services:
+  php:
+    environment:
+      DATABASE_URL: "mysql://root:paletteEvents@db/paletteEvents"
+    depends_on:
+      - db
+      - maildev
+    ports:
+      - 80:80
+      - 8000:8000
+    build: .
+    container_name: paletteEvents_php
+    volumes:
+      - ./docker/vhosts:/etc/apache2/sites-enabled
+      - ./docker/php.ini:/usr/local/etc/php/conf.d/99-php-custom.ini
+      - .:/paletteEvents:cached
+    working_dir: /paletteEvents
+    user: ${CUID}:${CGID}
+    env_file:
+      - ./.env.local
+
+
+  db:
+    image: mysql:5.7
+    container_name: paletteEvents_db
+    environment:
+      MYSQL_DATABASE: paletteEvents
+      MYSQL_USER: paletteEvents
+      MYSQL_PASSWORD: paletteEvents
+      MYSQL_ROOT_PASSWORD: paletteEvents
+    volumes:
+      - paletteEvents-data:/var/lib/mysql
+
+  maildev:
+    image: maildev/maildev
+    container_name: paletteEvents_maildev
+    command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
+    depends_on:
+      - db
+    env_file:
+      - ./.env.local
+    ports:
+      - 1080:80
+
+  adminer:
+    container_name: paletteEvents_adminer
+    image: adminer
+    ports:
+      - 8080:8080
+
+volumes:
+  paletteEvents-data:
