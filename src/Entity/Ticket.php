@@ -28,6 +28,14 @@ class Ticket
     #[ORM\JoinColumn(nullable: false)]
     private ?Facture $facture = null;
 
+    #[ORM\Column]
+    private ?int $place = null;
+
+    public function __toString(): string
+    {
+        return $this->code;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -77,6 +85,18 @@ class Ticket
     public function setFacture(Facture $facture): self
     {
         $this->facture = $facture;
+
+        return $this;
+    }
+
+    public function getPlace(): ?int
+    {
+        return $this->place;
+    }
+
+    public function setPlace(int $place): self
+    {
+        $this->place = $place;
 
         return $this;
     }

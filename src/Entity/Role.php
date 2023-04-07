@@ -26,6 +26,11 @@ class Role
         $this->user = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->role;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

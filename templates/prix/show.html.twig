@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Prix{% endblock %}
+
+{% block body %}
+    <h1>Prix</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ prix.id }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ prix.type }}</td>
+            </tr>
+            <tr>
+                <th>Somme</th>
+                <td>{{ prix.somme }}</td>
+            </tr>
+            <tr>
+                <th>PlaceMax</th>
+                <td>{{ prix.placeMax }}</td>
+            </tr>
+            <tr>
+                <th>PlaceRestantes</th>
+                <td>{{ prix.placeRestantes }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_prix_index') }}">back to list</a>
+
+    <a href="{{ path('app_prix_edit', {'id': prix.id}) }}">edit</a>
+
+    {{ include('prix/_delete_form.html.twig') }}
+{% endblock %}

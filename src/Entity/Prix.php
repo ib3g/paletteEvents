@@ -28,9 +28,20 @@ class Prix
     #[ORM\OneToMany(mappedBy: 'prix', targetEntity: Ticket::class)]
     private Collection $tickets;
 
+    #[ORM\Column]
+    private ?int $placeMax = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $placeRestantes = null;
+
     public function __construct()
     {
         $this->tickets = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->type;
     }
 
     public function getId(): ?int
@@ -100,6 +111,30 @@ class Prix
                 $ticket->setPrix(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPlaceMax(): ?int
+    {
+        return $this->placeMax;
+    }
+
+    public function setPlaceMax(int $placeMax): self
+    {
+        $this->placeMax = $placeMax;
+
+        return $this;
+    }
+
+    public function getPlaceRestantes(): ?int
+    {
+        return $this->placeRestantes;
+    }
+
+    public function setPlaceRestantes(?int $placeRestantes): self
+    {
+        $this->placeRestantes = $placeRestantes;
 
         return $this;
     }
