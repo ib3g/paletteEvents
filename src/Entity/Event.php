@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\EventRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
@@ -46,6 +47,18 @@ class Event
     #[ORM\OneToMany(mappedBy: 'event', targetEntity: Prix::class)]
     private Collection $prix;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $dateEvent = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $lieu = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $sponsors = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $status = null;
+
     public function __construct()
     {
         $this->demandes = new ArrayCollection();
@@ -54,6 +67,11 @@ class Event
         $this->tags = new ArrayCollection();
         $this->medias = new ArrayCollection();
         $this->prix = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->title;
     }
 
     public function getId(): ?int
@@ -273,6 +291,54 @@ class Event
                 $prix->setEvent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDateEvent(): ?\DateTimeInterface
+    {
+        return $this->dateEvent;
+    }
+
+    public function setDateEvent(\DateTimeInterface $dateEvent): self
+    {
+        $this->dateEvent = $dateEvent;
+
+        return $this;
+    }
+
+    public function getLieu(): ?string
+    {
+        return $this->lieu;
+    }
+
+    public function setLieu(string $lieu): self
+    {
+        $this->lieu = $lieu;
+
+        return $this;
+    }
+
+    public function getSponsors(): ?string
+    {
+        return $this->sponsors;
+    }
+
+    public function setSponsors(?string $sponsors): self
+    {
+        $this->sponsors = $sponsors;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

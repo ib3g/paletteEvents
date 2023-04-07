@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Prix index{% endblock %}
+
+{% block body %}
+    <h1>Prix index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type</th>
+                <th>Somme</th>
+                <th>PlaceMax</th>
+                <th>PlaceRestantes</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for prix in prixes %}
+            <tr>
+                <td>{{ prix.id }}</td>
+                <td>{{ prix.type }}</td>
+                <td>{{ prix.somme }}</td>
+                <td>{{ prix.placeMax }}</td>
+                <td>{{ prix.placeRestantes }}</td>
+                <td>
+                    <a href="{{ path('app_prix_show', {'id': prix.id}) }}">show</a>
+                    <a href="{{ path('app_prix_edit', {'id': prix.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_prix_new') }}">Create new</a>
+{% endblock %}
