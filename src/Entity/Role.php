@@ -18,7 +18,7 @@ class Role
     #[ORM\Column(length: 255)]
     private ?string $role = null;
 
-    #[ORM\OneToMany(mappedBy: 'role', targetEntity: User::class)]
+    #[ORM\ManyToMany(inversedBy: 'roles', targetEntity: User::class)]
     private Collection $user;
 
     public function __construct()
