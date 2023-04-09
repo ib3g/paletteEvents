@@ -22,7 +22,7 @@ class Prix
     private ?float $somme = null;
 
     #[ORM\ManyToOne(inversedBy: 'prix')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Event $event = null;
 
     #[ORM\OneToMany(mappedBy: 'prix', targetEntity: Ticket::class)]
