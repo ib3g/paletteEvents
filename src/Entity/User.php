@@ -23,9 +23,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
-    #[ORM\Column]
-    private array $roles = [];
-
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Role::class)]
+    private Collection $roles;
     /**
      * @var string The hashed password
      */
@@ -63,12 +62,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Media $avatar = null;
+
     public function __construct()
     {
         $this->demandes = new ArrayCollection();
         $this->events = new ArrayCollection();
         $this->animatedEvents = new ArrayCollection();
         $this->tickets = new ArrayCollection();
+        $this->roles = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -123,9 +126,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): self
+    public function addRole(Role $role): self
     {
-        $this->roles = $roles;
+        if (!$this->roles->contains($role)) {
+            $this->roles->add($role);
+        }
+
+        return $this;
+    }
+
+    public function removeRole(Role $role): self
+    {
+        if ($this->roles->removeElement($role)) {
+            // set the owning side to null (unless already changed)
+            if ($role->getUser() === $this) {
+                $role->removeUser($this);
+            }
+        }
 
         return $this;
     }
@@ -350,6 +367,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    public function getAvatar(): ?Media
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?Media $avatar): self
+    {
+        $this->avatar = $avatar;
 
         return $this;
     }

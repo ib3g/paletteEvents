@@ -16,6 +16,12 @@ class Ticket
     #[ORM\Column(length: 255)]
     private ?string $code = null;
 
+    #[ORM\Column]
+    private ?int $rang = null;
+
+    #[ORM\Column]
+    private ?int $position = null;
+
     #[ORM\ManyToOne(inversedBy: 'tickets')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Prix $prix = null;
@@ -28,8 +34,7 @@ class Ticket
     #[ORM\JoinColumn(nullable: false)]
     private ?Facture $facture = null;
 
-    #[ORM\Column]
-    private ?int $place = null;
+
 
     public function __toString(): string
     {
@@ -89,15 +94,38 @@ class Ticket
         return $this;
     }
 
-    public function getPlace(): ?int
+
+
+    /**
+     * @return int|null
+     */
+    public function getRang(): ?int
     {
-        return $this->place;
+        return $this->rang;
     }
 
-    public function setPlace(int $place): self
+    /**
+     * @param int|null $rang
+     */
+    public function setRang(?int $rang): void
     {
-        $this->place = $place;
-
-        return $this;
+        $this->rang = $rang;
     }
+
+    /**
+     * @return int|null
+     */
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    /**
+     * @param int|null $position
+     */
+    public function setPosition(?int $position): void
+    {
+        $this->position = $position;
+    }
+
 }

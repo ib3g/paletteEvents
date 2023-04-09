@@ -35,7 +35,7 @@ class Media
     private $path;
 
     #[ORM\ManyToOne(inversedBy: 'medias')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Event $event = null;
 
     public function __toString(): string

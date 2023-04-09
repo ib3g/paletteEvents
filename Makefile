@@ -74,3 +74,8 @@ assets_watch:
 	docker-compose exec -T php php bin/console assets:install
 	docker-compose exec -T php npm run build
 	docker-compose exec -T php npm run watch
+
+refresh:
+	docker-compose exec php php bin/console d:d:c -vvv
+	docker-compose exec php php bin/console d:s:u -f -n -vvv
+	docker-compose exec php php bin/console d:f:l -n
