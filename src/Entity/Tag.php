@@ -18,9 +18,7 @@ class Tag
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-
-
-    #[ORM\ManyToMany(targetEntity: Event::class, inversedBy: 'tags')]
+    #[ORM\ManyToMany(targetEntity: Event::class, inversedBy: 'tags', cascade: ['persist'])]
     private Collection $events;
 
     public function __construct()

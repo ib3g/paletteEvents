@@ -189,6 +189,45 @@ function ckeditor() {
         .pipe(dest('public/build/ckeditor/'));
 }
 
+function frontStylesMsCSS() {
+    return src('assets/frontend/ms/*.css')
+        .pipe(minifyCss({
+            level: {1: {specialComments: 0}}
+        }))
+        .pipe(concat('ms.css'))
+        .pipe(dest('public/build/frontend/ms/css/'));
+}
+
+function frontStylesMsJS() {
+    return src('assets/frontend/ms/*.js')
+        .pipe(minifyCss({
+            level: {1: {specialComments: 0}}
+        }))
+        .pipe(uglify())
+        .pipe(concat('ms.js'))
+        .pipe(dest('public/build/frontend/ms/js/'));
+}
+
+function frontStylesTeCSS() {
+    return src('assets/frontend/te/css/*.css')
+        .pipe(minifyCss({
+            level: {1: {specialComments: 0}}
+        }))
+        .pipe(concat('te.css'))
+        .pipe(dest('public/build/frontend/te/css/'));
+}
+
+function frontStylesTeJS() {
+    return src('assets/frontend/te/js/*.js')
+        .pipe(uglify())
+        .pipe(concat('te.js'))
+        .pipe(dest('public/build/frontend/te/js/'));
+}
+
+function frontStylesTeLib() {
+    return src('assets/frontend/te/lib/**/*.*')
+        .pipe(dest('public/build/frontend/te/lib/'));
+}
 
 //
 // Watch files for changes
@@ -209,6 +248,8 @@ function watchFiles() {
         'assets/js/plugins/visualization/echarts/echarts.min.js',
     ], series(echarts));
     watch('assets/js/custom/**/*.js', series(customJs));
+    watch('assets/frontend/**/*.css', series(frontStylesMsCSS, frontStylesTeCSS));
+    watch('assets/frontend/**/*.js', series(frontStylesMsJS, frontStylesTeJS, frontStylesTeLib));
     watch('assets/js/**/*.js', series(lint));
 }
 
@@ -222,7 +263,7 @@ function clean() {
 // Default task
 //
 
-exports.default = series(clean, lint, customJs, sass, fonts, datePicker, select2, echarts, icons, iconFonts, images, ckeditor, jquery, bootstrap);
+exports.default = series(clean, lint, customJs, sass, fonts, datePicker, select2, echarts, icons, iconFonts, images, ckeditor, jquery, bootstrap,frontStylesMsCSS, frontStylesMsJS, frontStylesTeCSS, frontStylesTeJS, frontStylesTeLib);
 
 
 //
