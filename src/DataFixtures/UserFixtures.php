@@ -4,20 +4,24 @@ namespace App\DataFixtures;
 
 use App\Entity\Role;
 use App\Entity\User;
+use App\Manager\FileManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFixtures extends AppFixtures
 {
     private UserPasswordHasherInterface $userPasswordHasher;
+    private FileManager $fileManager;
 
     /**
      * UserFixtures constructor.
      */
-    public function __construct(UserPasswordHasherInterface $userPasswordHasher)
+    public function __construct(UserPasswordHasherInterface $userPasswordHasher, FileManager $fileManager)
     {
         $this->userPasswordHasher = $userPasswordHasher;
+        $this->fileManager = $fileManager;
         parent::__construct();
     }
 
@@ -105,6 +109,8 @@ class UserFixtures extends AppFixtures
             $user->setPassword($this->userPasswordHasher->hashPassword($user, strtolower($prefix)));
             $user->setRole($role);
 
+            $this->generateImage($user);
+
             $role->addUser($user);
 
             $manager->persist($user);
@@ -129,11 +135,24 @@ class UserFixtures extends AppFixtures
             $user->setPassword($this->userPasswordHasher->hashPassword($user, 'user123'));
             $user->setRole($role);
 
+            $this->generateImage($user);
+
             $role->addUser($user);
             $manager->persist($user);
         }
 
         $manager->flush();
+    }
+
+    private function generateImage($user) {
+        $path = $this->generator->file(__DIR__.'/../../data/sample-user-images', __DIR__.'/../../var/cache/dev');
+
+        $fileName = explode(DIRECTORY_SEPARATOR, $path);
+        $fileName = $fileName[array_key_last($fileName)];
+        $uploadedFile = new UploadedFile($path, $fileName);
+
+        $file = $this->fileManager->uploadFile($uploadedFile);
+        $user->setAvatar($file);
     }
 
     public static function buildEmail(string $role)

@@ -92,7 +92,7 @@ class EventFixtures extends AppFixtures implements DependentFixtureInterface
 
                 // add media files
                 for ($j = 0; $j <= $faker->numberBetween(1,3); $j++) {
-                    $path = $this->generator->file(__DIR__.'/../../data/sample-images', __DIR__.'/../../var/cache/dev');
+                    $path = $faker->file(__DIR__.'/../../data/sample-images', __DIR__.'/../../var/cache/dev');
 
                     $fileName = explode(DIRECTORY_SEPARATOR, $path);
                     $fileName = $fileName[array_key_last($fileName)];
