@@ -17,6 +17,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BaseController extends AbstractController
 {
+    /**
+     * @Route("/", name="home")
+     */
+    public function index(){
+        return $this->render('home.html.twig');
+    }
     protected function addSuccessFlash($message = 'Votre opération a bien été effectuée !')
     {
         $this->addFlash('success', '<i class="icon-check"></i> '.$message);

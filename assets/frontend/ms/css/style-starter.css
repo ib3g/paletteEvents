@@ -50,6 +50,7 @@ Author URL: http://w3layouts.com
 }
 
 body {
+
   margin: 0;
   font-family: var(--bs-font-sans-serif);
   font-size: 1rem;
@@ -19370,19 +19371,20 @@ h3.title-style span {
 }
 
 .slide:first-child {
-  background: url(../images/banner1.jpg) no-repeat center top/cover;
+  background: url(../../../images/banner1.jpg) no-repeat center top/cover;
 }
 
 .slide:nth-child(2) {
-  background: url(../images/banner2.jpg) no-repeat center top/cover;
+  background: url(../../../images/banner2.jpg) no-repeat center top/cover;
 }
 
+
 .slide:nth-child(3) {
-  background: url(../images/banner3.jpg) no-repeat center top/cover;
+  background: url(../../../images/banner3.jpg) no-repeat center top/cover;
 }
 
 .slide:nth-child(4) {
-  background: url(../images/banner4.jpg) no-repeat center top/cover;
+  background: url(../../../images/banner4.jpg) no-repeat center top/cover;
 }
 
 .buttons button#prev {
@@ -19613,7 +19615,7 @@ h3.title-style span {
 
 /* video section */
 .videow3-right {
-  background: url(../images/banner1.jpg) no-repeat center;
+  background: url(../../../images/banner1.jpg) no-repeat center;
   -ms-background-size: cover;
   background-size: cover;
   z-index: 0;
@@ -19867,7 +19869,7 @@ div#small-dialog1 iframe {
 
 /* button with content section */
 .w3-midhny-sec {
-  background: url(../images/bg1.jpg) no-repeat top;
+  background: url(../../../images/bg1.jpg) no-repeat top;
   -ms-background-size: cover;
   background-size: cover;
   z-index: 0;

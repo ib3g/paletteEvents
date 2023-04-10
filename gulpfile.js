@@ -190,7 +190,7 @@ function ckeditor() {
 }
 
 function frontStylesMsCSS() {
-    return src('assets/frontend/ms/*.css')
+    return src('assets/frontend/ms/css/*.css')
         .pipe(minifyCss({
             level: {1: {specialComments: 0}}
         }))
@@ -199,17 +199,14 @@ function frontStylesMsCSS() {
 }
 
 function frontStylesMsJS() {
-    return src('assets/frontend/ms/*.js')
-        .pipe(minifyCss({
-            level: {1: {specialComments: 0}}
-        }))
+    return src('assets/frontend/ms/js/*.js')
         .pipe(uglify())
         .pipe(concat('ms.js'))
         .pipe(dest('public/build/frontend/ms/js/'));
 }
 
 function frontStylesTeCSS() {
-    return src('assets/frontend/te/css/*.css')
+    return src('assets/frontend/te/*.css')
         .pipe(minifyCss({
             level: {1: {specialComments: 0}}
         }))
