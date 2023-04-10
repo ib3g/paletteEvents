@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}{{ APPLICATION_NAME }}{% endblock %}</title>
+    <link rel="icon" href="{{  asset("build/images/logo.png")  }}" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet" type="text/css">
+    <link href="{{ '/build/icons/icon.min.css' }}" rel="stylesheet" type="text/css">
+    <link href="{{ '/build/fonts/stylesheet.css' }}" rel="stylesheet" type="text/css">
+    <link href="{{ '/build/css/all.min.css' }}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
+    {{ encore_entry_link_tags('app') }}
+
+    {% block stylesheets %}{% endblock %}
+
+    {% block global_javascripts %}
+        {{ encore_entry_script_tags('app') }}
+        <!-- Core JS files -->
+        <script type="application/javascript" src="{{ '/build/js/jquery.min.js' }}"></script>
+        <script type="application/javascript" src="{{ '/build/js/bootstrap.bundle.min.js' }}"></script>
+        <script type="application/javascript" src="{{ '/build/js/all.min.js' }}"></script>
+        <script type="application/javascript" src="{{ '/build/js/selects/selects.min.js' }}"></script>
+        <script type="application/javascript" src="{{ '/build/js/echarts/echarts.min.js' }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+        <!-- /core JS files -->
+        {% block javascripts %}{% endblock %}
+    {% endblock %}
+
+</head>
+<body>
+{% block body %}
+    <!-- Page content -->
+    <div class="page-content">
+        {% block sidebar %}
+
+            <!-- Main sidebar -->
+            <div class="sidebar sidebar-chellal sidebar-main sidebar-expand-xl sidebar-fixed d-print-none">
+                <!-- App logo and controls -->
+                <div class="d-flex align-self-end mr-2">
+                    <button type="button"
+                            class="btn btn-outline-light-100 text-white border-transparent btn-icon rounded-pill btn-sm sidebar-mobile-main-toggle d-xl-none ">
+                        <i class="icon-cross2 icon-2x"></i>
+                    </button>
+                </div>
+                <div class="navbar navbar-dark bg-transparent navbar-static border-0">
+                    <div class="navbar-brand flex-fill wmin-0">
+                        <a href="{{ path('admin') }}"
+                           class="d-inline-block">
+                            <img style="width: 100%; height: 100%" src="{{ '/build/images/logo.png' }}" alt="not found">
+                        </a>
+                    </div>
+                </div>
+                <!-- /app logo and controls -->
+                <!-- Sidebar content -->
+                <div class="sidebar-content">
+                    <!-- Main navigation -->
+                    <div class="card-sidebar-mobile card-sidebar">
+                        <!-- Main logo -->
+                        <div class="menu-list">
+                            {{ knp_menu_render('main', {'allow_safe_labels': true, 'currentClass': 'current active'}) }}
+                        </div>
+                    </div>
+                    <!-- /main navigation -->
+                </div>
+                <!-- /sidebar content -->
+            </div>
+            <!-- /main sidebar -->
+        {% endblock %}
+        <!-- Main content -->
+        <div class="content-wrapper">
+            <!-- Content area -->
+            <div class="content-inner content-inner-admin">
+                <!-- Page header -->
+                {% block front_menu %}
+                    <!-- Main navbar -->
+                    <div class="navbar navbar-expand-xl navbar-light justify-content-end" style="min-height: 102px">
+                        <div class="d-flex flex-1 d-xl-none">
+                            <button class="navbar-toggler sidebar-mobile-main-toggle" type="button">
+                                <i class="icon-paragraph-justify3 icon-2x"></i>
+                            </button>
+
+                            <div class="d-flex align-items-center px-3 ">
+                                <a href="{{ path('admin') }}" class=" ">
+                                    <img style="width: 150px; height: auto" src="{{ '/build/images/logo.png' }}" alt="not found">
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end align-items-center flex-1 flex-lg-0 order-1 order-lg-2">
+                            <ul class="navbar-nav flex-row">
+                                <li class="nav-item nav-item-dropdown-lg dropdown">
+                                    <a href="#" class="navbar-nav-link navbar-nav-link-toggler" data-toggle="dropdown">
+                                        <i class="icon-bell3 text-primary icon-2x" title="Centre de notifications"></i>
+                                        <span class="badge rounded-pill badge-danger p-1 text-white font-size-xs font-weight-bold">+1</span>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-content header-menu-dropdown">
+
+                                        <div class="dropdown-content-body dropdown-scrollable">
+                                            <ul class="media-list">
+                                                <li class="pt-2">
+                                                    <a class="text-decoration-none text-black"
+                                                       href="{{ path('admin') }}">
+                                                        <i class="icon-headset text-primary"></i>
+                                                        <span class="rounded-pill bg-danger bg-opacity-20 p-1 text-white font-size-xs font-weight-bold">+1</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </li>
+                                <li class="nav-item nav-item-dropdown-lg dropdown pt-1">
+                                    <a href="#" class="navbar-nav-link navbar-nav-link-toggler" data-toggle="dropdown">
+                        <span class="p-2 bg-primary rounded rounded-circle">
+                            <i class="icon-user text-white"></i>
+                        </span>
+                                    </a>
+
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-content header-menu-dropdown">
+                                        <div class="dropdown-content-body dropdown-scrollable">
+                                            <ul class="media-list">
+                                                <li class="my-2">
+                                                    <a class="text-decoration-none text-black font-weight-bold"
+                                                       href="{{ path('home') }}">Vers le site</a>
+                                                </li>
+                                                <li class="my-2">
+                                                    <a class="text-decoration-none text-black font-weight-bold">
+                                                        Profil
+                                                    </a>
+                                                </li>
+                                                <li class="mt-4">
+                                                    <a href="{{ path('app_logout') }}" class="text-decoration-none">
+                                                        <span class="text-danger font-weight-bold">Se déconnecter</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /main navbar -->
+                {% endblock %}
+                <!-- /page header -->
+                <div class="content main_content">
+                    {% block message_content %}{% endblock %}
+
+                    {% block banner %}
+                    {% endblock %}
+
+                    <!-- content -->
+                    {% block content %}
+                        <div class="px-3 py-3">
+                            {% block flash_messages %}
+                                {% for type, messages in app.flashes %}
+                                    {% for message in messages %}
+                                        <div class="alert alert-{{ type }} border-0 alert-dismissible mx-3 my-3">
+                                            <button type="button" class="close" data-dismiss="alert"><span>×</span></button>
+                                            <div class="alert-message">{{ message|raw }}</div>
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endblock %}
+
+                            {% block _content %}
+
+                            {% endblock %}
+                        </div>
+                    {% endblock %}
+                    <!-- /content -->
+
+                </div>
+                <!-- Footer -->
+                {% block footer %}
+
+                    {% if 'admin' not in app.request.uri %}
+                        {%  include('layout/_includes/footer.html.twig')  %}
+                    {% endif %}
+                {% endblock %}
+                <!-- /footer -->
+            </div>
+            <!-- /content area -->
+        </div>
+        <!-- /main content -->
+    </div>
+    <!-- /page content -->
+{% endblock %}
+</body>
+</html>

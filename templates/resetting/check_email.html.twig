@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réinitialisation{% endblock %}
+{% block body %}
+    <div class="limiter">
+        <div class="register-container">
+            <div class="request-wrap text-center">
+                    <form method="post" class="register-form">
+                        <span class="register-form-title">Réinitialisation</span>
+                        <div>Un e-mail a été envoyé. Il contient un lien
+                            sur lequel il vous faudra cliquer pour réinitialiser votre mot de passe.
+                        </div>
+
+                        <a href="{{ path('app_login') }}" class="btn btn-lg btn-success mt-2 rounded-lg">
+                            Retour
+                        </a>
+                    </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

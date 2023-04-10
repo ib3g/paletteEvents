@@ -65,6 +65,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Media $avatar = null;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $confirmationToken;
+
     public function __construct()
     {
         $this->demandes = new ArrayCollection();
@@ -117,13 +120,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function getRoles(): array
+    public function getRoles()
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles = [];
+        foreach ($this->roles as $role) {
+            $roles[] = $role->getRole();
+        }
 
-        return array_unique($roles);
+        if ($this->role && !in_array($this->role->getRole(), $roles)) {
+            $roles[] = $this->role->getRole();
+        }
+
+        // we need to make sure to have at least one role
+        $roles[] = Role::ROLE_USER;
+
+        return array_values(array_unique($roles));
     }
 
     public function addRole(Role $role): self
@@ -379,6 +390,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAvatar(?Media $avatar): self
     {
         $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    public function getConfirmationToken(): ?string
+    {
+        return $this->confirmationToken;
+    }
+
+    public function setConfirmationToken(?string $confirmationToken): self
+    {
+        $this->confirmationToken = $confirmationToken;
 
         return $this;
     }

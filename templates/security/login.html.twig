@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+{% block title %}Connexion{% endblock %}
+{% block content %}
+<div class="limiter">
+    <div class="register-container">
+        <div class="login-wrap">
+            {% block flash_messages %}
+                {% for type, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ type }} border-0 alert-dismissible">
+                            <div class="alert-message">{{ message|raw }}</div>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endblock %}
+            <form method="post" class="register-form">
+                <span class="register-form-title">Connectez-vous</span>
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+                {% if app.user %}
+                    <div class="mb-3">
+                        You are logged in as {{ app.user.email }}, <a href="{{ path('app_logout') }}">Logout</a>
+                    </div>
+                {% endif %}
+
+                <div class="px-3">
+                    <div class="row my-3">
+                        <div class="col-12">
+                            <input type="email" placeholder="E-mail" value="{{ last_username }}" name="email" id="inputEmail" class="form-control input-email input-control" autocomplete="email" required autofocus>
+                        </div>
+                    </div>
+
+                    <div class="row my-3">
+                        <div class="col-12">
+                            <input type="password" placeholder="Mot de passe" name="password" id="inputPassword" class="form-control input-password input-control" autocomplete="current-password" required>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+                <button class="register-form-btn" type="submit">
+                    Valider
+                </button>
+            </form>
+            <p class="hasAccount mt-5"><a href={{ path('app_user_request')}}>Mot de passe oublié ?</a></p>
+            <p class="hasAccount">Vous n'avez pas de compte ? <a href="{{ path('app_register')}}">Inscrivez-vous</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
