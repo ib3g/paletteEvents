@@ -20018,7 +20018,7 @@ p.copy-text a {
 
 /* inner banner */
 .inner-banner {
-  background: url(../images/inner-banner.jpg) no-repeat center;
+  background: url(../../../images/inner-banner.jpg) no-repeat center;
   background-size: cover;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -20724,3 +20724,14 @@ ul.rating-list li a.review-color {
 }
 
 /* //contact section */
+
+/* events liste */
+.events-classes .main-image{
+
+  width: 640px !important;
+  height: 261px;
+  object-fit: cover;
+
+}
+
+/* events liste */
