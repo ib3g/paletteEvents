@@ -48,9 +48,9 @@ legend {
   padding: 16px;
 }
 
-.sidebar-chellal {
+.sidebar-paletteEvent {
   width: 15rem !important;
-  background-color: $chellalDark;
+  background-color: $paletteEventDark;
 }
 
 .menu-list {
@@ -95,8 +95,15 @@ input[type=checkbox], input[type=radio] {
   min-height: auto !important;
 }
 
-.btn-chellal {
+.btn-paletteEvent {
+  background-color: $paletteEvent;
+  color: whitesmoke;
   font-weight: bold !important;
+
+  &:hover {
+    background-color: $paletteEventLight !important;
+    color: white;
+  }
 }
 
 .action-title {
@@ -112,7 +119,7 @@ input[type=checkbox], input[type=radio] {
 }
 
 .nav-tabs-bottom .nav-link.active:before {
-  background-color: $chellal !important;
+  background-color: $paletteEvent !important;
 }
 
 
@@ -132,7 +139,7 @@ input[type=checkbox], input[type=radio] {
 }
 
 .banner-section-container {
-  //background-image: url('/build/images/chellal-banner.jpeg');
+  //background-image: url('/build/images/paletteEvent-banner.jpeg');
   background-image: url('/build/images/logo_green.svg');
   //background-image: url('/build/images/favicon.png');
   filter: blur(3px);
@@ -168,7 +175,7 @@ input[type=checkbox], input[type=radio] {
 .show-card-container {
   width: 80%;
   border-radius: 8px;
-  background-color: $chellalLight;
+  background-color: $paletteEventLight;
   padding: 16px;
   margin: 8px;
   display: flex;
@@ -203,7 +210,7 @@ input[type=checkbox], input[type=radio] {
   margin-right: 24px;
 
   & i {
-    color: $chellal;
+    color: $paletteEvent;
     font-size: 25px;
   }
 }
@@ -221,7 +228,7 @@ input[type=checkbox], input[type=radio] {
 
   & i {
     margin-right: 8px;
-    color: $chellal;
+    color: $paletteEvent;
     font-size: 22px;
   }
 }
@@ -239,7 +246,7 @@ input[type=checkbox], input[type=radio] {
 }
 
 .pill-card-text-third {
-  color: $chellal;
+  color: $paletteEvent;
   font-size: 12px;
   font-weight: bold;
 }
@@ -318,7 +325,7 @@ input[type=checkbox], input[type=radio] {
 
 .card-shadow {
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
-  border: 0 solid rgba(0,0,0,.125) !important;
+  border: 0 solid rgba(0, 0, 0, .125) !important;
 }
 
 ::-webkit-scrollbar {
@@ -378,14 +385,14 @@ input[type=checkbox], input[type=radio] {
 }
 
 .pharmacy-card-name {
-  color: $chellal;
+  color: $paletteEvent;
   font-weight: 700;
   font-size: 28px;
   line-height: 34px;
 }
 
 .pharmacy-owner-link {
-  color: $chellal;
+  color: $paletteEvent;
   font-weight: 700;
   font-size: 16px;
   line-height: 20px;
@@ -404,7 +411,7 @@ input[type=checkbox], input[type=radio] {
 }
 
 .dataTable thead .sorting, .table-responsive table thead {
-  background-color: $chellal;
+  background-color: $paletteEvent;
   color: $white;
 }
 
@@ -413,6 +420,7 @@ input[type=checkbox], input[type=radio] {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .card-first-title {
   font-style: normal;
   font-weight: 600;
@@ -463,19 +471,24 @@ input[type=checkbox], input[type=radio] {
   box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1);
 }
 
-.bg-chellal {
-  background-color: $chellal;
+.bg-paletteEvent {
+  background-color: $paletteEvent;
 }
 
-.border-chellal {
-  border: 1px solid $chellal;
+.bg-paletteEvent-dark {
+  background-color: $paletteEventDark;
+}
+
+.border-paletteEvent {
+  border: 1px solid $paletteEvent;
 }
 
 table th:first-child {
-  border-radius: 8px 0 0 0 ;
+  border-radius: 8px 0 0 0;
 }
+
 table th:last-child {
-  border-radius:  0 8px  0 0 ;
+  border-radius: 0 8px 0 0;
 }
 
 .table {
@@ -483,8 +496,8 @@ table th:last-child {
 }
 
 .col-form-label.required:after {
-  content:" *";
-  color:red;
+  content: " *";
+  color: red;
 }
 
 .header-menu-dropdown {
@@ -503,7 +516,7 @@ table th:last-child {
 }
 
 .daterangepicker td.active:not(.off), .daterangepicker td.active:not(.off):hover {
-  background-color: $chellal;
+  background-color: $paletteEvent;
 }
 
 .chart-div {
@@ -543,17 +556,18 @@ table th:last-child {
   line-height: 30px;
   padding: 16px;
   margin-top: 45px;
+
   a {
     color: white;
   }
 }
 
 .btn-logout:hover a {
-  color: $chellal !important;
+  color: $paletteEvent !important;
 }
 
 .btn-logout:hover a .logout-icon {
-  color: $chellal !important;
+  color: $paletteEvent !important;
 }
 
 .logout-icon {
@@ -591,15 +605,15 @@ table.dataTable thead .sorting_desc, table.dataTable thead .sorting_asc, table.d
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-  border: 1px solid $chellal !important;
-  //background: linear-gradient(to bottom, $chellal 0%, $chellalDark 100%) !important;
-  background: $chellalLight !important;
+  border: 1px solid $paletteEvent !important;
+  //background: linear-gradient(to bottom, $paletteEvent 0%, $paletteEventDark 100%) !important;
+  background: $paletteEventLight !important;
 }
 
 .dataTables_paginate .paginate_button.current,
 .dataTables_paginate .paginate_button.current:focus,
 .dataTables_paginate .paginate_button.current:hover {
-  background-color: $chellal !important;
+  background-color: $paletteEvent !important;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current,
@@ -621,11 +635,12 @@ table.dataTable {
 }
 
 .embedded-form-container {
-  border: 1px solid rgba(0,0,0,0.26) ;
+  border: 1px solid rgba(0, 0, 0, 0.26);
   margin: 8px 0;
   padding: 8px;
   border-radius: 8px;
 }
+
 .embedded-form-li {
   max-width: 300px;
   margin: 4px;
@@ -635,15 +650,18 @@ table.dataTable {
 .removeButton {
   background-color: $red;
   color: $white;
-  &:hover{
+
+  &:hover {
     color: $white;
   }
 }
+
 .add_item_link {
   background-color: $cyan;
   color: $white;
   margin: 8px 0;
-  &:hover{
+
+  &:hover {
     color: $white;
   }
 }
@@ -653,10 +671,10 @@ table.dataTable {
 }
 
 .navbar-light {
-  border-bottom-color: $chellalLight;
+  border-bottom-color: $paletteEventLight;
 }
 
-.navbar-light .show>.navbar-nav-link {
+.navbar-light .show > .navbar-nav-link {
   background-color: transparent;
 }
 
@@ -665,18 +683,18 @@ table.dataTable {
 }
 
 .white-space-wrap {
-  white-space:pre-wrap;
+  white-space: pre-wrap;
 }
 
 .white-space-pre-line {
-  white-space:pre-line;
+  white-space: pre-line;
 }
 
 .fa-1rem, .icon-1rem {
   font-size: 1.3rem;
 }
 
-.input-group>.form-control {
+.input-group > .form-control {
   min-width: 221px;
 }
 
@@ -697,16 +715,16 @@ table.dataTable {
 }
 
 .table-sale-result input {
-  min-height: 25px!important;
+  min-height: 25px !important;
   max-width: 90px !important;
 
   padding: 4px;
   color: #333;
   background-color: #fff;
   background-clip: padding-box;
-  border: 1px solid $chellal;
+  border: 1px solid $paletteEvent;
   border-radius: 0.25rem;
-  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
 .table-sale-result th:not(:first-child) {

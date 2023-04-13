@@ -36,7 +36,7 @@
         {% block sidebar %}
 
             <!-- Main sidebar -->
-            <div class="sidebar sidebar-chellal sidebar-main sidebar-expand-xl sidebar-fixed d-print-none">
+            <div class="sidebar sidebar-paletteEvent sidebar-main sidebar-expand-xl sidebar-fixed d-print-none">
                 <!-- App logo and controls -->
                 <div class="d-flex align-self-end mr-2">
                     <button type="button"
@@ -45,12 +45,11 @@
                     </button>
                 </div>
                 <div class="navbar navbar-dark bg-transparent navbar-static border-0">
-                    <div class="navbar-brand flex-fill wmin-0">
-                        <a href="{{ path('admin') }}"
-                           class="d-inline-block">
-                            <img style="width: 100%; height: 100%" src="{{ '/build/images/logo.png' }}" alt="not found">
-                        </a>
-                    </div>
+                    <a href="{{ path('admin') }}"
+                       class="d-inline-block text-white navbar-brand flex-fill" style="font-size: 18px">
+                        <img style="width: 50px;height: 50px" src="{{  asset("build/images/logo.png")  }}" alt="not found"/>
+                        PaletteEvents
+                    </a>
                 </div>
                 <!-- /app logo and controls -->
                 <!-- Sidebar content -->
@@ -82,8 +81,9 @@
                             </button>
 
                             <div class="d-flex align-items-center px-3 ">
-                                <a href="{{ path('admin') }}" class=" ">
-                                    <img style="width: 150px; height: auto" src="{{ '/build/images/logo.png' }}" alt="not found">
+                                <a href="{{ path('admin') }}" class="text-decoration-none text-paletteEvent font-weight-bold">
+                                    <img style="width: 50px;height: 50px" src="{{  asset("build/images/logo.png")  }}" alt="not found"/>
+                                    PaletteEvents
                                 </a>
                             </div>
                         </div>
@@ -92,7 +92,7 @@
                             <ul class="navbar-nav flex-row">
                                 <li class="nav-item nav-item-dropdown-lg dropdown">
                                     <a href="#" class="navbar-nav-link navbar-nav-link-toggler" data-toggle="dropdown">
-                                        <i class="icon-bell3 text-primary icon-2x" title="Centre de notifications"></i>
+                                        <i class="icon-bell3 text-paletteEvent-dark icon-2x" title="Centre de notifications"></i>
                                         <span class="badge rounded-pill badge-danger p-1 text-white font-size-xs font-weight-bold">+1</span>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right dropdown-content header-menu-dropdown">
@@ -113,7 +113,7 @@
                                 </li>
                                 <li class="nav-item nav-item-dropdown-lg dropdown pt-1">
                                     <a href="#" class="navbar-nav-link navbar-nav-link-toggler" data-toggle="dropdown">
-                        <span class="p-2 bg-primary rounded rounded-circle">
+                        <span class="p-2 bg-paletteEvent-dark rounded rounded-circle">
                             <i class="icon-user text-white"></i>
                         </span>
                                     </a>

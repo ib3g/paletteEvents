@@ -3,45 +3,52 @@
 {% block title %}User index{% endblock %}
 
 {% block _content %}
-    <h1>User index</h1>
 
-    <table class="table">
-        <thead>
+    <div class="d-flex flex-row justify-content-between align-items-center flex-wrap">
+        <h1 class="action-title">Utilisateurs</h1>
+        <a href="{{ path('app_user_new') }}" class="btn btn-paletteEvent radius mr-2 mb-2">Nouveau Utilisateur <i
+                    class="icon-plus2"></i></a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table datatable-basic table-striped table-hover" id="dataTable">
+            <thead>
             <tr>
-                <th>Id</th>
-                <th>Email</th>
-                <th>Roles</th>
+                <th>Ordre</th>
                 <th>FullName</th>
-                <th>Birthday</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Date de Naissance</th>
                 <th>Profession</th>
-                <th>CentreInteret</th>
-                <th>IsVerified</th>
+                <th>C. d'interet</th>
                 <th>actions</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-            <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.role.role }}</td>
-                <td>{{ user.fullName }}</td>
-                <td>{{ user.birthday ? user.birthday|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ user.profession }}</td>
-                <td>{{ user.centreInteret }}</td>
-                <td>{{ user.isVerified ? 'Yes' : 'No' }}</td>
-                <td>
-                    <a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="10">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_user_new') }}">Create new</a>
+            </thead>
+            <tbody>
+            {% for key,user in users %}
+                <tr>
+                    <td>{{ key+1 }}</td>
+                    <td>{{ user.fullName }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.role.role }}</td>
+                    <td>{{ user.birthday ? user.birthday|date('Y-m-d') : '' }}</td>
+                    <td>{{ user.profession }}</td>
+                    <td>{{ user.centreInteret }}</td>
+                    <td>
+                        <a href="{{ path('app_user_show', {'id': user.id}) }}">
+                            <i class="icon-eye text-paletteEvent" title="Voir"></i>
+                        </a>
+                        <a href="{{ path('app_user_edit', {'id': user.id}) }}">
+                            <i class="icon-pencil text-paletteEvent-dark" title="Modifier"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="10">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
