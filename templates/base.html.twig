@@ -74,13 +74,13 @@
                         <a class="nav-link active" aria-current="page" href="{{ path("home") }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="about.html">About Us</a>
+                        <a class="nav-link" href="{{ path('animators') }}">Animators</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('events_index') }}">Events</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="contact.html">Contact</a>
+                        <a class="nav-link" href="{{ path('contact') }}">Contact</a>
                     </li>
                 </ul>
                 <form action="#error" method="GET" class="d-flex search-header ms-lg-2">
@@ -138,10 +138,10 @@
                     <h6>Links</h6>
                     <ul>
                         <li><a href="{{ path('home') }}">Home</a> </li>
-                        <li><a href="about.html">About Us</a> </li>
+                        <li><a href="{{ path('animators') }}">Animators</a> </li>
                         <li><a href="{{ path('events_index') }}">Events</a> </li>
                         <li><a href="#blog">Blog Posts</a> </li>
-                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="{{ path('contact') }}">Contact</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-2 col-6 sub-two-right mt-lg-0 mt-5">

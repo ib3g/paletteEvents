@@ -19370,23 +19370,6 @@ h3.title-style span {
   transition: all 0.7s ease-in-out;
 }
 
-.slide:first-child {
-  background: url(../../../images/banner1.jpg) no-repeat center top/cover;
-}
-
-.slide:nth-child(2) {
-  background: url(../../../images/banner2.jpg) no-repeat center top/cover;
-}
-
-
-.slide:nth-child(3) {
-  background: url(../../../images/banner3.jpg) no-repeat center top/cover;
-}
-
-.slide:nth-child(4) {
-  background: url(../../../images/banner4.jpg) no-repeat center top/cover;
-}
-
 .buttons button#prev {
   position: absolute;
   top: 55%;
@@ -20567,13 +20550,13 @@ ul.rating-list li a.review-color {
 
 .course-price-item h6 {
   border-radius: 100px;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
   text-align: center;
   background: var(--primary-color);
   color: #FFFFFF;
-  min-width: 70px;
-  min-height: 70px;
+  min-width: 77px;
+  min-height: 77px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -20733,5 +20716,9 @@ ul.rating-list li a.review-color {
   object-fit: cover;
 
 }
-
+.team-area .img-animator{
+  width: 374px !important;
+  height: 416px;
+  object-fit: cover;
+}
 /* events liste */
