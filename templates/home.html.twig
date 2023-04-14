@@ -41,7 +41,7 @@
                         odit? At iure facere,
                         porro repellat officia quas, dolores magnam assumenda soluta odit
                         harum.</p>
-                    <a href="about.html" class="btn btn-style mt-5"> Know more about us</a>
+                    <a href="about.html" class="btn btn-style mt-5"> Savoir plus</a>
                 </div>
                 <div class="col-lg-6 history-info mt-lg-0 mt-5 pt-md-4 pt-2">
                     <div class="position-relative img-border">
@@ -56,7 +56,7 @@
     <!-- classes section -->
     <section class="w3l-classes py-5" id="classes">
         <div class="container py-lg-5 py-md-4 py-2">
-            <h3 class="title-style text-center">Our Best <span>Topics</span></h3>
+            <h3 class="title-style text-center">Our Popular <span>Topics</span></h3>
             <div class="row text-center justify-content-center">
                 <div class="col-lg-4 col-md-6 mt-lg-5 mt-4">
                     <div class="grids-1 box-wrap p-lg-3">
@@ -128,31 +128,38 @@
         <div class="container py-lg-5 py-md-4 py-2">
             <div class="row align-items-center">
                 <div class="col-lg-5">
-                    <h3 class="title-style">Listen to <span>Music</span> Buzz anywhere</h3>
-                    <h6 class="sub-title mt-md-4 mt-md-5 mt-4">Where words leave off, <br>Music Begins.</h6>
-                    <a href="{{ path('events_index') }}" class="btn btn-style mt-lg-5 mt-4">View Events</a>
+                    <h3 class="title-style">Events <span>ajoutés</span> récement</h3>
+                    <h6 class="sub-title mt-md-4 mt-md-5 mt-4">Explorer  <br>les nouveautés des Events</h6>
+                    <a href="{{ path('events_index') }}" class="btn btn-style mt-lg-5 mt-4">Tous les Events</a>
                 </div>
                 <div class="col-lg-7 mt-lg-0 mt-5 ps-lg-5">
                     <div class="row">
                         <div class="col-6">
-                            <div class="column-w3-img position-relative">
-                                <a href="#image"><img src="{{ asset('build/images/img1.jpg') }}" alt=""
-                                                      class="radius-image img-fluid"></a>
+                            {% for key,event in events|slice(0,2) %}
+                            <div class="column-w3-img position-relative {% if key == 1 %} mt-4 img_sm{% else %}img_bg{% endif %}">
+                                <a  href="{{ path('app_event_show',{"id":event.id}) }}">
+                                    {% set url = "/build/images/placeholder.png" %}
+                                    {% if event.medias is not empty %}
+                                        {% set url = "/uploads/" ~ event.medias[0].realName %}
+                                    {% endif %}
+                                    <img src="{{ asset(url) }}" alt=""
+                                                      class="radius-image img-fluid">
+                                </a>
                             </div>
-                            <div class="column-w3-img position-relative mt-4">
-                                <a href="#image"><img src="{{ asset('build/images/img3.jpg') }}" alt=""
-                                                      class="radius-image img-fluid"></a>
-                            </div>
+                              {% endfor %}
                         </div>
                         <div class="col-6">
-                            <div class="column-w3-img position-relative">
-                                <a href="#image"><img src="{{ asset('build/images/img4.jpg') }}" alt=""
+                            {% for key,event in events|slice(2,4) %}
+                            <div class="column-w3-img position-relative {% if key == 1 %}mt-4 img_bg{% else %}img_sm{% endif %}">
+                                <a  href="{{ path('app_event_show',{"id":event.id}) }}">
+                                    {% set url = "/build/images/placeholder.png" %}
+                                    {% if event.medias is not empty %}
+                                        {% set url = "/uploads/" ~ event.medias[0].realName %}
+                                    {% endif %}
+                                    <img src="{{ asset(url) }}" alt=""
                                                       class="radius-image img-fluid"></a>
                             </div>
-                            <div class="column-w3-img position-relative mt-4">
-                                <a href="#image"><img src="{{ asset('build/images/img2.jpg') }}" alt=""
-                                                      class="radius-image img-fluid"></a>
-                            </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
