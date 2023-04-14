@@ -76,7 +76,7 @@ class ResettingManager
 
             ]);
 
-            $this->mailer->send('Rejoindre Chellal', $htmlContents, $user->getEmail());
+            $this->mailer->send('Rejoindre PaletteEvent', $htmlContents, $user->getEmail());
         }
     }
 

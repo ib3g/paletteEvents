@@ -40,27 +40,24 @@ class Builder implements ContainerAwareInterface
         $menu->setChildrenAttribute('class', 'nav nav-sidebar');
 
         $menuList = [
-            'dashboard' => [
-                'route' => 'admin',
-                'label' => 'Dashboard',
-                'icon' => 'fas fa-chart-pie fa-1rem',
-                'roles' => [
-                    'ROLE_MANAGER',
-                    'ROLE_PHARMACY',
-                ]
-            ]
+            'utilisateur' => [
+                'route' => 'app_user_index',
+                'label' => 'Utilisateurs',
+                'icon' => 'icon-users fa-1rem',
+                'roles' => []
+            ],
         ];
 
         $requestUri = $this->requestStack->getCurrentRequest()->getRequestUri();
 
         foreach ($menuList as $name => $item) {
             $roles = $item['roles'];
-            $granted = false;
-            foreach ($roles as $role) {
-                if ($this->authorizationChecker->isGranted($role)) {
-                    $granted = true;
-                }
-            }
+            $granted = true;
+//            foreach ($roles as $role) {
+//                if ($this->authorizationChecker->isGranted($role)) {
+//                    $granted = true;
+//                }
+//            }
 
             if ($granted) {
 

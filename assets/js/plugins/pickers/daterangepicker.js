@@ -65,7 +65,7 @@
             this.drops = 'up';
 
         this.buttonClasses = 'btn btn-sm';
-        this.applyButtonClasses = 'bg-chellal text-white';
+        this.applyButtonClasses = 'bg-paletteEvent text-white';
         this.cancelButtonClasses = 'btn-light';
 
         this.locale = {

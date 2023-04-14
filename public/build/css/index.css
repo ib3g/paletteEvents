@@ -1,12 +1,15 @@
 @charset "UTF-8";
 .btn-success {
-  background-color: #45CFCC !important;
-  border-color: #45CFCC !important; }
+  background-color: #28a745 !important;
+  border-color: #28a745 !important; }
 
-.text-teal, .text-chellal {
+.text-teal {
   color: #45CFCC !important; }
 
-.text-chellal-dark {
+.text-paletteEvent {
+  color: #783946 !important; }
+
+.text-paletteEvent-dark {
   color: #243239 !important; }
 
 /* ------------------------------------------------------------------------------
@@ -30912,7 +30915,7 @@ legend {
 .menu-logo {
   padding: 16px; }
 
-.sidebar-chellal {
+.sidebar-paletteEvent {
   width: 15rem !important;
   background-color: #243239; }
 
@@ -30948,8 +30951,13 @@ input {
 input[type=checkbox], input[type=radio] {
   min-height: auto !important; }
 
-.btn-chellal {
+.btn-paletteEvent {
+  background-color: #783946;
+  color: whitesmoke;
   font-weight: bold !important; }
+  .btn-paletteEvent:hover {
+    background-color: #a57d85 !important;
+    color: white; }
 
 .action-title {
   font-style: normal;
@@ -30962,7 +30970,7 @@ input[type=checkbox], input[type=radio] {
   max-height: 200px; }
 
 .nav-tabs-bottom .nav-link.active:before {
-  background-color: #45CFCC !important; }
+  background-color: #783946 !important; }
 
 .main_content {
   padding: 0 !important; }
@@ -31005,7 +31013,7 @@ input[type=checkbox], input[type=radio] {
 .show-card-container {
   width: 80%;
   border-radius: 8px;
-  background-color: #AFEBEA;
+  background-color: #a57d85;
   padding: 16px;
   margin: 8px;
   display: -ms-flexbox;
@@ -31050,7 +31058,7 @@ input[type=checkbox], input[type=radio] {
       align-items: center;
   margin-right: 24px; }
   .show-card-icon i {
-    color: #45CFCC;
+    color: #783946;
     font-size: 25px; }
 
 .show-card-text {
@@ -31064,7 +31072,7 @@ input[type=checkbox], input[type=radio] {
   font-size: 14px; }
   .pill-card-text-first i {
     margin-right: 8px;
-    color: #45CFCC;
+    color: #783946;
     font-size: 22px; }
 
 .pill-card-text {
@@ -31080,7 +31088,7 @@ input[type=checkbox], input[type=radio] {
   font-weight: bolder; }
 
 .pill-card-text-third {
-  color: #45CFCC;
+  color: #783946;
   font-size: 12px;
   font-weight: bold; }
 
@@ -31212,13 +31220,13 @@ input[type=checkbox], input[type=radio] {
   line-height: 20px; }
 
 .pharmacy-card-name {
-  color: #45CFCC;
+  color: #783946;
   font-weight: 700;
   font-size: 28px;
   line-height: 34px; }
 
 .pharmacy-owner-link {
-  color: #45CFCC;
+  color: #783946;
   font-weight: 700;
   font-size: 16px;
   line-height: 20px; }
@@ -31234,7 +31242,7 @@ input[type=checkbox], input[type=radio] {
     border-radius: 8px; }
 
 .dataTable thead .sorting, .table-responsive table thead {
-  background-color: #45CFCC;
+  background-color: #783946;
   color: #fff; }
 
 .truncate {
@@ -31284,17 +31292,20 @@ input[type=checkbox], input[type=radio] {
 .card-shadow {
   box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1); }
 
-.bg-chellal {
-  background-color: #45CFCC; }
+.bg-paletteEvent {
+  background-color: #783946; }
 
-.border-chellal {
-  border: 1px solid #45CFCC; }
+.bg-paletteEvent-dark {
+  background-color: #243239; }
+
+.border-paletteEvent {
+  border: 1px solid #783946; }
 
 table th:first-child {
   border-radius: 8px 0 0 0; }
 
 table th:last-child {
-  border-radius: 0 8px  0 0; }
+  border-radius: 0 8px 0 0; }
 
 .table {
   color: #000; }
@@ -31321,7 +31332,7 @@ table th:last-child {
       align-items: center; }
 
 .daterangepicker td.active:not(.off), .daterangepicker td.active:not(.off):hover {
-  background-color: #45CFCC; }
+  background-color: #783946; }
 
 .chart-div {
   margin: 16px 0;
@@ -31365,10 +31376,10 @@ table th:last-child {
     color: white; }
 
 .btn-logout:hover a {
-  color: #45CFCC !important; }
+  color: #783946 !important; }
 
 .btn-logout:hover a .logout-icon {
-  color: #45CFCC !important; }
+  color: #783946 !important; }
 
 .logout-icon {
   margin-right: 1.25rem !important;
@@ -31399,13 +31410,13 @@ table.dataTable thead .sorting_desc, table.dataTable thead .sorting_asc, table.d
   display: none; }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-  border: 1px solid #45CFCC !important;
-  background: #AFEBEA !important; }
+  border: 1px solid #783946 !important;
+  background: #a57d85 !important; }
 
 .dataTables_paginate .paginate_button.current,
 .dataTables_paginate .paginate_button.current:focus,
 .dataTables_paginate .paginate_button.current:hover {
-  background-color: #45CFCC !important; }
+  background-color: #783946 !important; }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current,
 .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
@@ -31448,7 +31459,7 @@ table.dataTable {
   font-size: 16px !important; }
 
 .navbar-light {
-  border-bottom-color: #AFEBEA; }
+  border-bottom-color: #a57d85; }
 
 .navbar-light .show > .navbar-nav-link {
   background-color: transparent; }
@@ -31484,9 +31495,9 @@ table.dataTable {
   color: #333;
   background-color: #fff;
   background-clip: padding-box;
-  border: 1px solid #45CFCC;
+  border: 1px solid #783946;
   border-radius: 0.25rem;
-  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out; }
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out; }
 
 .table-sale-result th:not(:first-child) {
   min-width: auto !important;
