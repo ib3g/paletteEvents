@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <section class="inner-banner py-5">
+        <div class="w3l-breadcrumb py-lg-5">
+            <div class="container pt-5 pb-sm-4 pb-2">
+                <h4 class="inner-text-title font-weight-bold pt-5">Animators</h4>
+                <ul class="breadcrumbs-custom-path">
+                    <li><a href="{{ path('home') }}">Home</a></li>
+                    <li class="active"><i class="fas fa-angle-right mx-2"></i>Animators</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <div class="team-area pt-5" id="team">
+        <div class="container py-md-5 py-md-4 py-2">
+            <h3 class="title-style text-capitalize text-center">Our  <span>Animators</span>
+            </h3>
+
+            <div class="row mt-lg-5 mt-4">
+                {% for animator in animators %}
+                    <div class="col-lg-4 mt-2 col-sm-6">
+                        <div class="single-team">
+                            <div class="img-area">
+                                {% set url = "/build/images/placeholder.png" %}
+                                {% if animator.avatar is not empty %}
+                                    {% set url = "/uploads/" ~ animator.avatar.realName %}
+                                {% endif %}
+                                <img src="{{ url }}" class="img-fluid img-animator radius-image" alt="">
+                                <div class="social">
+                                    <ul class="list-inline">
+                                        <li><a href="#url"><i class="fab fa-facebook-f"></i></a></li>
+                                        <li><a href="#url"><i class="fab fa-twitter"></i></a></li>
+                                        <li><a href="#url"><i class="fab fa-linkedin-in"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="img-text">
+                                <h4><a href="#team">{{ animator.fullName }}</a></h4>
+                                <p>{{ animator.profession }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

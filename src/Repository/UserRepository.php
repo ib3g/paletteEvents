@@ -55,6 +55,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         $this->save($user, true);
     }
+// get users with role ROLE_ANIMATEUR
+    public function findAnimateurs()
+    {
+        return $this->createQueryBuilder('u')
+            ->join('u.roles', 'r')
+            ->andWhere('r.role = :role')
+            ->setParameter('role', 'ROLE_ANIMATEUR')
+            ->getQuery()
+            ->getResult();
+    }
 
 //    /**
 //     * @return User[] Returns an array of User objects

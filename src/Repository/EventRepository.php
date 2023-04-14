@@ -39,6 +39,31 @@ class EventRepository extends ServiceEntityRepository
         }
     }
 
+    // query builder returns last 4 events
+        public function findLastEvents($max): array
+        {
+            return $this->createQueryBuilder('e')
+                ->orderBy('e.id', 'DESC')
+                ->setMaxResults($max)
+                ->getQuery()
+                ->getResult()
+            ;
+        }
+    public function findEventsWithSharedCategories(Event $event, int $max): array
+    {
+        $categoryArray = $event->getCategories(); // Get the category array of the event passed in parameter
+        $qb = $this->createQueryBuilder('e')
+            ->where(':categoryArray MEMBER OF e.categories') // Check if any of the categories of an event match any of the categories of the event passed in parameter
+            ->andWhere('e.id != :id') // Exclude the event passed in parameter
+            ->setParameter('categoryArray', $categoryArray)
+            ->setParameter('id', $event->getId())
+            ->orderBy('e.id', 'DESC')
+            ->setMaxResults($max)
+            ->getQuery();
+
+        return $qb->getResult();
+    }
+
 //    /**
 //     * @return Event[] Returns an array of Event objects
 //     */

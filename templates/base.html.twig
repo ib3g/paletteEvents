@@ -5,7 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PaletteEvents - Plateforme de gestion des événements</title>
+    <title>PaletteEvents - Plateforme de planification d'événements</title>
     <!-- Google fonts -->
     <link href=//fonts.googleapis.com/css2?family=Londrina+Outline&display=swap" rel="stylesheet">
     <!-- Template CSS Style link -->
@@ -74,13 +74,13 @@
                         <a class="nav-link active" aria-current="page" href="{{ path("home") }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="about.html">About Us</a>
+                        <a class="nav-link" href="{{ path('animators') }}">Animators</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('events_index') }}">Events</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="contact.html">Contact</a>
+                        <a class="nav-link" href="{{ path('contact') }}">Contact</a>
                     </li>
                 </ul>
                 <form action="#error" method="GET" class="d-flex search-header ms-lg-2">
@@ -118,9 +118,7 @@
             <div class="row">
                 <div class="col-lg-4 sub-one-left pe-lg-5">
                     <h6>About </h6>
-                    <p class="footer-phny">Lorem ipsum viverra feugiat. Pellen tesque libero ut justo,
-                        ultrices in ligula. Semper at tempufddfel.Lorem ipsum dolor sit,l. Lorem ipsum dolor sit,
-                        amet elit.</p>
+                    <p class="footer-phny"><b>PaletteEvents</b> est un outil de planification d'événements qui permet de créer, de partager et de promouvoir des événements .</p>
                     <div class="columns-2 mt-lg-5 mt-4">
                         <ul class="social">
                             <li><a href="#facebook"><span class="fab fa-facebook-f"></span></a>
@@ -138,10 +136,10 @@
                     <h6>Links</h6>
                     <ul>
                         <li><a href="{{ path('home') }}">Home</a> </li>
-                        <li><a href="about.html">About Us</a> </li>
+                        <li><a href="{{ path('animators') }}">Animators</a> </li>
                         <li><a href="{{ path('events_index') }}">Events</a> </li>
                         <li><a href="#blog">Blog Posts</a> </li>
-                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="{{ path('contact') }}">Contact</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-2 col-6 sub-two-right mt-lg-0 mt-5">

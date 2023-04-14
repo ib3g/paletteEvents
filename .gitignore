@@ -5,9 +5,9 @@ node_modules
 /.env.local.php
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
-/public/bundles
-/public/uploads
-/public/build
+/public/bundles/
+/public/uploads/
+/public/build/*
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
