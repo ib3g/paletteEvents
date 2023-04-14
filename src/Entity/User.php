@@ -47,7 +47,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?Role $role = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Demande::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Demande::class, cascade: ['persist', 'remove'])]
     private Collection $demandes;
 
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Event::class)]

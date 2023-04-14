@@ -114,7 +114,7 @@ class EventFixtures extends AppFixtures implements DependentFixtureInterface
                     if (!$demande)  {
                         $demande = new Demande();
                         $demande->setText("Je souhaiterais faire partie de l'équipe d'animation de cet événement.");
-                        $demande->setStatus(1);
+                        $demande->setStatus(Demande::STATUS_PENDING);
                         $demande->setEvent($event);
                         $demande->setUser($animateur);
                         $demande->setCreatedAt($faker->dateTimeBetween('-'.$faker->numberBetween(1, 60).' days', $event->getDateEvent()));

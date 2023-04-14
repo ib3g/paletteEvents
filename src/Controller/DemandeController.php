@@ -10,8 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/demande')]
-class DemandeController extends AbstractController
+#[Route('/admin/demande')]
+class DemandeController extends BaseController
 {
     #[Route('/', name: 'app_demande_index', methods: ['GET'])]
     public function index(DemandeRepository $demandeRepository): Response
@@ -48,31 +48,17 @@ class DemandeController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_demande_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Demande $demande, DemandeRepository $demandeRepository): Response
+    #[Route('/{id}/changeStatus', name: 'app_demande_switch_status', methods: ['GET', 'POST'])]
+    public function switchStatus(Request $request, Demande $demande, DemandeRepository $demandeRepository): Response
     {
-        $form = $this->createForm(DemandeType::class, $demande);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
+        $status = $request->get('status');
+        if ($demande->getStatus() == Demande::STATUS_PENDING) {
+            $demande->setStatus($status);
             $demandeRepository->save($demande, true);
-
-            return $this->redirectToRoute('app_demande_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('demande/edit.html.twig', [
-            'demande' => $demande,
-            'form' => $form,
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_demande_delete', methods: ['POST'])]
-    public function delete(Request $request, Demande $demande, DemandeRepository $demandeRepository): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$demande->getId(), $request->request->get('_token'))) {
-            $demandeRepository->remove($demande, true);
+            $this->addSuccessFlash('Demande traitée avec succès');
         }
 
         return $this->redirectToRoute('app_demande_index', [], Response::HTTP_SEE_OTHER);
     }
+
 }

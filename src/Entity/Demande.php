@@ -9,6 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: DemandeRepository::class)]
 class Demande
 {
+    const STATUS_PENDING = 0;
+    const STATUS_ACCEPTED = 1;
+    const STATUS_REJECTED = 2;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

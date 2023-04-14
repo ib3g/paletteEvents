@@ -1,39 +1,64 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin.html.twig' %}
 
-{% block title %}Demande index{% endblock %}
+{% block title %}Demandes{% endblock %}
 
-{% block body %}
-    <h1>Demande index</h1>
+{% block _content %}
 
-    <table class="table">
-        <thead>
+    <div class="d-flex flex-row justify-content-between align-items-center flex-wrap">
+        <h1 class="action-title">Demandes</h1>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table datatable-basic table-striped table-hover" id="dataTable">
+            <thead>
             <tr>
-                <th>Id</th>
+                <th>Ordre</th>
                 <th>Text</th>
-                <th>CreatedAt</th>
+                <th>Auteur</th>
+                <th>Évènement</th>
+                <th>Date</th>
                 <th>Status</th>
                 <th>actions</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for demande in demandes %}
-            <tr>
-                <td>{{ demande.id }}</td>
-                <td>{{ demande.text }}</td>
-                <td>{{ demande.createdAt ? demande.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ demande.status }}</td>
-                <td>
-                    <a href="{{ path('app_demande_show', {'id': demande.id}) }}">show</a>
-                    <a href="{{ path('app_demande_edit', {'id': demande.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_demande_new') }}">Create new</a>
+            </thead>
+            <tbody>
+            {% for key, demande in demandes %}
+                <tr>
+                    <td>{{ key+1 }}</td>
+                    <td>{{ demande.text }}</td>
+                    <td><a target="_blank" href="{{ path('app_user_show', {'id': demande.user.id }) }}">{{ demande.user }}</a></td>
+                    <td><a target="_blank" href="{{ path('app_event_show', {'id': demande.event.id }) }}">{{ demande.event }}</a></td>
+                    <td>{{ demande.createdAt ? demande.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>
+                        {% if demande.status == 0 %}
+                            <span class="badge badge-info">En attente</span>
+                        {% elseif demande.status == 1 %}
+                            <span class="badge badge-success">Accepté</span>
+                        {% elseif demande.status == 2 %}
+                            <span class="badge badge-danger">Refusé</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        {% if demande.status == 0 %}
+                            <a href="{{ path('app_demande_switch_status', {'id': demande.id, 'status': 1}) }}">
+                                <i class="icon-check text-success icon-2x" title="Accepter"></i>
+                            </a>
+                            <a href="{{ path('app_demande_switch_status', {'id': demande.id, 'status': 2}) }}">
+                                <i class="icon-x text-danger icon-2x" title="Refuser"></i>
+                            </a>
+                        {% else %}
+                            <span>
+                                -
+                            </span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

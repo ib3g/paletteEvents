@@ -46,6 +46,18 @@ class Builder implements ContainerAwareInterface
                 'icon' => 'icon-users fa-1rem',
                 'roles' => []
             ],
+            'Demandes' => [
+                'route' => 'app_demande_index',
+                'label' => 'Demandes',
+                'icon' => 'icon-folder icon-1rem',
+                'roles' => []
+            ],
+            'Tags' => [
+                'route' => 'app_tag_index',
+                'label' => 'Tags',
+                'icon' => 'icon-folder icon-1rem',
+                'roles' => []
+            ],
         ];
 
         $requestUri = $this->requestStack->getCurrentRequest()->getRequestUri();
