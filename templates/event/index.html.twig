@@ -20,7 +20,15 @@
     <!-- classes section -->
     <div class="w3l-grids-block-5 classes-bg-cont py-5 events-classes">
         <div class="container py-lg-5 py-md-4 py-2">
-            <h3 class="title-style text-center mb-sm-5 mb-4">Discover the  <span>Events</span></h3>
+            <h3 class="title-style text-center mb-sm-5 mb-4">Discover the
+                {% if categoryName is defined %}
+                    <b>  {{ categoryName }} </b>
+                {% endif %}
+                {% if tagName is defined %}
+                    <b>  #{{ tagName }} </b>
+                {% endif %}
+                <span>Events</span>
+            </h3>
             <div class="row justify-content-center">
                 {% for event in events|sort((a,b) => a.dateEvent|date('Y-m-d') > b.dateEvent|date('Y-m-d')) %}
                 <div class="col-lg-4 col-md-6">
@@ -91,6 +99,22 @@
                         </div>
                     </div>
                 </div>
+                {% else %}
+                    {% if tagName is defined or categoryName is defined %}
+                        <div class="col-12">
+                            <div class="text-center">
+                               <i class="black-text"> We couldn't find anything,
+                                Adjust your filters and try again</i><br>
+                                <a href="{{ path("events_index") }}" class="btn btn-style mt-lg-5 mt-4">Tous les Events</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="col-12">
+                            <div class="text-center">
+                                <i class="black-text"> No events yet </i>
+                            </div>
+                        </div>
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>
