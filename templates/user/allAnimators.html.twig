@@ -21,23 +21,26 @@
                 {% for animator in animators %}
                     <div class="col-lg-4 mt-2 col-sm-6">
                         <div class="single-team">
-                            <div class="img-area">
+                              <div class="img-area">
                                 {% set url = "/build/images/placeholder.png" %}
                                 {% if animator.avatar is not empty %}
                                     {% set url = "/uploads/" ~ animator.avatar.realName %}
                                 {% endif %}
+
                                 <img src="{{ url }}" class="img-fluid img-animator radius-image" alt="">
-                                <div class="social">
-                                    <ul class="list-inline">
-                                        <li><a href="#url"><i class="fab fa-facebook-f"></i></a></li>
-                                        <li><a href="#url"><i class="fab fa-twitter"></i></a></li>
-                                        <li><a href="#url"><i class="fab fa-linkedin-in"></i></a></li>
-                                    </ul>
-                                </div>
+                                    <div class="social">
+                                        <ul class="list-inline">
+                                            <li><a href="#url"><i class="fab fa-facebook-f"></i></a></li>
+                                            <li><a href="#url"><i class="fab fa-twitter"></i></a></li>
+                                            <li><a href="#url"><i class="fab fa-linkedin-in"></i></a></li>
+                                        </ul>
+                                    </div>
                             </div>
                             <div class="img-text">
-                                <h4><a href="#team">{{ animator.fullName }}</a></h4>
+                                <a href="{{ path('events_same_animator', {'animatorName': animator.fullName}) }}">
+                                <h4>{{ animator.fullName }}</h4>
                                 <p>{{ animator.profession }}</p>
+                                </a>
                             </div>
                         </div>
                     </div>

@@ -20,14 +20,21 @@
     <!-- classes section -->
     <div class="w3l-grids-block-5 classes-bg-cont py-5 events-classes">
         <div class="container py-lg-5 py-md-4 py-2">
-            <h3 class="title-style text-center mb-sm-5 mb-4">Discover the
-                {% if categoryName is defined %}
-                    <b>  {{ categoryName }} </b>
+            <h3 class="title-style text-center mb-sm-5 mb-4">
+                {% if owner is defined %}
+                    Découvrir les Events de  <span>{{ owner }}</span>
+                {% elseif animator is defined  %}
+                    Events animés par   <span>{{ animator }}</span>
+                {% else %}
+                    Découvrir les  <span>Events</span>
+                    {% if categoryName is defined %}
+                        <b>  {{ categoryName }} </b>
+                    {% endif %}
+                    {% if tagName is defined %}
+                        <b>  #{{ tagName }} </b>
+                    {% endif %}
+
                 {% endif %}
-                {% if tagName is defined %}
-                    <b>  #{{ tagName }} </b>
-                {% endif %}
-                <span>Events</span>
             </h3>
             <div class="row justify-content-center">
                 {% for event in events|sort((a,b) => a.dateEvent|date('Y-m-d') > b.dateEvent|date('Y-m-d')) %}
@@ -100,11 +107,11 @@
                     </div>
                 </div>
                 {% else %}
-                    {% if tagName is defined or categoryName is defined %}
+                    {% if tagName is defined or categoryName is defined or owner is defined or animator is defined %}
                         <div class="col-12">
                             <div class="text-center">
-                               <i class="black-text"> We couldn't find anything,
-                                Adjust your filters and try again</i><br>
+                               <i class="black-text"> Nous n'avons rien trouvé,
+                                   Ajustez vos filtres et réessayez</i><br>
                                 <a href="{{ path("events_index") }}" class="btn btn-style mt-lg-5 mt-4">Tous les Events</a>
                             </div>
                         </div>

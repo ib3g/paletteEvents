@@ -30,7 +30,12 @@
                     <h3 class="title-style">Bienvenue à <span>{{ event.title }}</span></h3>
                     <div class="row mt-3">
                         <div class="col-8">
-                            <h6>Organisé par <b style="color: #f50537">{{ event.owner.fullName|upper }}</b></h6>
+                         <a href="{{ path('events_same_owner',{"ownerName":event.owner.fullName|lower}) }}">
+                            <h6>Organisé par <b style="color: #f50537">
+                                    {{ event.owner.fullName|upper }}
+                                </b>
+                            </h6>
+                         </a>
                         </div>
                         <div class="col-4 text-right">
                             <h6>  <i class="fas fa-calendar-alt"></i>&nbsp;{{ event.dateEvent|date('d M Y') }}
@@ -166,8 +171,10 @@
                             </div>
                         </div>
                         <div class="img-text">
-                            <h4><a href="#team">{{ animator.fullName }}</a></h4>
-                            <p>{{ animator.profession }}</p>
+                            <a href="{{ path('events_same_animator', {'animatorName': animator.fullName}) }}">
+                                <h4>{{ animator.fullName }}</h4>
+                                <p>{{ animator.profession }}</p>
+                            </a>
                         </div>
                     </div>
                 </div>

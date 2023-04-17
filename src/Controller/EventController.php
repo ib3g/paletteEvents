@@ -7,6 +7,7 @@ use App\Form\EventType;
 use App\Repository\CategoryRepository;
 use App\Repository\EventRepository;
 use App\Repository\TagRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -81,7 +82,7 @@ class EventController extends AbstractController
 
         return $this->redirectToRoute('events_index', [], Response::HTTP_SEE_OTHER);
     }
-    #[Route('/{categoryName}/list', name: 'similar_events_category', methods: ['GET'])]
+    #[Route('/{categoryName}/category', name: 'similar_events_category', methods: ['GET'])]
     public function similarEventsByCategory($categoryName,Request $request, EventRepository $eventRepository,CategoryRepository $categoryRepository): Response
     {
         $category=$categoryRepository->findOneBy(["name"=>$categoryName]);
@@ -101,5 +102,25 @@ class EventController extends AbstractController
              'tagName' => $tagName,
          ]);
      }
+    #[Route('/{ownerName}/list', name: 'events_same_owner', methods: ['GET'])]
+    function eventsWithSameOwner($ownerName,Request $request, EventRepository $eventRepository,UserRepository $userRepository): Response
+    {
+        $owner=$userRepository->findOneBy(['fullName'=>$ownerName]);
+        $events = $eventRepository->allEventsByOwner($owner, 20);
+        return $this->render('event/index.html.twig', [
+            'events' => $events,
+            'owner' => $owner
+        ]);
+    }
+    #[Route('/{animatorName}/animateur', name: 'events_same_animator', methods: ['GET'])]
+    function eventsWithSameAnimator($animatorName, EventRepository $eventRepository,UserRepository $userRepository): Response
+    {
+        $animator=$userRepository->findOneBy(['fullName'=>$animatorName]);
+        $events = $eventRepository->findEventsWithAnimator($animator, 20);
+        return $this->render('event/index.html.twig', [
+            'events' => $events,
+            'animator' => $animator
+        ]);
+    }
 
 }
