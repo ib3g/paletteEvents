@@ -64,6 +64,45 @@ class EventRepository extends ServiceEntityRepository
         return $qb->getResult();
     }
 
+    // events with the same owner as the event passed in parameter
+    public function findEventsWithSameOwner(Event $event, int $max): array
+    {
+        $qb = $this->createQueryBuilder('e')
+            ->where('e.owner = :owner')
+            ->andWhere('e.id != :id')
+            ->setParameter('owner', $event->getOwner())
+            ->setParameter('id', $event->getId())
+            ->orderBy('e.id', 'DESC')
+            ->setMaxResults($max)
+            ->getQuery();
+
+        return $qb->getResult();
+    }
+
+    // events where category passed in parameter is present in the event categories
+    public function findEventsWithCategory($category, int $max): array
+    {
+        $qb = $this->createQueryBuilder('e')
+            ->where(':category MEMBER OF e.categories')
+            ->setParameter('category', $category)
+            ->orderBy('e.id', 'DESC')
+            ->setMaxResults($max)
+            ->getQuery();
+
+        return $qb->getResult();
+    }
+    // events where tag passed in parameter is present in the event tags
+    public function findEventsWithTag($tag, int $max): array
+    {
+        $qb = $this->createQueryBuilder('e')
+            ->where(':tag MEMBER OF e.tags')
+            ->setParameter('tag', $tag)
+            ->orderBy('e.id', 'DESC')
+            ->setMaxResults($max)
+            ->getQuery();
+
+        return $qb->getResult();
+    }
 //    /**
 //     * @return Event[] Returns an array of Event objects
 //     */

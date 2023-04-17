@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Form\EventType;
+use App\Repository\CategoryRepository;
 use App\Repository\EventRepository;
+use App\Repository\TagRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,7 +33,7 @@ class EventController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $eventRepository->save($event, true);
 
-            return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('events_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('event/new.html.twig', [
@@ -44,10 +46,11 @@ class EventController extends AbstractController
     public function show(Event $event): Response
     {
         $events = $this->getDoctrine()->getRepository(Event::class)->findEventsWithSharedCategories($event,3);
-
+        $eventsSameOwner = $this->getDoctrine()->getRepository(Event::class)->findEventsWithSameOwner($event,3);
         return $this->render('event/show.html.twig', [
             'event' => $event,
             'moreEvents' => $events,
+            'eventsSameOwner' => $eventsSameOwner,
         ]);
     }
 
@@ -60,7 +63,7 @@ class EventController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $eventRepository->save($event, true);
 
-            return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('events_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('event/edit.html.twig', [
@@ -76,6 +79,27 @@ class EventController extends AbstractController
             $eventRepository->remove($event, true);
         }
 
-        return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('events_index', [], Response::HTTP_SEE_OTHER);
     }
+    #[Route('/{categoryName}/list', name: 'similar_events_category', methods: ['GET'])]
+    public function similarEventsByCategory($categoryName,Request $request, EventRepository $eventRepository,CategoryRepository $categoryRepository): Response
+    {
+        $category=$categoryRepository->findOneBy(["name"=>$categoryName]);
+        $events=$eventRepository->findEventsWithCategory($category->getId(), 20);
+        return $this->render('event/index.html.twig', [
+            'events' => $events,
+            'categoryName' => $category,
+        ]);
+    }
+    #[Route('/{tagName}/tag', name: 'similar_events_tag', methods: ['GET'])]
+    function similarEventsByTag($tagName,Request $request, EventRepository $eventRepository,TagRepository $tagRepository): Response
+     {
+         $tag=$tagRepository->findOneBy(["name"=>$tagName]);
+         $events = $eventRepository->findEventsWithTag($tagName, 20);
+         return $this->render('event/index.html.twig', [
+             'events' => $events,
+             'tagName' => $tagName,
+         ]);
+     }
+
 }

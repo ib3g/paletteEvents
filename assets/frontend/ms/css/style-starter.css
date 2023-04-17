@@ -20760,3 +20760,11 @@ ul.rating-list li a.review-color {
   width: 100%;
   object-fit: cover;
 }
+#moreEvents{
+  background-color:var(--bg-lightgrey);
+}
+.tags-list a{
+  color: var(--heading-color);
+  font-weight: 600;
+  font-size: 14px
+}
