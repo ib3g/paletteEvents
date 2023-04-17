@@ -74,7 +74,7 @@ class UserController extends BaseController
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
-    #[Route('/animators', name: 'animators', methods: ['GET'])]
+    #[Route('/animateurs', name: 'animators', methods: ['GET'])]
     public function showAnimators(UserRepository $userRepository){
         $animators = $userRepository->findAnimateurs();
         return $this->render('user/allAnimators.html.twig',[
