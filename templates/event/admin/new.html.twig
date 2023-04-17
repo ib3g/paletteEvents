@@ -1,12 +1,12 @@
 {% extends 'admin.html.twig' %}
 
-{% block title %}Category index{% endblock %}
+{% block title %}Event index{% endblock %}
 
 {% block _content %}
 
     <div class="d-flex flex-row justify-content-between align-items-center flex-wrap">
-        <h1 class="action-title">Création d'une catégorie</h1>
+        <h1 class="action-title">Création d'un event</h1>
     </div>
 
-    {{ include('category/_form.html.twig') }}
+    {{ include('event/admin/_form.html.twig') }}
 {% endblock %}

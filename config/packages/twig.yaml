@@ -1,7 +1,17 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
+    globals:
+        APPLICATION_NAME: "paletteEvents"
     form_themes:
         - 'bootstrap_4_layout.html.twig'
+        - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
+
+fos_ck_editor:
+    configs:
+        main_config:
+            toolbar:
+                - { name: "styles", items: ['Bold', 'Italic', 'Underline', 'Strike', 'Blockquote', '-', 'Link', '-', 'RemoveFormat', '-', 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'Image', 'Table', '-', 'Styles', 'Format','Font','FontSize', '-', 'TextColor', 'BGColor', 'Source'] }
+
 
 when@test:
     twig:

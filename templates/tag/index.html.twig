@@ -16,6 +16,7 @@
                 <tr>
                     <th>Id</th>
                     <th>Name</th>
+                    <th>Events</th>
                     <th>actions</th>
                 </tr>
             </thead>
@@ -24,6 +25,7 @@
                 <tr>
                     <td>{{ tag.id }}</td>
                     <td>{{ tag.name }}</td>
+                    <td>{{ tag.events|length }}</td>
                     <td>
                         <a href="{{ path('app_tag_edit', {'id': tag.id}) }}">
                                 <i class="icon-pencil text-paletteEvent-dark" title="Modifier"></i>

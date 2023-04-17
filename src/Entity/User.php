@@ -23,8 +23,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Role::class)]
-    private Collection $roles;
     /**
      * @var string The hashed password
      */
@@ -74,7 +72,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->events = new ArrayCollection();
         $this->animatedEvents = new ArrayCollection();
         $this->tickets = new ArrayCollection();
-        $this->roles = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -115,47 +112,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUsername(): string
     {
         return (string) $this->email;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function getRoles()
-    {
-        $roles = [];
-        foreach ($this->roles as $role) {
-            $roles[] = $role->getRole();
-        }
-
-        if ($this->role && !in_array($this->role->getRole(), $roles)) {
-            $roles[] = $this->role->getRole();
-        }
-
-        // we need to make sure to have at least one role
-        $roles[] = Role::ROLE_USER;
-
-        return array_values(array_unique($roles));
-    }
-
-    public function addRole(Role $role): self
-    {
-        if (!$this->roles->contains($role)) {
-            $this->roles->add($role);
-        }
-
-        return $this;
-    }
-
-    public function removeRole(Role $role): self
-    {
-        if ($this->roles->removeElement($role)) {
-            // set the owning side to null (unless already changed)
-            if ($role->getUser() === $this) {
-                $role->removeUser($this);
-            }
-        }
-
-        return $this;
     }
 
     /**
@@ -404,5 +360,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->confirmationToken = $confirmationToken;
 
         return $this;
+    }
+
+    public function getRoles()
+    {
+        return [$this->role->getRole()];
     }
 }

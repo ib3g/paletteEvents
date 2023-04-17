@@ -1,35 +1,43 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin.html.twig' %}
 
 {% block title %}Category index{% endblock %}
 
-{% block body %}
-    <h1>Category index</h1>
+{% block _content %}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for category in categories %}
-            <tr>
-                <td>{{ category.id }}</td>
-                <td>{{ category.name }}</td>
-                <td>
-                    <a href="{{ path('app_category_show', {'id': category.id}) }}">show</a>
-                    <a href="{{ path('app_category_edit', {'id': category.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="d-flex flex-row justify-content-between align-items-center flex-wrap">
+        <h1 class="action-title">Catégories</h1>
+        <a href="{{ path('app_category_new') }}" class="btn btn-paletteEvent radius mr-2 mb-2">Nouvelle catégorie <i
+                    class="icon-plus2"></i></a>
+    </div>
 
-    <a href="{{ path('app_category_new') }}">Create new</a>
+    <div class="table-responsive">
+        <table class="table datatable-basic table-striped table-hover" id="dataTable">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Events</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for category in categories %}
+                <tr>
+                    <td>{{ category.id }}</td>
+                    <td>{{ category.name }}</td>
+                    <td>{{ category.events|length }}</td>
+                    <td>
+                        <a href="{{ path('app_category_edit', {'id': category.id}) }}">
+                            <i class="icon-pencil text-paletteEvent-dark" title="Modifier"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

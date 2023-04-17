@@ -13,10 +13,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/event')]
 class EventController extends AbstractController
 {
-    #[Route('/', name: 'events_index', methods: ['GET'])]
+    #[Route('/admin/event', name: 'admin_events_index', methods: ['GET'])]
+    public function adminIndex(EventRepository $eventRepository): Response
+    {
+        return $this->render('event/admin/index.html.twig', [
+            'events' => $eventRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/event', name: 'events_index', methods: ['GET'])]
     public function index(EventRepository $eventRepository): Response
     {
         return $this->render('event/index.html.twig', [
@@ -24,7 +31,7 @@ class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_event_new', methods: ['GET', 'POST'])]
+    #[Route('/admin/event/new', name: 'app_event_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EventRepository $eventRepository): Response
     {
         $event = new Event();
@@ -32,22 +39,23 @@ class EventController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $event->setOwner($this->getUser());
             $eventRepository->save($event, true);
 
-            return $this->redirectToRoute('events_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_events_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('event/new.html.twig', [
+        return $this->renderForm('event/admin/new.html.twig', [
             'event' => $event,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_event_show', methods: ['GET'])]
-    public function show(Event $event): Response
+    #[Route('/event/{id}', name: 'app_event_show', methods: ['GET'])]
+    public function show(Event $event,EventRepository $eventRepository): Response
     {
-        $events = $this->getDoctrine()->getRepository(Event::class)->findEventsWithSharedCategories($event,3);
-        $eventsSameOwner = $this->getDoctrine()->getRepository(Event::class)->findEventsWithSameOwner($event,3);
+        $events = $eventRepository->findEventsWithSharedCategories($event,3);
+        $eventsSameOwner = $eventRepository->findEventsWithSameOwner($event,3);
         return $this->render('event/show.html.twig', [
             'event' => $event,
             'moreEvents' => $events,
@@ -55,7 +63,15 @@ class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_event_edit', methods: ['GET', 'POST'])]
+    #[Route('/admin/event/{id}', name: 'admin_event_show', methods: ['GET'])]
+    public function adminShow(Event $event,EventRepository $eventRepository): Response
+    {
+        return $this->render('event/admin/show.html.twig', [
+            'event' => $event,
+        ]);
+    }
+
+    #[Route('/admin/event/{id}/edit', name: 'app_event_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Event $event, EventRepository $eventRepository): Response
     {
         $form = $this->createForm(EventType::class, $event);
@@ -64,25 +80,25 @@ class EventController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $eventRepository->save($event, true);
 
-            return $this->redirectToRoute('events_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_events_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('event/edit.html.twig', [
+        return $this->renderForm('event/admin/edit.html.twig', [
             'event' => $event,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_event_delete', methods: ['POST'])]
+    #[Route('/admin/event/{id}', name: 'app_event_delete', methods: ['POST'])]
     public function delete(Request $request, Event $event, EventRepository $eventRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$event->getId(), $request->request->get('_token'))) {
             $eventRepository->remove($event, true);
         }
 
-        return $this->redirectToRoute('events_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('admin_events_index', [], Response::HTTP_SEE_OTHER);
     }
-    #[Route('/{categoryName}/category', name: 'similar_events_category', methods: ['GET'])]
+    #[Route('/event/{categoryName}/category', name: 'similar_events_category', methods: ['GET'])]
     public function similarEventsByCategory($categoryName,Request $request, EventRepository $eventRepository,CategoryRepository $categoryRepository): Response
     {
         $category=$categoryRepository->findOneBy(["name"=>$categoryName]);
@@ -92,7 +108,7 @@ class EventController extends AbstractController
             'categoryName' => $category,
         ]);
     }
-    #[Route('/{tagName}/tag', name: 'similar_events_tag', methods: ['GET'])]
+    #[Route('/event/{tagName}/tag', name: 'similar_events_tag', methods: ['GET'])]
     function similarEventsByTag($tagName,Request $request, EventRepository $eventRepository,TagRepository $tagRepository): Response
      {
          $tag=$tagRepository->findOneBy(["name"=>$tagName]);
@@ -102,7 +118,7 @@ class EventController extends AbstractController
              'tagName' => $tagName,
          ]);
      }
-    #[Route('/{ownerName}/list', name: 'events_same_owner', methods: ['GET'])]
+    #[Route('/event/{ownerName}/list', name: 'events_same_owner', methods: ['GET'])]
     function eventsWithSameOwner($ownerName,Request $request, EventRepository $eventRepository,UserRepository $userRepository): Response
     {
         $owner=$userRepository->findOneBy(['fullName'=>$ownerName]);
@@ -112,7 +128,7 @@ class EventController extends AbstractController
             'owner' => $owner
         ]);
     }
-    #[Route('/{animatorName}/animateur', name: 'events_same_animator', methods: ['GET'])]
+    #[Route('/event/{animatorName}/animateur', name: 'events_same_animator', methods: ['GET'])]
     function eventsWithSameAnimator($animatorName, EventRepository $eventRepository,UserRepository $userRepository): Response
     {
         $animator=$userRepository->findOneBy(['fullName'=>$animatorName]);

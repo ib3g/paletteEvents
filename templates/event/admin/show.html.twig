@@ -1,0 +1,19 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Event index{% endblock %}
+
+{% block _content %}
+
+    <div class="d-flex flex-row justify-content-between align-items-center flex-wrap">
+        <h1 class="action-title">Event</h1>
+        <a href="{{ path('app_event_edit', {'id': event.id}) }}" class="btn btn-paletteEvent radius mr-2 mb-2">Modifier</a>
+    </div>
+
+    <table class="table">
+        <tbody>
+        </tbody>
+    </table>
+
+
+    <a class="btn btn-chellal btn-secondary" href="{{ path('admin_events_index') }}">Retour à la liste</a>
+{% endblock %}

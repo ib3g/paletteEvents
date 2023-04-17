@@ -26,7 +26,7 @@ class Event
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column(length: 550)]
+    #[ORM\Column(length: 3000)]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
@@ -74,6 +74,7 @@ class Event
         $this->tags = new ArrayCollection();
         $this->medias = new ArrayCollection();
         $this->prix = new ArrayCollection();
+        $this->status = self::STATUS_NEW;
     }
 
     public function __toString(): string

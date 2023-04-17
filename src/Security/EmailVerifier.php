@@ -2,39 +2,47 @@
 
 namespace App\Security;
 
+use App\Entity\User;
+use App\Manager\CustomMailer;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
+use Twig\Environment;
 
 class EmailVerifier
 {
-    public function __construct(
-        private VerifyEmailHelperInterface $verifyEmailHelper,
-        private MailerInterface $mailer,
-        private EntityManagerInterface $entityManager
-    ) {
+    private $verifyEmailHelper;
+    private CustomMailer $mailer;
+    private $entityManager;
+    private Environment $twig;
+
+    public function __construct(VerifyEmailHelperInterface $helper, CustomMailer $mailer, EntityManagerInterface $manager, Environment $twig)
+    {
+        $this->verifyEmailHelper = $helper;
+        $this->mailer = $mailer;
+        $this->entityManager = $manager;
+        $this->twig = $twig;
     }
 
-    public function sendEmailConfirmation(string $verifyEmailRouteName, UserInterface $user, TemplatedEmail $email): void
+    public function sendEmailConfirmation(UserInterface|User $user): void
     {
         $signatureComponents = $this->verifyEmailHelper->generateSignature(
-            $verifyEmailRouteName,
+            'app_verify_email',
             $user->getId(),
-            $user->getEmail()
+            $user->getEmail(),
+            ['id' => $user->getId()]
         );
 
-        $context = $email->getContext();
-        $context['signedUrl'] = $signatureComponents->getSignedUrl();
-        $context['expiresAtMessageKey'] = $signatureComponents->getExpirationMessageKey();
-        $context['expiresAtMessageData'] = $signatureComponents->getExpirationMessageData();
+        $htmlContents = $this->twig->render('registration/confirmation_email.html.twig', [
+            'signedUrl' => $signatureComponents->getSignedUrl(),
+            'userName' => $user->getFullName(),
+            'expiresAtMessageKey' => $signatureComponents->getExpirationMessageKey(),
+            'expiresAtMessageData' => $signatureComponents->getExpirationMessageData()
+        ]);
 
-        $email->context($context);
-
-        $this->mailer->send($email);
+        $this->mailer->send("Confirmation de compte email", $htmlContents, $user->getEmail());
     }
 
     /**

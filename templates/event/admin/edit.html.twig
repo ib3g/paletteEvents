@@ -5,8 +5,9 @@
 {% block _content %}
 
     <div class="d-flex flex-row justify-content-between align-items-center flex-wrap">
-        <h1 class="action-title">Modification d'une catégorie</h1>
+        <h1 class="action-title">Modification d'un event</h1>
     </div>
 
-    {{ include('category/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+    {{ include('event/admin/_form.html.twig', {'button_label': 'Update'}) }}
 {% endblock %}
