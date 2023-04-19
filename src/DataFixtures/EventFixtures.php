@@ -64,7 +64,7 @@ class EventFixtures extends AppFixtures implements DependentFixtureInterface
 
         foreach ($organisteurs as $organisateur) {
             // create event
-            for ($i = 0; $i <= $faker->numberBetween(2,6); $i++) {
+            for ($i = 0; $i <= $faker->numberBetween(2,9); $i++) {
                 $event = new Event();
                 $event->setTitle($faker->randomElement($evenements));
                 $event->setOwner($organisateur);

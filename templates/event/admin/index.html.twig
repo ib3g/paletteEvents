@@ -54,13 +54,15 @@
                         {% endfor %}
                     </td>
                     <td>
-                        <a class="p-1" href="{{ path('admin_event_show', {'id': event.id}) }}">
-                            <i class="icon-eye text-paletteEvent" title="Voir"></i>
-                        </a>
-                        <a href="{{ path('app_event_edit', {'id': event.id}) }}">
-                            <i class="icon-pencil text-paletteEvent-dark" title="Modifier"></i>
-                        </a>
-                        {{ include('event/admin/_delete_form.html.twig') }}
+                        <div class="d-flex flex-row">
+                            <a class="p-1" href="{{ path('admin_event_show', {'id': event.id}) }}">
+                                <i class="icon-eye text-paletteEvent" title="Voir"></i>
+                            </a>
+                            <a class="p-1" href="{{ path('app_event_edit', {'id': event.id}) }}">
+                                <i class="icon-pencil text-paletteEvent-dark" title="Modifier"></i>
+                            </a>
+                            {{ include('event/admin/_delete_form.html.twig') }}
+                        </div>
                     </td>
                 </tr>
             {% else %}

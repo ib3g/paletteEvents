@@ -32,7 +32,7 @@ class Event
     #[ORM\Column(length: 255)]
     private ?string $shortDescription = null;
 
-    #[ORM\OneToMany(mappedBy: 'event', targetEntity: Demande::class)]
+    #[ORM\OneToMany(mappedBy: 'event', targetEntity: Demande::class, cascade: ['persist', 'remove'])]
     private Collection $demandes;
 
     #[ORM\ManyToOne(inversedBy: 'events')]

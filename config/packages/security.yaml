@@ -43,7 +43,7 @@ security:
          - { path: ^/admin/demande, roles: [ROLE_ORGANISATEUR] }
          - { path: ^/admin/category, roles: ROLE_ADMIN }
          - { path: ^/admin/tags/, roles: ROLE_ADMIN }
-         - { path: ^/admin/user, roles: [ROLE_ORGANISATEUR, ROLE_ADMIN] }
+         - { path: ^/admin/user, roles: [ROLE_ADMIN] }
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/profile, roles: ROLE_USER }
 
