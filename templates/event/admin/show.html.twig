@@ -5,15 +5,69 @@
 {% block _content %}
 
     <div class="d-flex flex-row justify-content-between align-items-center flex-wrap">
-        <h1 class="action-title">Event</h1>
-        <a href="{{ path('app_event_edit', {'id': event.id}) }}" class="btn btn-paletteEvent radius mr-2 mb-2">Modifier</a>
+        <h1 class="action-title">Event : {{ event.title }}</h1>
+        <div>
+            <a href="{{ path('app_prix_index', {'id': event.id}) }}"
+               class="btn btn-secondary radius mr-2 mb-2">Gérer les prix</a>
+            <a href="{{ path('app_event_edit', {'id': event.id}) }}"
+               class="btn btn-paletteEvent radius mr-2 mb-2">Modifier</a>
+        </div>
     </div>
 
-    <table class="table">
-        <tbody>
-        </tbody>
-    </table>
 
+    <div class="d-flex flex-column flex-wrap text-black pr-2 my-3">
+        <div>
+            <p class="font-weight-bold my-0"> Par  </p>
+            <p><a href="{{ path('app_user_show', {'id': event.owner.id}) }}">{{ event.owner }}</a></p>
+        </div>
+        <div>
+            <p class="font-weight-bold my-0"> Courte description </p>
+            <p> {{ event.shortDescription }}</p>
+        </div>
+        <div>
+            <p class="font-weight-bold my-0"> Description </p>
+            <p> {{ event.description }}</p>
+        </div>
+        <div>
+            <p class="font-weight-bold my-0"> Catégories </p>
+            <p> {% for category in event.categories %}
+                    <span> {{ category }}, </span>
+                {% endfor %}
+            </p>
+        </div>
+        <div>
+            <p class="font-weight-bold my-0"> Tags </p>
+            <p> {% for tag in event.tags %}
+                    <span> {{ tag }}, </span>
+                {% endfor %}
+            </p>
+        </div>
+        <div>
+            <p class="font-weight-bold my-0"> Date de l'évènement </p>
+            <p>
+                {{ event.dateEvent|date('d/m/Y à H:i') }}
+            </p>
+        </div>
+        <div>
+            <p class="font-weight-bold my-0"> Tickets </p>
+            <div class="d-flex flex-wrap my-2">
+                {% for prix in event.prix %}
+                    <div class="border-2 rounded border-paletteEvent shadow-2 p-1 m-1" style="min-width: 100px">
+                        <p class="font-weight-bold text-uppercase">{{ prix.type }}</p>
+                        <p class="font-weight-bold">Prix : {{ prix.somme }}</p>
+                        <p class="font-weight-bold">Places : {{ prix.placeRestantes }} / {{ prix.placeMax }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="d-flex align-items-center flex-row flex-wrap">
+        <div class="d-flex flex-row flex-wrap">
+            {% for media in event.medias %}
+                <img style="width: 19rem" class="pr-sm-2 py-2 px-0" src="/uploads/{{ media.realName }}" alt="not image found">
+            {% endfor %}
+        </div>
+    </div>
 
     <a class="btn btn-chellal btn-secondary" href="{{ path('admin_events_index') }}">Retour à la liste</a>
 {% endblock %}

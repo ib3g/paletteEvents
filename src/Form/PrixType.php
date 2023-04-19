@@ -15,9 +15,12 @@ class PrixType extends AbstractType
             ->add('type')
             ->add('somme')
             ->add('placeMax')
-            ->add('placeRestantes')
-            ->add('event')
         ;
+
+        if ($builder->getData()->getId() === null) {
+            $builder
+                ->add('placeRestantes');
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
