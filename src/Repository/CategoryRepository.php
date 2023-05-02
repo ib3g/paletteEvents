@@ -63,4 +63,16 @@ class CategoryRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findCategories($limit = 6)
+    {
+        // retourner les catégories les plus populaires
+        return $this->createQueryBuilder('c')
+            ->select('c.id, c.name, COUNT(e.id) AS nbEvents')
+            ->join('c.events', 'e')
+            ->groupBy('c.id')
+            ->orderBy('nbEvents', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
 }

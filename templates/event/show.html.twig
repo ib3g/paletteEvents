@@ -259,7 +259,7 @@
                                         <span><i class="fas fa-check-circle"></i> Effective Mixing</span>
                                     </li>
                                 </ul>
-                                <button  data-endpoint="{{ path('event.paiement',{'event':event.id,'type':price.type}) }}" data-type="{{ price.type }}" data-event="{{ event.id }}" class="paiment-btn btn btn-style mt-4">Choose Plan</button>
+                                <button  data-endpoint="{{ path('event.paiement',{'event':event.id,'type':price.type}) }}" data-type="{{ price.type }}" data-event="{{ event.id }}" data-redirect="{{ path('app_login') }}" data-stripe="{{ stripe_public }}" class="paiment-btn btn btn-style mt-4">Choose Plan</button>
                             </div>
                         </div>
                         {% endfor %}

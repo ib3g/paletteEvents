@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Prix;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Exception\ApiErrorException;
@@ -66,4 +67,57 @@ class StripeService
 
         return $user->getStripeCustomerId();
     }
+    public function createCheckout(User $user, $price_id, $mode = 'payment'){
+        $this->initStripe();
+
+        $price = $this->getByStripeId($price_id);
+        try {
+            $line_items_data = [
+                'price' => $price_id,
+                'quantity' => 1,
+            ];
+            $data = [
+                'customer' => $this->checkCustomer($user),
+                'payment_method_types' => ['card'],
+                'line_items' => [$line_items_data],
+                'mode' => $mode,
+                'success_url' => $this->container->getParameter('app_url').'/event/stripe-payment-succedeed/'.$price_id.'?session_id={CHECKOUT_SESSION_ID}',
+                'cancel_url' => $this->container->getParameter('app_url').'/events',
+                'locale' => 'fr',
+                'allow_promotion_codes' => true,
+//                "phone_number_collection"=>[
+//                    'enabled' => true,
+//                ]
+            ];
+            if ('payment' === $mode) {
+                $data['billing_address_collection'] = 'required';
+                $data['payment_intent_data'] = [
+                    'metadata' => [
+                        'price_id' => $price_id,
+                    ],
+                ];
+            }
+            $session = \Stripe\Checkout\Session::create($data);
+        }catch (ApiErrorException $e){
+            return $e->getMessage();
+        }
+        return $session;
+    }
+    public function getByStripeId($stripe_id)
+    {
+        return $this->manager->getRepository(Prix::class)->findOneBy(['stripe_price_id' => $stripe_id]);
+    }
+    public function getSession($session_id)
+    {
+        $this->initStripe();
+
+        try {
+            $session = \Stripe\Checkout\Session::retrieve($session_id);
+        } catch (ApiErrorException $e) {
+            return null;
+        }
+
+        return $session;
+    }
+
 }

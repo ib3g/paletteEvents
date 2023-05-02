@@ -32,16 +32,10 @@
         <div class="container py-lg-5 py-md-4 py-2">
             <div class="row align-items-center">
                 <div class="col-lg-6 section-width pe-xl-5 pt-lg-4">
-                    <h3 class="title-style">Welcome to <span>PaletteEvents</span></h3>
-                    <p class="mt-4">At corrupti odit At iure facere,
-                        porro repellat officia quas, dolores magnam assumenda soluta odit
-                        harum maiores fugiat accusamus eos nulla. Iure voluptatibus explicabo
-                        officia.</p>
-                    <p class="mt-4 pb-dm-3">Lorem ipsum, dolor sit amet consectetur adipisicing elit. At, corrupti
-                        odit? At iure facere,
-                        porro repellat officia quas, dolores magnam assumenda soluta odit
-                        harum.</p>
-                    <a href="about.html" class="btn btn-style mt-5"> Savoir plus</a>
+                    <h3 class="title-style">Bienvenue à <span>PaletteEvents</span></h3>
+                    <p class="mt-4">Nous offrons une variété d'événements, allant de soirées entre amis, aux événements culturels, en passant par les concerts et les festivals.</p>
+                    <p class="mt-4 pb-dm-3">Si vous ne trouvez pas l'événement que vous recherchez, nous vous offrons la possibilité de créer votre propre événement en quelques clics seulement!</p>
+                    <a  href="{{ path('app_login') }}" class="btn btn-style mt-5"> Devenir membre</a>
                 </div>
                 <div class="col-lg-6 history-info mt-lg-0 mt-5 pt-md-4 pt-2">
                     <div class="position-relative img-border">
@@ -55,69 +49,30 @@
 
     <!-- classes section -->
     <section class="w3l-classes py-5" id="classes">
+        {% set icons = [
+            "fa-music",
+            "fa-compact-disc",
+            "fa-drum",
+            "fa-play",
+            "fa-microphone",
+            "fa-headphones",
+
+        ] %}
         <div class="container py-lg-5 py-md-4 py-2">
-            <h3 class="title-style text-center">Our Popular <span>Topics</span></h3>
+            <h3 class="title-style text-center">Nos catégories <span>Populaires</span></h3>
             <div class="row text-center justify-content-center">
+                {% for key,category in categories %}
                 <div class="col-lg-4 col-md-6 mt-lg-5 mt-4">
                     <div class="grids-1 box-wrap p-lg-3">
+                        <a href="{{ path("similar_events_category",{"categoryName":category.name}) }}"  class="title-head mt-4 mb-2">
                         <div class="icon">
-                            <i class="fas fa-music"></i>
+                            <i class="fas {{ icons[key] }}"></i>
                         </div>
-                        <h4><a href="#service" class="title-head mt-4 mb-2">Piano</a></h4>
-                        <p class="text-para">Lorem ipsum dolor sit amet, elit. Id ab commodi magnam fugiat accusamus
-                            eos. </p>
+                        </a>
+                        <h4><a href="{{ path("similar_events_category",{"categoryName":category.name}) }}"  class="title-head mt-4 mb-2">{{ category.name }}</a></h4>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 mt-lg-5 mt-4">
-                    <div class="grids-1 box-wrap p-lg-3">
-                        <div class="icon active">
-                            <i class="fas fa-compact-disc"></i>
-                        </div>
-                        <h4><a href="#service" class="title-head mt-4 mb-2">Guitar</a></h4>
-                        <p class="text-para">Lorem ipsum dolor sit amet, elit. Id ab commodi magnam fugiat accusamus
-                            eos. </p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mt-lg-5 mt-4">
-                    <div class="grids-1 box-wrap p-lg-3">
-                        <div class="icon">
-                            <i class="fas fa-drum"></i>
-                        </div>
-                        <h4><a href="#service" class="title-head mt-4 mb-2">Trumpet</a></h4>
-                        <p class="text-para">Lorem ipsum dolor sit amet, elit. Id ab commodi magnam fugiat accusamus
-                            eos. </p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mt-4">
-                    <div class="grids-1 box-wrap p-lg-3">
-                        <div class="icon">
-                            <i class="fas fa-compact-disc"></i>
-                        </div>
-                        <h4><a href="#service" class="title-head mt-4 mb-2">DJ</a></h4>
-                        <p class="text-para">Lorem ipsum dolor sit amet, elit. Id ab commodi magnam fugiat accusamus
-                            eos. </p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mt-4">
-                    <div class="grids-1 box-wrap p-lg-3">
-                        <div class="icon">
-                            <i class="fas fa-play"></i>
-                        </div>
-                        <h4><a href="#service" class="title-head mt-4 mb-2">Musics</a></h4>
-                        <p class="text-para">Lorem ipsum dolor sit amet, elit. Id ab commodi magnam fugiat accusamus
-                            eos. </p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 mt-4">
-                    <div class="grids-1 box-wrap p-lg-3">
-                        <div class="icon">
-                            <i class="fas fa-headphones-alt"></i>
-                        </div>
-                        <h4><a href="#service" class="title-head mt-4 mb-2">Listening</a></h4>
-                        <p class="text-para">Lorem ipsum dolor sit amet, elit. Id ab commodi magnam fugiat accusamus
-                            eos. </p>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </section>
@@ -209,25 +164,19 @@
                     </a>
                 </div>
                 <div class="col-lg-6 ps-xl-5 ps-lg-4 mt-lg-0 mt-5">
-                    <a class="nav-link" href="{{ path('animators') }}"> <h3 class="title-style mb-4">Join the <span>Team</span></h3> </a>
-                    <p>Lorem ipsum viverra feugiat. Pellen tesque libero ut justo,
-                        ultrices in ligula. Semper at tempufddfel. Lorem ipsum dolor sit amet consectetur adipisicing
-                        elit.</p>
+                    <a class="nav-link" href="{{ path('animators') }}"> <h3 class="title-style mb-4">Rejouignez <span>l'Equipe</span></h3> </a>
+                    <p>Si vous êtes une personne créative, enthousiaste et désireuse de partager votre passion pour l'animation, alors rejoignez-nous pour vivre une expérience unique et enrichissante en tant qu'animateur / animatrice.</p>
                     <div class="two-grids mt-5">
                         <div class="grids_info">
                             <i class="fas fa-volume-up"></i>
                             <div class="detail">
-                                <h4>Exclusive Releases</h4>
-                                <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                                    mollit.</p>
+                                <h4>Travaillez avec une équipe dynamique et passionnée</h4>
                             </div>
                         </div>
                         <div class="grids_info mt-xl-5 mt-4">
                             <i class="fas fa-compact-disc"></i>
                             <div class="detail">
-                                <h4>Full DJ Sets & Podcasts</h4>
-                                <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                                    mollit.</p>
+                                <h4>Devenez un acteur clé dans la création d'expériences inoubliables.</h4>
                             </div>
                         </div>
                     </div>
@@ -241,13 +190,13 @@
     <section class="w3l-forms-9 pt-5 pb-lg-4" id="newsletter">
         <div class="container">
             <div class="main-midd text-center mx-auto" style="max-width:700px;">
-                <h3 class="title-style mb-2">Subscribe to our daily <span>updates!</span></h3>
-                <p class="">Enter your email address to register to our newsletter</p>
+                <h3 class="title-style mb-2">Abonnez-vous à notre <span>newsletter!</span></h3>
+                <p class="">Entrez votre adresse e-mail pour vous inscrire </p>
 
                 <div class="main-midd-2 mt-md-5 mt-4 mx-auto" style="max-width:600px;">
                     <form action="#url" method="GET" class="d-sm-flex rightside-form">
-                        <input type="email" class="form-control" name="email" placeholder="Enter your email">
-                        <button class="btn btn-style" type="submit">Subscribe</button>
+                        <input type="email" class="form-control" name="email" placeholder="Votre adresse e-mail">
+                        <button class="btn btn-style" type="submit">Inscrire</button>
                     </form>
                 </div>
             </div>
@@ -262,13 +211,13 @@
                 <div class="row align-items-center p-md-4">
                     <div class="col-xl-8 col-lg-9">
                         <div class="title-content-two pe-lg-5">
-                            <h3 class="title-w3l mb-md-1 mb-4 d-md-flex align-items-center">Contact Us Now!
+                            <h3 class="title-w3l mb-md-1 mb-4 d-md-flex align-items-center">Contactez Nous!
                                 <a class="mt-md-0 mt-2" href="tel:+ 12 123 456 789">+ 12 123 456 789</a> </h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            <p>Vous souhaitez nous contacter ? Nous serions ravis de vous aider !</p>
                         </div>
                     </div>
                     <div class="col-xl-4 col-lg-3 mt-lg-0 mt-sm-5 mt-4 text-lg-end">
-                        <a href="about.html" class="btn btn-style ">Contact Now</a>
+                        <a href="about.html" class="btn btn-style ">Contact</a>
                     </div>
                 </div>
             </div>

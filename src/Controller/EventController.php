@@ -9,6 +9,7 @@ use App\Repository\EventRepository;
 use App\Repository\PrixRepository;
 use App\Repository\TagRepository;
 use App\Repository\UserRepository;
+use App\Service\Mailer;
 use App\Service\StripeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -146,14 +147,28 @@ class EventController extends AbstractController
                         'price_id' => $price->getId(),
                     ]);
                 }
-//                $checkout = $stripeService->createCheckout($user, $price->getId(), $mode);
-                $checkout = $stripeService->getCustomer($user);
-                dd($checkout);
+                $checkout = $stripeService->createCheckout($user, $price->getStripePriceId(), $mode);
                 return $this->json([
                     'session_id' => $checkout->id,
                 ]);
             }
 
+        }
+    }
+
+    /**
+     * @Route("/stripe-payment-succedeed/{priceId}", name="event.stripe.payment-succeeded", methods={"GET"})
+     */
+    public function paymentSucceeded(Request $request, StripeService $stripeService,Mailer $mailer, $priceId,UserRepository $userRepository,PrixRepository $prixRepository)
+    {
+//        $user = $this->getUser();
+        $user = $userRepository->find(4);
+        $session_id = $request->get('session_id');
+        $session = $stripeService->getSession($session_id);
+        if (!$session) {
+            $price=$prixRepository->findOneBy(["stripe_price_id"=>$priceId]);
+            $event=$price->getEvent();
+            return $this->redirectToRoute('app_event_show', ['id' => $event->getId()]);
         }
     }
 }
