@@ -176,10 +176,6 @@
                 </div>
                 <!-- Footer -->
                 {% block footer %}
-
-                    {% if 'admin' not in app.request.uri %}
-                        {%  include('layout/_includes/footer.html.twig')  %}
-                    {% endif %}
                 {% endblock %}
                 <!-- /footer -->
             </div>

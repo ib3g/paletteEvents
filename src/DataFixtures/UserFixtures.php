@@ -120,7 +120,7 @@ class UserFixtures extends AppFixtures
         }
 
         // Random users
-        for ($i = 0; $i <= 10; $i++) {
+        for ($i = 0; $i <= 16; $i++) {
             $userInterest = $faker->randomElements($centres_interet, $faker->numberBetween(1, 8));
 
             $role = $this->getReference($faker->randomElement([Role::ROLE_ORGANISATEUR, Role::ROLE_ANIMATEUR, Role::ROLE_USER]));

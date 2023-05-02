@@ -1,0 +1,13 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Modification d'un event{% endblock %}
+
+{% block _content %}
+
+    <div class="d-flex flex-row justify-content-between align-items-center flex-wrap">
+        <h1 class="action-title">Modification d'un event</h1>
+    </div>
+
+
+    {{ include('event/admin/_form.html.twig', {'button_label': 'Modifier'}) }}
+{% endblock %}

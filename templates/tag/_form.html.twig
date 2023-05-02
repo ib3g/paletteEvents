@@ -1,4 +1,6 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+
+    <a class="btn btn-chellal btn-secondary" href="{{ path('app_tag_index') }}">Retour à la liste</a>
+    <button type="submit" class="btn btn-chellal btn-paletteEvent">{{ button_label|default('Sauvegarder') }}</button>
 {{ form_end(form) }}

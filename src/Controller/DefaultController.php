@@ -14,6 +14,7 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\Event;
+use App\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -22,10 +23,11 @@ class DefaultController extends AbstractController
     /**
      * @Route("/", name="home")
      */
-    public function index(){
+    public function index(EventRepository $eventRepository){
         // call findLastEvents from EventRepository
-        $events = $this->getDoctrine()->getRepository(Event::class)->findLastEvents(4);
+        $events = $eventRepository->findLastEvents(4);
         $categories = $this->getDoctrine()->getRepository(Category::class)->findCategories(6);
+
         return $this->render('home.html.twig',[
             'events' => $events,
             'categories' => $categories,

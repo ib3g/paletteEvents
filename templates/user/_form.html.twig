@@ -1,4 +1,33 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.fullName) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.email) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.birthday) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.profession) }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.centreInteret) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.role) }}
+        </div>
+    </div>
+
+    {{ form_row(form._token) }}
+
+    <a class="btn btn-chellal btn-secondary" href="{{ path('app_user_index') }}">Retour à la liste</a>
+    <button type="submit" class="btn btn-chellal btn-paletteEvent">{{ button_label|default('Save') }}</button>
+{{ form_end(form, {'render_rest': false}) }}

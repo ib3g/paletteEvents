@@ -44,7 +44,42 @@ class Builder implements ContainerAwareInterface
                 'route' => 'app_user_index',
                 'label' => 'Utilisateurs',
                 'icon' => 'icon-users fa-1rem',
-                'roles' => []
+                'roles' => [
+                    Role::ROLE_ADMIN,
+                ]
+            ],
+            'Events' => [
+                'route' => 'admin_events_index',
+                'label' => 'Events',
+                'icon' => 'icon-folder icon-1rem',
+                'roles' => [
+                    Role::ROLE_ORGANISATEUR,
+                    Role::ROLE_ADMIN,
+                ]
+            ],
+            'Demandes' => [
+                'route' => 'app_demande_index',
+                'label' => 'Demandes',
+                'icon' => 'icon-folder icon-1rem',
+                'roles' => [
+                    Role::ROLE_ORGANISATEUR,
+                ]
+            ],
+            'Tags' => [
+                'route' => 'app_tag_index',
+                'label' => 'Tags',
+                'icon' => 'icon-folder icon-1rem',
+                'roles' => [
+                    Role::ROLE_ADMIN
+                ]
+            ],
+            'Category' => [
+                'route' => 'app_category_index',
+                'label' => 'Catégories',
+                'icon' => 'icon-folder icon-1rem',
+                'roles' => [
+                    Role::ROLE_ADMIN
+                ]
             ],
         ];
 
@@ -52,30 +87,34 @@ class Builder implements ContainerAwareInterface
 
         foreach ($menuList as $name => $item) {
             $roles = $item['roles'];
-            $granted = true;
-//            foreach ($roles as $role) {
-//                if ($this->authorizationChecker->isGranted($role)) {
-//                    $granted = true;
-//                }
-//            }
+            $granted = false;
+            foreach ($roles as $role) {
+                if ($this->authorizationChecker->isGranted($role)) {
+                    $granted = true;
+                }
+            }
 
             if ($granted) {
 
                 $routeNames = match ($name) {
-                    'dashboard' => [$name, 'dashboard'],
+                    'utilisateur' => [$name, 'user'],
+                    'Events' => [$name, 'event'],
+                    'Demandes' => [$name, 'demande'],
+                    'Tags' => [$name, 'tag'],
+                    'Category' => [$name, 'category'],
                     default => [$name],
                 };
 
                 $color = '';
                 foreach ($routeNames as $routeName) {
                     if (str_contains($requestUri, $routeName) && !empty($routeName)) {
-                        $color = 'text-primary';
+                        $color = 'text-paletteEventLight';
                     }
                 }
 
                 $menu->addChild($name, [
                     'route' => $item['route'],
-                    'label' => '<i class="'.$color.' '.$item["icon"].'"> </i> <span class="menu-label '.$color.'">'. $item['label'] .'</span>',
+                    'label' => '<i class="'.$color.' '.$item["icon"].'"> </i> <span class="menu-label font-weight-bold '.$color.'">'. $item['label'] .'</span>',
                     'extras' => ['safe_label' => true],
                 ])
                     ->setAttribute('class', 'nav-item')

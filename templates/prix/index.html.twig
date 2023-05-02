@@ -1,12 +1,19 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin.html.twig' %}
 
-{% block title %}Prix index{% endblock %}
+{% block title %}Prix de l'event : {{ event }}{% endblock %}
 
-{% block body %}
-    <h1>Prix index</h1>
+{% block _content %}
 
-    <table class="table">
-        <thead>
+    <div class="d-flex flex-row justify-content-between align-items-center flex-wrap">
+        <h1 class="action-title">Prix de l'event : <a class="text-decoration-none text-paletteEvent" href="{{ path('admin_event_show', {'id': event.id}) }}">{{ event }}</a></h1>
+        <a href="{{ path('app_prix_new', {'id': event.id}) }}" class="btn btn-paletteEvent radius mr-2 mb-2">Nouveau
+            Prix <i
+                    class="icon-plus2"></i></a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table datatable-basic table-striped table-hover" id="dataTable">
+            <thead>
             <tr>
                 <th>Id</th>
                 <th>Type</th>
@@ -15,27 +22,31 @@
                 <th>PlaceRestantes</th>
                 <th>actions</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for prix in prixes %}
-            <tr>
-                <td>{{ prix.id }}</td>
-                <td>{{ prix.type }}</td>
-                <td>{{ prix.somme }}</td>
-                <td>{{ prix.placeMax }}</td>
-                <td>{{ prix.placeRestantes }}</td>
-                <td>
-                    <a href="{{ path('app_prix_show', {'id': prix.id}) }}">show</a>
-                    <a href="{{ path('app_prix_edit', {'id': prix.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_prix_new') }}">Create new</a>
+            </thead>
+            <tbody>
+            {% for key,prix in prices %}
+                <tr>
+                    <td>{{ key+1 }}</td>
+                    <td>{{ prix.type }}</td>
+                    <td>{{ prix.somme }}</td>
+                    <td>{{ prix.placeMax }}</td>
+                    <td>{{ prix.placeRestantes }}</td>
+                    <td>
+                        <div class="d-flex flex-row">
+                            <a class="p-1" href="{{ path('app_prix_edit', {'id': prix.id}) }}">
+                                <i class="icon-pencil text-paletteEvent-dark" title="Modifier"></i>
+                            </a>
+                            {{ include('prix/_delete_form.html.twig') }}
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a class="btn btn-chellal btn-secondary" href="{{ path('admin_event_show', {'id': event.id}) }}">Retour à l'event</a>
+    </div>
 {% endblock %}

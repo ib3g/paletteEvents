@@ -88,7 +88,7 @@ class EventFixtures extends AppFixtures implements DependentFixtureInterface
 
         foreach ($organisteurs as $organisateur) {
             // create event
-            for ($i = 0; $i <= $faker->numberBetween(2,6); $i++) {
+            for ($i = 0; $i <= $faker->numberBetween(2,9); $i++) {
                 $event = new Event();
                 $event->setTitle($faker->randomElement($evenements));
                 $event->setOwner($organisateur);
@@ -145,7 +145,7 @@ class EventFixtures extends AppFixtures implements DependentFixtureInterface
                     if (!$demande)  {
                         $demande = new Demande();
                         $demande->setText("Je souhaiterais faire partie de l'équipe d'animation de cet événement.");
-                        $demande->setStatus(1);
+                        $demande->setStatus(Demande::STATUS_PENDING);
                         $demande->setEvent($event);
                         $demande->setUser($animateur);
                         $demande->setCreatedAt($faker->dateTimeBetween('-'.$faker->numberBetween(1, 60).' days', $event->getDateEvent()));

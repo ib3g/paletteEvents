@@ -7,7 +7,7 @@ node_modules
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
 /public/uploads/
-/public/build/*
+/public/build/
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
