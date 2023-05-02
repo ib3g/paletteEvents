@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Category;
 use App\Entity\Demande;
 use App\Entity\Event;
+use App\Entity\Prix;
 use App\Entity\Role;
 use App\Entity\Tag;
 use App\Entity\User;
@@ -39,6 +40,29 @@ class EventFixtures extends AppFixtures implements DependentFixtureInterface
         $categories = $manager->getRepository(Category::class)->findAll();
         $tags = $manager->getRepository(Tag::class)->findAll();
 
+        // prices array with type and prix
+        // premiumPrices
+        for($i=0;$i<10;$i++){
+            $prixPremuim=new Prix();
+            $prixPremuim->setType("premium");
+            $max=$faker->numberBetween(100,200);
+            $prixPremuim->setPlaceMax($max);
+            $prixPremuim->setPlaceRestantes($faker->numberBetween(1,$max));
+            $prixPremuim->setSomme($faker->numberBetween(300,400));
+            $manager->persist($prixPremuim);
+
+            $prixRegular=new Prix();
+            $prixRegular->setType("regular");
+            $max=$faker->numberBetween(100,300);
+            $prixRegular->setPlaceMax($max);
+            $prixRegular->setPlaceRestantes($faker->numberBetween(1,$max));
+            $prixRegular->setSomme($faker->numberBetween(100,250));
+            $manager->persist($prixRegular);
+
+            $manager->flush();
+        }
+        $premiumPrices = $manager->getRepository(Prix::class)->findBy(['type' => 'premium']);
+        $regularPrices = $manager->getRepository(Prix::class)->findBy(['type' => 'regular']);
         $evenements = [
             'Festival ElectroMania',
             'ComicWorld Convention',
@@ -101,6 +125,13 @@ class EventFixtures extends AppFixtures implements DependentFixtureInterface
                     $file = $this->fileManager->uploadFile($uploadedFile);
                     $event->addMedia($file);
                 }
+                // add prices
+                $premium=$faker->randomElement($premiumPrices);
+                $regular=$faker->randomElement($regularPrices);
+                $event->addPrix($premium);
+                $manager->persist($premium);
+                $event->addPrix($regular);
+                $manager->persist($regular);
 
                 $manager->persist($event);
                 $manager->flush();

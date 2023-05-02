@@ -34,6 +34,8 @@ class Prix
     #[ORM\Column(nullable: true)]
     private ?int $placeRestantes = null;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $stripe_price_id;
     public function __construct()
     {
         $this->tickets = new ArrayCollection();
@@ -138,4 +140,21 @@ class Prix
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getStripePriceId()
+    {
+        return $this->stripe_price_id;
+    }
+
+    /**
+     * @param mixed $stripe_price_id
+     */
+    public function setStripePriceId($stripe_price_id): void
+    {
+        $this->stripe_price_id = $stripe_price_id;
+    }
+
 }

@@ -66,6 +66,8 @@ class Event
     #[ORM\Column(length: 255)]
     private ?string $status = null;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $stripe_event_id;
     public function __construct()
     {
         $this->demandes = new ArrayCollection();
@@ -349,4 +351,21 @@ class Event
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getStripeEventId()
+    {
+        return $this->stripe_event_id;
+    }
+
+    /**
+     * @param mixed $stripe_event_id
+     */
+    public function setStripeEventId($stripe_event_id): void
+    {
+        $this->stripe_event_id = $stripe_event_id;
+    }
+
 }

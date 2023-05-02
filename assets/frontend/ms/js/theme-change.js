@@ -20,3 +20,20 @@ function switchTheme(e) {
 }
 
 toggleSwitch.addEventListener('change', switchTheme, false);
+$('.paiment-btn').click(function(){
+    var route = $(this).data('endpoint');
+    var type = $(this).data('type');
+    var event = $(this).data('event');
+    $.ajax({
+        url: route,
+        type: 'POST',
+        data: {'type':type, 'event':event },
+        dataType: 'json',
+        success: function (response) {
+            console.log('responses ',response)
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            console.log(xhr);
+        }
+    });
+});

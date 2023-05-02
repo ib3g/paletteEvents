@@ -7119,7 +7119,7 @@ fieldset:disabled .btn {
 
 .fixed-top {
   position: fixed;
-  top: 52px;
+  top: 0;
   right: 0;
   left: 0;
   z-index: 1030;
@@ -20767,4 +20767,13 @@ ul.rating-list li a.review-color {
   color: var(--heading-color);
   font-weight: 600;
   font-size: 14px
+}
+.btn-membre{
+  width: 15% !important;
+  padding: 1%;
+  font-size: 12px;
+  margin-left: 1%;
+}
+.btn-membre a{
+  color: var(--primary-color);
 }

@@ -6,8 +6,10 @@ use App\Entity\Event;
 use App\Form\EventType;
 use App\Repository\CategoryRepository;
 use App\Repository\EventRepository;
+use App\Repository\PrixRepository;
 use App\Repository\TagRepository;
 use App\Repository\UserRepository;
+use App\Service\StripeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -122,5 +124,36 @@ class EventController extends AbstractController
             'animator' => $animator
         ]);
     }
+    #[Route('/{event}/{type}/paiement', name: 'event.paiement', methods: ['POST'])]
+    function eventPaiement(Request $request,EventRepository $eventRepository,PrixRepository $prixRepository,UserRepository $userRepository,StripeService $stripeService): Response
+    {
+//        $user = $this->getUser();
+        $user = $userRepository->find(4);
+        $session = $request->getSession();
+        $eventId = $request->get('event');
+        $type = $request->get('type');
+        $event=$eventRepository->find($eventId);
+        if($event){
+            $price=$prixRepository->findOneBy(['type'=>$type,'event'=>$event]);
+            if ($price){
+                $somme=$price->getSomme();
+                $session->set('price_id', $price->getId());
+                $mode = 'payment';
 
+                if(!$user){
+                    return $this->json([
+                        'unlogged' => true,
+                        'price_id' => $price->getId(),
+                    ]);
+                }
+//                $checkout = $stripeService->createCheckout($user, $price->getId(), $mode);
+                $checkout = $stripeService->getCustomer($user);
+                dd($checkout);
+                return $this->json([
+                    'session_id' => $checkout->id,
+                ]);
+            }
+
+        }
+    }
 }
