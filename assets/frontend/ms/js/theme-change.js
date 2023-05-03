@@ -20,3 +20,33 @@ function switchTheme(e) {
 }
 
 toggleSwitch.addEventListener('change', switchTheme, false);
+$('.paiment-btn').click(function(){
+    alert('fffd')
+    var route = $(this).data('endpoint');
+    var type = $(this).data('type');
+    var event = $(this).data('event');
+    var redirect = $(this).data('redirect');
+    let stripe = Stripe($(this).data('stripe'));
+    console.log('stripeddd', stripe);
+    $.ajax({
+        url: route,
+        type: 'POST',
+        data: {'type':type, 'event':event },
+        dataType: 'json',
+        success: function (response) {
+           if(response.unlogged) {
+               window.location.href = redirect;
+           }  else if(response.session_id) {
+               stripe
+                   .redirectToCheckout({
+                       sessionId: response.session_id
+                   })
+                   .then(function (result) {
+                   });
+           }
+        },
+        error: function (xhr, textStatus, errorThrown) {
+            console.log(xhr);
+        }
+    });
+});

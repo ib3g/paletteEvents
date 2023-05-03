@@ -66,6 +66,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $confirmationToken;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $stripe_customer_id;
     public function __construct()
     {
         $this->demandes = new ArrayCollection();
@@ -366,4 +368,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return [$this->role->getRole()];
     }
+
+    /**
+     * @return mixed
+     */
+    public function getStripeCustomerId()
+    {
+        return $this->stripe_customer_id;
+    }
+
+    /**
+     * @param mixed $stripe_customer_id
+     */
+    public function setStripeCustomerId($stripe_customer_id): void
+    {
+        $this->stripe_customer_id = $stripe_customer_id;
+    }
+
 }

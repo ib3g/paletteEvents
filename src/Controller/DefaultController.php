@@ -12,6 +12,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Event;
 use App\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,8 +26,11 @@ class DefaultController extends AbstractController
     public function index(EventRepository $eventRepository){
         // call findLastEvents from EventRepository
         $events = $eventRepository->findLastEvents(4);
+        $categories = $this->getDoctrine()->getRepository(Category::class)->findCategories(6);
+
         return $this->render('home.html.twig',[
-            'events' => $events
+            'events' => $events,
+            'categories' => $categories,
         ]);
     }
 

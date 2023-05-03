@@ -17,41 +17,7 @@
 
 <body>
 <!-- top header -->
-<section class="w3l-top-header">
-    <div class="container">
-        <div class="top-content-w3ls d-flex align-items-center justify-content-between">
-            <div class="top-headers">
-                <ul>
-                    <li>
-                        <p class="d-md-block d-none">Have any question ?</p>
-                    </li>
-                    <li>
-                        <i class="fa fa-phone"></i><a href="tel:+1(21) 234 4567">+1(21) 234 4567</a>
-                    </li>
-                    <li class="me-0">
-                        <i class="fa fa-envelope"></i><a href="mailto:mail@example.com">mail@example.com</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="top-headers top-headers-2">
-                <ul>
-                    <li>
-                        <a href="#facebook"><span class="fab fa-facebook-f"></span></a>
-                    </li>
-                    <li>
-                        <a href="#twitter"><span class="fab fa-twitter"></span></a>
-                    </li>
-                    <li>
-                        <a href="#instagram"><span class="fab fa-instagram"></span></a>
-                    </li>
-                    <li class=" me-0">
-                        <a href="#linkedin"><span class="fab fa-linkedin-in"></span></a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</section>
+
 <!-- //top header -->
 <!-- header -->
 <header id="site-header" class="fixed-top">
@@ -88,6 +54,14 @@
                            required>
                     <button class="btn btn-style" type="submit"><i class="fas fa-search"></i></button>
                 </form>
+
+                <button class="btn btn-style btn-style-3 btn-membre bg-transparent text-danger" style="width: 20%;">
+                    {% if app.user %}
+                        <a href="" >{{ app.user.fullName }}</a>
+                    {% else %}
+                   <a href="{{ path('app_login') }}">Devenir Membre</a>
+                    {% endif %}
+                </button>
             </div>
             <!-- toggle switch for light and dark theme -->
             <div class="cont-ser-position">
@@ -190,14 +164,14 @@
 <button onclick="topFunction()" id="movetop" title="Go to top">
     <span class="fas fa-level-up-alt" aria-hidden="true"></span>
 </button>
-
+<script type="application/javascript" src="{{ asset('build/frontend/ms/js/ms.js') }}"></script>
+<script src="https://js.stripe.com/v3/"></script>
 <script type="application/javascript" src="{{ asset('build/js/jquery.min.js') }}"></script>
 <script type="application/javascript" src="{{ asset('build/js/bootstrap.bundle.min.js') }}"></script>
 <script type="application/javascript" src="{{ asset('build/js/all.min.js') }}"></script>
 <script type="application/javascript" src="{{ asset('build/js/datepicker/datepicker.min.js') }}"></script>
 <script type="application/javascript" src="{{ asset('build/js/selects/selects.min.js') }}"></script>
 <script type="application/javascript" src="{{ asset('build/js/echarts/echarts.min.js') }}"></script>
-<script type="application/javascript" src="{{ asset('build/frontend/ms/js/ms.js') }}"></script>
 
 <script>
     // When the user scrolls down 20px from the top of the document, show the button

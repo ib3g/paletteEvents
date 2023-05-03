@@ -5,6 +5,8 @@ twig:
     form_themes:
         - 'bootstrap_4_layout.html.twig'
         - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
+    globals:
+        stripe_public: '%env(STRIPE_PUBLIC)%'
 
 fos_ck_editor:
     configs:

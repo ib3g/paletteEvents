@@ -6,8 +6,11 @@ use App\Entity\Event;
 use App\Form\EventType;
 use App\Repository\CategoryRepository;
 use App\Repository\EventRepository;
+use App\Repository\PrixRepository;
 use App\Repository\TagRepository;
 use App\Repository\UserRepository;
+use App\Service\Mailer;
+use App\Service\StripeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -138,5 +141,50 @@ class EventController extends AbstractController
             'animator' => $animator
         ]);
     }
+    #[Route('/{event}/{type}/paiement', name: 'event.paiement', methods: ['POST'])]
+    function eventPaiement(Request $request,EventRepository $eventRepository,PrixRepository $prixRepository,UserRepository $userRepository,StripeService $stripeService): Response
+    {
+//        $user = $this->getUser();
+        $user = $userRepository->find(4);
+        $session = $request->getSession();
+        $eventId = $request->get('event');
+        $type = $request->get('type');
+        $event=$eventRepository->find($eventId);
+        if($event){
+            $price=$prixRepository->findOneBy(['type'=>$type,'event'=>$event]);
+            if ($price){
+                $somme=$price->getSomme();
+                $session->set('price_id', $price->getId());
+                $mode = 'payment';
 
+                if(!$user){
+                    return $this->json([
+                        'unlogged' => true,
+                        'price_id' => $price->getId(),
+                    ]);
+                }
+                $checkout = $stripeService->createCheckout($user, $price->getStripePriceId(), $mode);
+                return $this->json([
+                    'session_id' => $checkout->id,
+                ]);
+            }
+
+        }
+    }
+
+    /**
+     * @Route("/stripe-payment-succedeed/{priceId}", name="event.stripe.payment-succeeded", methods={"GET"})
+     */
+    public function paymentSucceeded(Request $request, StripeService $stripeService,Mailer $mailer, $priceId,UserRepository $userRepository,PrixRepository $prixRepository)
+    {
+//        $user = $this->getUser();
+        $user = $userRepository->find(4);
+        $session_id = $request->get('session_id');
+        $session = $stripeService->getSession($session_id);
+        if (!$session) {
+            $price=$prixRepository->findOneBy(["stripe_price_id"=>$priceId]);
+            $event=$price->getEvent();
+            return $this->redirectToRoute('app_event_show', ['id' => $event->getId()]);
+        }
+    }
 }
