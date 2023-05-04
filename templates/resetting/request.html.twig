@@ -9,7 +9,7 @@
             <div class="request-wrap">
                 <form method="post" action="{{ path('app_user_send_reset_email') }}" class="register-form">
                     <div class="form-group input-request">
-                        <input type="text" placeholder="Email" class="form-control input-primary" id="username" name="username" required="required" />
+                        <input type="text" placeholder="Email" class="form-control input-primary my-2" id="username" name="username" required="required" />
                         {% if invalid_username is defined %}
                             <p class="text-danger">{{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}) }}</p>
                         {% endif %}
