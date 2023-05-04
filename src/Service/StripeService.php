@@ -82,7 +82,7 @@ class StripeService
                 'line_items' => [$line_items_data],
                 'mode' => $mode,
                 'success_url' => $this->container->getParameter('app_url').'/event/stripe-payment-succedeed/'.$price_id.'?session_id={CHECKOUT_SESSION_ID}',
-                'cancel_url' => $this->container->getParameter('app_url').'/events',
+                'cancel_url' => $this->container->getParameter('app_url').'/event/'.$price->getEvent()->getId(),
                 'locale' => 'fr',
                 'allow_promotion_codes' => true,
 //                "phone_number_collection"=>[
@@ -119,5 +119,48 @@ class StripeService
 
         return $session;
     }
+    public function getPaymentIntent($payment_intent_id)
+    {
+        $this->initStripe();
 
+        try {
+            $payment_intent = \Stripe\PaymentIntent::retrieve($payment_intent_id);
+        } catch (ApiErrorException $e) {
+            return null;
+        }
+
+        return $payment_intent;
+    }
+    public function getChargeByPaymentIntent($payment_intent_id)
+    {
+        $this->initStripe();
+
+        try {
+            $charge = \Stripe\Charge::all([
+                'payment_intent' => $payment_intent_id,
+            ]);
+
+            $charge = \count($charge->data) > 0 ? $charge->data[0] : null;
+        } catch (ApiErrorException $e) {
+            return null;
+        }
+
+        return $charge;
+    }
+    public function getLastInvoice($user)
+    {
+        $this->initStripe();
+
+        try {
+            $invoice = \Stripe\Invoice::all([
+                'customer' => $this->checkCustomer($user),
+            ]);
+
+            $invoice = \count($invoice->data) > 0 ? $invoice->data[0] : null;
+        } catch (ApiErrorException $e) {
+            return null;
+        }
+
+        return $invoice;
+    }
 }

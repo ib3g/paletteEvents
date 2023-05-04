@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Form\EventType;
+use App\Manager\CustomMailer;
 use App\Repository\CategoryRepository;
 use App\Repository\EventRepository;
 use App\Repository\PrixRepository;
@@ -11,6 +12,7 @@ use App\Repository\TagRepository;
 use App\Repository\UserRepository;
 use App\Service\Mailer;
 use App\Service\StripeService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -144,8 +146,7 @@ class EventController extends AbstractController
     #[Route('/{event}/{type}/paiement', name: 'event.paiement', methods: ['POST'])]
     function eventPaiement(Request $request,EventRepository $eventRepository,PrixRepository $prixRepository,UserRepository $userRepository,StripeService $stripeService): Response
     {
-//        $user = $this->getUser();
-        $user = $userRepository->find(4);
+        $user = $this->getUser();
         $session = $request->getSession();
         $eventId = $request->get('event');
         $type = $request->get('type');
@@ -173,18 +174,48 @@ class EventController extends AbstractController
     }
 
     /**
-     * @Route("/stripe-payment-succedeed/{priceId}", name="event.stripe.payment-succeeded", methods={"GET"})
+     * @Route("/event/stripe-payment-succedeed/{priceId}", name="event.stripe.payment-succeeded", methods={"GET"})
      */
-    public function paymentSucceeded(Request $request, StripeService $stripeService,Mailer $mailer, $priceId,UserRepository $userRepository,PrixRepository $prixRepository)
+    public function paymentSucceeded(Request $request, StripeService $stripeService, CustomMailer $mailer, $priceId,UserRepository $userRepository,PrixRepository $prixRepository,EntityManagerInterface $entityManager): Response
     {
-//        $user = $this->getUser();
-        $user = $userRepository->find(4);
+        $user = $this->getUser();
         $session_id = $request->get('session_id');
         $session = $stripeService->getSession($session_id);
+        $price=$prixRepository->findOneBy(["stripe_price_id"=>$priceId]);
+        $event=$price->getEvent();
         if (!$session) {
-            $price=$prixRepository->findOneBy(["stripe_price_id"=>$priceId]);
-            $event=$price->getEvent();
             return $this->redirectToRoute('app_event_show', ['id' => $event->getId()]);
         }
+        $paymentIntent = $stripeService->getPaymentIntent($session->payment_intent);
+
+        if (!$paymentIntent) return $this->redirectToRoute("app_event_show", ['id' => $price->getEvent()->getId()]);
+
+        $charge = $stripeService->getChargeByPaymentIntent($paymentIntent->id);
+
+        $invoice = $stripeService->getLastInvoice($user);
+
+        $html = $this->renderView('mail/event/event_payment_succeeded.html.twig', [
+            'user' => $user,
+            'event' => $price->getEvent(),
+            'price' => $price,
+            'url_docs' => $this->getParameter('app_url') . '/account/confidential-documents',
+            'url_dashboard' => $this->getParameter('app_url') . '/account',
+            'receipt_url' => $charge ? $charge->receipt_url : null,
+            'invoice_pdf' => $invoice ?$invoice->invoice_pdf : null,
+        ]);
+
+            $price->setPlaceRestantes($price->getPlaceRestantes()-1);
+            $entityManager->persist($price);
+            $entityManager->flush();
+
+        $mailer->send(
+            "Merci pour votre achat",
+            $html,
+            $user->getEmail()
+        );
+        return $this->render('event/payment-succeeded.html.twig', [
+            'receipt_url' => $charge ? $charge->receipt_url : null,
+            'invoice_pdf' => $invoice ? $invoice->invoice_pdf : null,
+        ]);
     }
 }

@@ -35,7 +35,6 @@ class CustomMailer
         $transport = Transport::fromDsn($mailer_dns);
 
         $mailer = new Mailer($transport);
-
         $mailer->send($templatedEmail);
     }
 }

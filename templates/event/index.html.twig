@@ -50,7 +50,7 @@
                             </a>
                             <div class="course-price-item">
                                 {% if event.prix is not empty %}
-                                    {% for prix in event.prix.values|sort((a,b) => a.somme < b.somme ) | slice(0,1) %}
+                                    {% for prix in event.prix.values|sort((a,b) => a.somme > b.somme ) | slice(0,1) %}
                                       <h6>From<br> ${{ prix.somme }}</h6>
                                     {% endfor %}
                                 {% else %}
