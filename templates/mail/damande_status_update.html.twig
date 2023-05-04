@@ -1,0 +1,51 @@
+<table class="body-wrap">
+    <tr>
+        <td></td>
+        <td class="container" width="600">
+            <div class="content">
+                <table class="main" width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td class="content-wrap aligncenter">
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td>
+                                        <div class="text-center" style="font-weight: bold; display: flex; align-items: center;">
+                                            <img style="width: 50px;height: 50px" src="{{ absolute_url(asset('build/images/logo.png')) }}"
+                                                 alt="logo not found">
+                                                PaletteEvents
+                                        </div>
+
+                                        <h2>Bonjour {{ demande.user.fullName }},</h2>
+                                        <br>
+                                        <p>
+                                            Votre demande de participation à l'événement {{ demande.event.title }} a été mise à jour.
+                                            <br>
+                                            <br>
+                                            Demande :
+                                            {% if demande.status == 1 %}
+                                                <strong>Acceptée</strong>
+                                                <br>
+                                                <br>
+                                                Lien vers l'événement : <a target="_blank" href="{{ url }}">{{ demande.event.title }}</a>
+                                                <br>
+                                                <br>
+                                                N'hésitez pas à nous contacter pour plus d'informations.
+                                                A tout de suite !
+                                            {% else %}
+                                                <strong>Refusée</strong>
+                                                <br>
+                                                <br>
+                                            {% endif %}
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+        <td></td>
+    </tr>
+</table>
+

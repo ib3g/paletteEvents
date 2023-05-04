@@ -1,11 +1,12 @@
 twig:
     default_path: '%kernel.project_dir%/templates'
-    globals:
-        APPLICATION_NAME: "paletteEvents"
-        stripe_public: '%env(STRIPE_PUBLIC)%'
     form_themes:
         - 'bootstrap_4_layout.html.twig'
         - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
+    globals:
+        APPLICATION_NAME: "paletteEvents"
+        stripe_public: '%env(STRIPE_PUBLIC)%'
+        notification_manager: '@App\Manager\NotificationManager'
 
 fos_ck_editor:
     configs:

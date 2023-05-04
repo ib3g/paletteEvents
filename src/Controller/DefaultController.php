@@ -38,7 +38,7 @@ class DefaultController extends AbstractController
      * @Route("/admin", name="admin")
      */
     public function admin(){
-        return $this->render('home.html.twig');
+        return $this->render('admin.html.twig');
     }
 
     /**

@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Demande;
+use App\Entity\Event;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -37,6 +39,30 @@ class DemandeRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function getNewDemandeFor(User $user) {
+        $qb = $this->createQueryBuilder('d')
+            ->leftJoin('d.event', 'e')
+            ->andWhere('e.owner = :user')
+            ->andWhere('d.status = :status')
+            ->setParameter('user', $user)
+            ->setParameter('status', Demande::STATUS_PENDING);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function allDemandeByEventOwner($owner): array
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->leftJoin('d.event', 'e')
+            ->leftJoin('e.owner', 'owner')
+            ->where('owner = :owner')
+            ->setParameter('owner', $owner)
+            ->orderBy('e.status', 'ASC')
+            ->getQuery();
+
+        return $qb->getResult();
     }
 
 //    /**

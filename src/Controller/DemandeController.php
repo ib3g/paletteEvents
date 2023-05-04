@@ -3,12 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Demande;
+use App\Entity\User;
 use App\Form\DemandeType;
+use App\Manager\CustomMailer;
 use App\Repository\DemandeRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Twig\Environment;
 
 #[Route('/admin/demande')]
 class DemandeController extends BaseController
@@ -16,8 +19,10 @@ class DemandeController extends BaseController
     #[Route('/', name: 'app_demande_index', methods: ['GET'])]
     public function index(DemandeRepository $demandeRepository): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
         return $this->render('demande/index.html.twig', [
-            'demandes' => $demandeRepository->findAll(),
+            'demandes' => $demandeRepository->allDemandeByEventOwner($user),
         ]);
     }
 
@@ -49,13 +54,24 @@ class DemandeController extends BaseController
     }
 
     #[Route('/{id}/changeStatus', name: 'app_demande_switch_status', methods: ['GET', 'POST'])]
-    public function switchStatus(Request $request, Demande $demande, DemandeRepository $demandeRepository): Response
+    public function switchStatus(Request $request, Demande $demande,
+                                 DemandeRepository $demandeRepository, CustomMailer $mailer,
+                                 Environment $twig, UrlGeneratorInterface $urlGenerator): Response
     {
         $status = $request->get('status');
         if ($demande->getStatus() == Demande::STATUS_PENDING) {
             $demande->setStatus($status);
             $demandeRepository->save($demande, true);
-            $this->addSuccessFlash('Demande traitée avec succès');
+
+            $url = $urlGenerator->generate('app_event_show', ['id' => $demande->getEvent()->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
+            $htmlContents = $twig->render('mail/damande_status_update.html.twig', [
+                'demande' => $demande,
+                'url' => $url
+            ]);
+
+            // send email to notify user
+            $mailer->send('Votre demande a été mise à jour', $htmlContents, $demande->getUser()->getEmail());
+            $this->addSuccessFlash('Demande traitée avec succès et un email a été envoyé à l\'utilisateur');
         }
 
         return $this->redirectToRoute('app_demande_index', [], Response::HTTP_SEE_OTHER);
