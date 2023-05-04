@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+
+        <div class="container-fluid text-center py-5 success-paiment" style="margin-top: 10%;margin-bottom: 3%">
+        <div class="row">
+        <div class="col-12">
+            <h3>Merci pour votre achat ! Veuillez vérifier votre boite mail.</h3>
+
+            <div class="row text-center mt-5 ml-auto">
+                <div class="m-auto">
+                        <a target="_blank" href="{{ receipt_url }}" class="btn btn-black mr-3">Voir mon reçu</a>
+                    <a href="{{ path('events_index') }}" class="btn abonne-btn">Retour aux Events</a>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+
+
+{% endblock %}

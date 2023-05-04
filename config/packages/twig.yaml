@@ -2,11 +2,10 @@ twig:
     default_path: '%kernel.project_dir%/templates'
     globals:
         APPLICATION_NAME: "paletteEvents"
+        stripe_public: '%env(STRIPE_PUBLIC)%'
     form_themes:
         - 'bootstrap_4_layout.html.twig'
         - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
-    globals:
-        stripe_public: '%env(STRIPE_PUBLIC)%'
 
 fos_ck_editor:
     configs:

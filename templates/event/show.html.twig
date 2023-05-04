@@ -243,23 +243,42 @@
                     <p class="mt-3">Aptent taciti sociosqu ad litora
                         conubia nostra, per inceptos himenaeos. Aenean volutpat elementum ante, id eleifend eros
                         luctus sit.</p>
-                    <a href="#prices" class="btn btn-style mt-4">See all Prices</a>
                 </div>
                 <div class="col-lg-8 ps-xl-5 mt-lg-0 mt-sm-5 mt-4">
                     <div class="row">
-                        {% for key,price in prices %}
+                        {% for key,price in prices|sort((a, b) => a.somme <=> b.somme) %}
                         <div class="col-md-6 {% if key == 1 %}mt-md-0 mt-4{% endif %}">
                             <div class="box-pricing featured">
                                 <h3 class="text-price">{{ price.type|upper }} <span style="font-weight: 100">Plan</span></h3>
                                 <h4>${{ price.somme }}</h4>
                                     <ul>
-                                    <li><i class="fas fa-check-circle"></i> Types of Music</li>
-                                    <li><i class="fas fa-check-circle"></i> Jazz Basics</li>
-                                    <li class="na">
-                                        <span><i class="fas fa-check-circle"></i> Effective Mixing</span>
-                                    </li>
+                                    <li><i class="fas fa-check-circle"></i> <b>{{ price.placeRestantes }}</b> Places Restantes</li>
+                                     {% if 'regular' == price.type %}
+                                         <li class="na">
+                                             <span><i class="fas fa-check-circle"></i> Jazz Basics</span>
+                                         </li>
+                                         <li class="na">
+                                             <span><i class="fas fa-check-circle"></i> Effective Mixing</span>
+                                         </li>
+                                     {% else %}
+                                         <li><i class="fas fa-check-circle"></i> Jazz Basics</li>
+                                         <li>
+                                             <span><i class="fas fa-check-circle"></i> Effective Mixing</span>
+                                         </li>
+                                     {% endif %}
                                 </ul>
-                                <button  data-endpoint="{{ path('event.paiement',{'event':event.id,'type':price.type}) }}" data-type="{{ price.type }}" data-event="{{ event.id }}" data-redirect="{{ path('app_login') }}" data-stripe="{{ stripe_public }}" class="paiment-btn btn btn-style mt-4">Choose Plan</button>
+                                {% if price.placeRestantes == price.placeMax %}
+                                    <button class="btn btn-style mt-4" disabled>Guichet Fermé</button>
+                                {% else %}
+                                <button
+                                        data-endpoint="{{ path('event.paiement',{'event':event.id,'type':price.type}) }}"
+                                        data-type="{{ price.type }}"
+                                        data-event="{{ event.id }}"
+                                        data-redirect="{{ path('app_login') }}"
+                                        data-stripe="{{ stripe_public }}"
+                                        class="paiment-btn btn btn-style mt-4"
+                                >Payer</button>
+                                    {% endif %}
                             </div>
                         </div>
                         {% endfor %}
@@ -304,7 +323,7 @@
                                         <li><i class="fas fa-check-circle"></i> Jazz Basics</li>
                                         <li><i class="fas fa-check-circle"></i> Effective Mixing</li>
                                     </ul>
-                                    <a href="#pricing" class="btn btn-style mt-4">Choose Plan</a>
+                                    <a href="#pricing" class="btn btn-style mt-4">Payer</a>
                                 </div>
                             </div>
                         </div>
