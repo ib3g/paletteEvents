@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Event;
+use App\Entity\Role;
 use App\Form\EventType;
 use App\Manager\CustomMailer;
 use App\Repository\CategoryRepository;
@@ -23,8 +24,10 @@ class EventController extends AbstractController
     #[Route('/admin/event', name: 'admin_events_index', methods: ['GET'])]
     public function adminIndex(EventRepository $eventRepository): Response
     {
+        $user = $this->getUser();
+        $events = $this->isGranted(Role::ROLE_ADMIN) ? $eventRepository->findAll() : $eventRepository->allEventsByOwner($user, 100);
         return $this->render('event/admin/index.html.twig', [
-            'events' => $eventRepository->findAll(),
+            'events' => $events,
         ]);
     }
 

@@ -13,7 +13,6 @@
             <thead>
             <tr>
                 <th>Ordre</th>
-                <th>Text</th>
                 <th>Auteur</th>
                 <th>Évènement</th>
                 <th>Date</th>
@@ -25,7 +24,6 @@
             {% for key, demande in demandes %}
                 <tr>
                     <td>{{ key+1 }}</td>
-                    <td>{{ demande.text }}</td>
                     <td><a target="_blank" href="{{ path('app_user_show', {'id': demande.user.id }) }}">{{ demande.user }}</a></td>
                     <td><a target="_blank" href="{{ path('app_event_show', {'id': demande.event.id }) }}">{{ demande.event }}</a></td>
                     <td>{{ demande.createdAt ? demande.createdAt|date('Y-m-d H:i:s') : '' }}</td>
