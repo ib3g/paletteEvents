@@ -38,7 +38,15 @@ class RoleRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function roleByUser($user): array
+    {
+        $qb = $this->createQueryBuilder('e')
+            ->where(':user MEMBER OF e.user') // Check if any of the categories of an event match any of the categories of the event passed in parameter
+            ->setParameter('user', $user)
+            ->getQuery();
 
+        return $qb->getResult();
+    }
 //    /**
 //     * @return Role[] Returns an array of Role objects
 //     */

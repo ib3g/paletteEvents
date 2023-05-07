@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use http\Env\Request;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -64,6 +65,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->setParameter('role', 'ROLE_ANIMATEUR')
             ->getQuery()
             ->getResult();
+    }
+    public function update(User $user, $data,$role){
+        $user->setFullName($data->getFullName());
+        $user->setEmail($data->getEmail());
+        $user->setProfession($data->getProfession());
+        $user->setCentreInteret($data->getCentreInteret());
+        $user->setRole($role);
+        $user->setBirthday($data->getBirthday());
     }
 
 

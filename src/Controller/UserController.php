@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Role;
 use App\Entity\User;
+use App\Form\RegistrationFormType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -79,6 +82,25 @@ class UserController extends BaseController
         $animators = $userRepository->findAnimateurs();
         return $this->render('user/allAnimators.html.twig',[
             'animators' => $animators
+        ]);
+    }
+
+    #[Route('/profile/{fullName}', name: 'profile', methods: ['GET','POST'])]
+    public function profile($fullName,Request $request,EntityManagerInterface $manager,UserRepository $userRepository){
+        $user=$this->getUser();
+        if(!$user) return $this->redirectToRoute("app_login");
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $role=($manager->getRepository(Role::class)->roleByUser($user));
+            if($role) $role=$role[0];
+            $userRepository->update($user,$form->getData(),$role);
+            $manager->persist($user);
+            $manager->flush();
+            return $this->redirectToRoute('profile',['fullName'=>$user->getFullName()]);
+        }
+        return $this->render("user/profile.html.twig",[
+            'form' => $form->createView(),
         ]);
     }
 }
