@@ -6,7 +6,9 @@ use App\Entity\Role;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Form\UserType;
+use App\Repository\TicketRepository;
 use App\Repository\UserRepository;
+use App\Service\StripeService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -86,7 +88,7 @@ class UserController extends BaseController
     }
 
     #[Route('/profile/{fullName}', name: 'profile', methods: ['GET','POST'])]
-    public function profile($fullName,Request $request,EntityManagerInterface $manager,UserRepository $userRepository){
+    public function profile($fullName,Request $request,EntityManagerInterface $manager,UserRepository $userRepository,StripeService $stripeService,TicketRepository $ticketRepository){
         $user=$this->getUser();
         if(!$user) return $this->redirectToRoute("app_login");
         $form = $this->createForm(UserType::class, $user);
@@ -99,8 +101,20 @@ class UserController extends BaseController
             $manager->flush();
             return $this->redirectToRoute('profile',['fullName'=>$user->getFullName()]);
         }
+        $tickets=$ticketRepository->findBy(['user'=>$user]);
+        $factures=[];
+        foreach ($tickets as $ticket){
+            $factures[]=[
+                'event'=>$ticket->getPrix()->getEvent()->getTitle(),
+                'price'=>$ticket->getPrix()->getSomme(),
+                'date'=>$ticket->getFacture()->getCreatedAt(),
+                'status'=>$ticket->getFacture()->getStatus(),
+                'receipt'=>$ticket->getFacture()->getCode()
+            ];
+        }
         return $this->render("user/profile.html.twig",[
             'form' => $form->createView(),
+            'factures' => $factures,
         ]);
     }
 }
