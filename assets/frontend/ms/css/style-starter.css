@@ -20777,3 +20777,11 @@ ul.rating-list li a.review-color {
 .btn-membre a{
   color: var(--primary-color);
 }
+.share-btn .col-1{
+  width: 4.333333% !important;
+}.share-btn i{
+   font-size: 23px !important;
+}.share-btn h5{
+  color: var(--primary-color);
+  font-weight: 600;
+}
