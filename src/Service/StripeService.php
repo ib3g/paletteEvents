@@ -155,8 +155,22 @@ class StripeService
             $invoice = \Stripe\Invoice::all([
                 'customer' => $this->checkCustomer($user),
             ]);
-
             $invoice = \count($invoice->data) > 0 ? $invoice->data[0] : null;
+        } catch (ApiErrorException $e) {
+            return null;
+        }
+
+        return $invoice;
+    }
+
+    public function getInvoices($user)
+    {
+        $this->initStripe();
+
+        try {
+            $invoice = \Stripe\Invoice::all([
+                'customer' => $this->checkCustomer($user),
+            ]);
         } catch (ApiErrorException $e) {
             return null;
         }

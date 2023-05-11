@@ -15,7 +15,7 @@
                     <h6>{{ event.categories[0].name }}</h6>
                     {% endif %}
                     <h3>{{ event.title }}</h3>
-                    <a  href="{{ path('app_event_show',{"id":event.id}) }}" class="btn btn-style mt-4">Voir l'Event</a>
+                    <a  href="{{ path('app_event_show',{"id":event.id}) }}" class="btn btn-style mt-4">Savoir plus</a>
                 </div>
             </div>
         </div>
@@ -35,7 +35,7 @@
                     <h3 class="title-style">Bienvenue à <span>PaletteEvents</span></h3>
                     <p class="mt-4">Nous offrons une variété d'événements, allant de soirées entre amis, aux événements culturels, en passant par les concerts et les festivals.</p>
                     <p class="mt-4 pb-dm-3">Si vous ne trouvez pas l'événement que vous recherchez, nous vous offrons la possibilité de créer votre propre événement en quelques clics seulement!</p>
-                    <a  href="{{ path('app_login') }}" class="btn btn-style mt-5"> Devenir membre</a>
+                   {% if not app.user%} <a  href="{{ path('app_login') }}" class="btn btn-style mt-5"> Devenir membre</a>{% endif %}
                 </div>
                 <div class="col-lg-6 history-info mt-lg-0 mt-5 pt-md-4 pt-2">
                     <div class="position-relative img-border">

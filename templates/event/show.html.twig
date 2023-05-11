@@ -1,7 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Event{% endblock %}
-
+ {% block og_meta %}
+     <meta property="og:image" content="{{ "/uploads/" ~ event.medias[0].realName }}" />
+     <meta property="og:image:secure_url" content="{{ "/uploads/" ~ event.medias[0].realName }}" />
+     <link rel="image_src" href="{{ "/uploads/" ~ event.medias[0].realName }}" />
+     <meta property="og:image:type" content="{{ event.medias[0].mimeType }}" />
+ {% endblock %}
 {% block content %}
 
     <!-- inner banner -->
@@ -232,10 +237,9 @@
     <!--/ gallery -->
     <!-- pricing block -->
 
-
+<section class="pricing-w3l py-5" id="prices">
     {% set prices=event.prix.values %}
     {% if prices %}
-    <section class="pricing-w3l py-5" id="prices">
         <div class="container py-lg-5 py-md-4 py-2">
             <div class="row align-items-center py-2">
                 <div class="col-lg-4">
@@ -286,9 +290,7 @@
                 </div>
             </div>
         </div>
-    </section>
     {% else %}
-        <section class="pricing-w3l py-5"  id="prices">
             <div class="container py-lg-5 py-md-4 py-2">
                 <div class="row align-items-center py-2">
                     <div class="col-lg-4">
@@ -330,8 +332,16 @@
                     </div>
                 </div>
             </div>
-        </section>
     {% endif %}
+    <div class="container py-lg-5 py-md-4 py-2">
+        <div class="row share-btn">
+            <div class="offset-md-3 col-3"><h5 class="">Partager l'évenement</h5></div>
+            <div class="col-1 text-center"> <a href="https://facebook.com/sharer/sharer.php?u={{app.request.uri}}" target="_blank"><i class="fab fa-facebook-f"></i></a></div>
+            <div class="col-1 text-left"> <a href="https://twitter.com/share?text={{event.title}}&url={{app.request.uri}}" target="_blank"><i class="fab fa-twitter"></i></a></div>
+            <div class="col-1 text-left"> <a href="whatsapp://send?text={{ app.request.uri }}" data-action="share/whatsapp/share" target="_blank"><i class="fab fa-whatsapp"></i></a></div>
+        </div>
+        </div>
+    </section>
 
     <!--  events Same Owner -->
     {% if eventsSameOwner  %}

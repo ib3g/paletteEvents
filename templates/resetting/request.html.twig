@@ -2,22 +2,24 @@
 
 {% block title %}Changer le mot de passe{% endblock %}
 {% block content %}
-    <div class="limiter">
+    <div class="limiter" style="margin-top: 13%;">
+        <div class="container py-lg-5 py-md-4 py-2" style="padding-top: 0 !important;">
         <div class="register-container">
+            <h4 class="register-form-title text-center mb-5">Mot de passe oublié ?</h4>
             <div class="request-wrap">
                 <form method="post" action="{{ path('app_user_send_reset_email') }}" class="register-form">
-                    <span class="register-form-title">Mot de passe oublié ?</span>
                     <div class="form-group input-request">
                         <input type="text" placeholder="Email" class="form-control input-primary" id="username" name="username" required="required" />
                         {% if invalid_username is defined %}
                             <p class="text-danger">{{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}) }}</p>
                         {% endif %}
                     </div>
-                    <button class="register-form-btn" type="submit">
+                    <button class="register-form-btn btn btn-success mt-3" type="submit">
                         Réinitialiser
                     </button>
                 </form>
             </div>
+        </div>
         </div>
      </div>
 {% endblock %}

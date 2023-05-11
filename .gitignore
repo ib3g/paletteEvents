@@ -8,6 +8,7 @@ node_modules
 /public/bundles/
 /public/uploads/
 /public/build/
+/public/
 /var/
 /vendor/
 ###< symfony/framework-bundle ###

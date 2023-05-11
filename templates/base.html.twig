@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{{ asset('build/icons/icon.min.css') }}">
 {#    <link rel="stylesheet" href="{{ asset('build/css/all.min.css') }}">#}
     <link rel="icon" href="{{  asset("build/images/logo.png")  }}" />
+    {% block og_meta %}{% endblock %}
 </head>
 
 <body>
@@ -57,7 +58,7 @@
 
                 <button class="btn btn-style btn-style-3 btn-membre bg-transparent text-danger" style="width: 20%;">
                     {% if app.user %}
-                        <a href="" >{{ app.user.fullName }}</a>
+                        <a href="{{ path("profile",{"fullName":app.user.fullName}) }}" >{{ app.user.fullName }}</a>
                     {% else %}
                    <a href="{{ path('app_login') }}">Devenir Membre</a>
                     {% endif %}

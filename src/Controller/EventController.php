@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Event;
+use App\Entity\Facture;
 use App\Entity\Role;
+use App\Entity\Ticket;
 use App\Form\EventType;
 use App\Manager\CustomMailer;
 use App\Repository\CategoryRepository;
@@ -196,13 +198,32 @@ class EventController extends AbstractController
         $charge = $stripeService->getChargeByPaymentIntent($paymentIntent->id);
 
         $invoice = $stripeService->getLastInvoice($user);
+        $invoices = $stripeService->getInvoices($user);
+       if($charge->receipt_url) {
+           $ticket=new Ticket();
+           $ticket->setCode('T'.rand(1,$price->getPlaceMax()));
+           $ticket->setPosition(rand(1,$price->getPlaceMax()));
+           $ticket->setRang(rand(1,$price->getPlaceMax()));
+           $ticket->setPrix($price);
+           $ticket->setUser($user);
+           $entityManager->persist($ticket);
+
+           $facture = new Facture();
+           $facture->setTicket($ticket);
+           $facture->setStatus("payed");
+           $facture->setCreatedAt(new \DateTime());
+           $facture->setCode($charge->receipt_url);
+           $entityManager->persist($ticket);
+
+           $entityManager->flush();
+       }
 
         $html = $this->renderView('mail/event/event_payment_succeeded.html.twig', [
             'user' => $user,
             'event' => $price->getEvent(),
             'price' => $price,
             'url_docs' => $this->getParameter('app_url') . '/account/confidential-documents',
-            'url_dashboard' => $this->getParameter('app_url') . '/account',
+            'url_dashboard' => $this->getParameter('app_url') . '/profile/'.$user->getFullName(),
             'receipt_url' => $charge ? $charge->receipt_url : null,
             'invoice_pdf' => $invoice ?$invoice->invoice_pdf : null,
         ]);
