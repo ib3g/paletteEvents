@@ -51,6 +51,7 @@ class RegistrationController extends BaseController
             $this->emailVerifier->sendEmailConfirmation($user);
             // do anything else you need here, like send an email
 
+            $this->addSuccessFlash('Votre compte a été créé. Veuillez vérifier votre e-mail pour un lien de vérification.');
             return $this->redirectToRoute('app_login');
         }
 

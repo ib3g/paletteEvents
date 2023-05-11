@@ -1,52 +1,77 @@
 {% extends 'base.html.twig' %}
 {% block title %}Connexion{% endblock %}
 {% block content %}
-<div class="limiter py-5 my-3">
-    <div class="container py-lg-5 py-md-4 py-2">
-    <div class="register-container">
-        <div class="login-wrap">
-            {% block flash_messages %}
-                {% for type, messages in app.flashes %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ type }} border-0 alert-dismissible">
-                            <div class="alert-message">{{ message|raw }}</div>
-                        </div>
-                    {% endfor %}
-                {% endfor %}
-            {% endblock %}
-            <form method="post" class="register-form">
-                <h4 class="register-form-title text-center mt-5 mb-5">Connectez-vous</h4>
-                {% if error %}
-                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                {% endif %}
+    <section class="h-100 gradient-form " style="background-color: #eee;margin-top: 5%">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-xl-10">
+                    <div class="card rounded-3 text-black">
+                        <div class="row g-0">
+                            <div class="col-12">
+                                {% for message in app.flashes('success') %}
+                                    <div class="alert alert-success">
+                                        {{ message|raw }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="card-body p-md-5 mx-md-4">
 
-                {% if app.user %}
-                    <div class="mb-3">
-                        You are logged in as {{ app.user.email }}, <a href="{{ path('app_logout') }}">Logout</a>
-                    </div>
-                {% endif %}
+                                    <div class="text-center">
+                                        <a class="navbar-brand" href="{{ path("home") }}">
+                                            {#                <i class="fas fa-music me-1"></i>#}
+                                            <img style="width: 50px;height: 50px" src="{{  asset("build/images/logo.png")  }}" />
 
-                <div class="px-3">
-                    <div class="row my-3">
-                        <div class="col-12">
-                            <input type="email" placeholder="E-mail" value="{{ last_username }}" name="email" id="inputEmail" class="form-control input-email input-control" autocomplete="email" required autofocus>
-                        </div>
-                    </div>
+                                        </a>
+                                        <h4 class="mt-1 mb-5 pb-1">PaletteEvents</h4>
+                                    </div>
 
-                    <div class="row my-3">
-                        <div class="col-12">
-                            <input type="password" placeholder="Mot de passe" name="password" id="inputPassword" class="form-control input-password input-control" autocomplete="current-password" required>
+                                    <form method="post" class="register-form">
+                                        {% if error %}
+                                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                                        {% endif %}
+
+                                        {% if app.user %}
+                                            <div class="mb-3">
+                                                You are logged in as {{ app.user.email }}, <a href="{{ path('app_logout') }}">Logout</a>
+                                            </div>
+                                        {% endif %}
+                                        <div class="form-outline mb-4">
+                                            <label class="form-label" for="inputEmail">Email</label>
+                                            <input type="email" placeholder="E-mail" value="{{ last_username }}" name="email" id="inputEmail" class="form-control input-email input-control" autocomplete="email" required autofocus>
+                                        </div>
+
+                                        <div class="form-outline mb-4">
+                                            <label class="form-label" for="inputPassword">Password</label>
+                                            <input type="password" placeholder="Mot de passe" name="password" id="inputPassword" class="form-control input-password input-control" autocomplete="current-password" required>
+                                        </div>
+
+                                        <div class="text-center pt-1 mb-5 pb-1">
+                                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+                                            <button class="register-form-btn btn btn-success" type="submit">Valider</button>
+
+                                            <a class="text-muted" href={{ path('app_user_request')}}>Mot de passe oublié ?</a>
+                                        </div>
+
+                                        <div class="d-flex align-items-center justify-content-center pb-4">
+                                            <p class="mb-0 me-2">Vous n'avez pas de compte?</p>
+                                           <a href="{{ path('app_register')}}"> <button type="button" class="btn btn-outline-danger">Créer</button></a>
+                                        </div>
+
+                                    </form>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+                                <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                                    <h4 class="mb-4">Connectez-vous</h4>
+                                    <p class="small mb-0">PaletteEvents est un outil de planification d'événements qui permet de créer, de partager et de promouvoir des événements .</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
-                <button class="register-form-btn btn btn-success" type="submit" style="float: right;margin-right: 2%">Valider</button>
-            </form>
-            <p class="hasAccount mt-5"><a href={{ path('app_user_request')}}>Mot de passe oublié ?</a></p>
-            <p class="hasAccount">Vous n'avez pas de compte ? <a href="{{ path('app_register')}}">Inscrivez-vous</a></p>
+            </div>
         </div>
-    </div>
-</div>
-</div>
+    </section>
 {% endblock %}

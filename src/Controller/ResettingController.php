@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\ResettingFormType;
 use App\Manager\ResettingManager;
 use App\Manager\UserManager;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,10 +37,15 @@ class ResettingController extends BaseController
 
     #[Route('/send-email', name: 'app_user_send_reset_email', methods: ['GET','POST'])]
 
-    public function sendResetEmail(Request $request): Response
+    public function sendResetEmail(Request $request,UserRepository $userRepository): Response
     {
         $username = $request->request->get('username');
-
+         $user= $userRepository->findOneBy(['email' => $username]);
+        if(empty($user))
+        {
+          $this->addErrorFlash('Email n\'existe pas !');
+            return $this->redirectToRoute('app_user_request');
+        }
         $this->resettingManager->resetPassword($username);
 
         return new RedirectResponse($this->generateUrl('app_user_check_email', ['username' => $username]));

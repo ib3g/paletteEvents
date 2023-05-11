@@ -210,7 +210,7 @@ class EventController extends AbstractController
 
            $facture = new Facture();
            $facture->setTicket($ticket);
-           $facture->setStatus("payed");
+           $facture->setStatus("payéé");
            $facture->setCreatedAt(new \DateTime());
            $facture->setCode($charge->receipt_url);
            $entityManager->persist($ticket);
