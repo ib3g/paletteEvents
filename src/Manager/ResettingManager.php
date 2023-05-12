@@ -47,8 +47,8 @@ class ResettingManager
     public function resetPassword(string $email)
     {
         /** @var User $user */
-        $user = $this->userRepository->findBy(['email' => $email]);
-        if (null !== $user) {
+        $user = $this->userRepository->findOneBy(['email' => $email]);
+        if ($user) {
             $url = $this->generateUrlToken($user);
             $htmlContents = $this->twig->render('mail/password_reset.html.twig', [
                 'expiration_date' => new \DateTime('+1 days'),
@@ -59,12 +59,15 @@ class ResettingManager
 
             $this->mailer->send('Réinitialisation du mot de passe', $htmlContents, $user->getEmail());
         }
+        else {
+            $this->container->get('session')->getFlashBag()->add('danger', 'Cet email n\'existe pas');
+        }
     }
 
     public function sendJoinLink(string $email)
     {
         /** @var User $user */
-        $user = $this->userRepository->findBy(['email' => $email]);
+        $user = $this->userRepository->findOneBy(['email' => $email]);
         if (null !== $user) {
 
             $url = $this->generateUrlToken($user);
@@ -82,6 +85,9 @@ class ResettingManager
 
     public function generateUrlToken($user)
     {
+        if(!$user) {
+            return null;
+        }
         if (null === $user->getConfirmationToken()) {
             $user->setConfirmationToken($this->tokenGenerator->generateToken());
             $this->entityManager->persist($user);

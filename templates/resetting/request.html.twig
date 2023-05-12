@@ -13,6 +13,11 @@
                         {% if invalid_username is defined %}
                             <p class="text-danger">{{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}) }}</p>
                         {% endif %}
+                        {% for message in app.flashes('danger') %}
+                            <div class="alert alert-danger">
+                                {{ message|raw }}
+                            </div>
+                        {% endfor %}
                     </div>
                     <button class="register-form-btn btn btn-success mt-3" type="submit">
                         Réinitialiser

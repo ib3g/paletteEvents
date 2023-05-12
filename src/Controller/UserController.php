@@ -112,9 +112,12 @@ class UserController extends BaseController
                 'receipt'=>$ticket->getFacture()->getCode()
             ];
         }
+        $demandes=$user->getDemandes();
+
         return $this->render("user/profile.html.twig",[
             'form' => $form->createView(),
             'factures' => $factures,
+            'demandes' => $demandes,
         ]);
     }
 }

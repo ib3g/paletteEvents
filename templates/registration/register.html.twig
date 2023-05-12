@@ -1,56 +1,63 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Register{% endblock %}
-
 {% block content %}
-    <div class="container py-lg-5 py-md-4 py-2">
-<div class="px-3 py-5 my-5">
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
+    <section class="h-100 gradient-form " style="background-color: #eee;margin-top: 5%">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-xl-10">
+                    <div class="card rounded-3 text-black">
+                        <div class="row g-0">
+                            <div class="col-lg-6">
+                                <div class="card-body p-md-5 mx-md-4">
+                                    <div class="text-center">
+                                        <a class="navbar-brand" href="{{ path("home") }}">
+                                            {#                <i class="fas fa-music me-1"></i>#}
+                                            <img style="width: 50px;height: 50px" src="{{  asset("build/images/logo.png")  }}" />
 
-    <h1 class="text-center mb-5">Register</h1>
+                                        </a>
+                                        <h4 class="mt-1 mb-5 pb-1">Créer un compte</h4>
+                                    </div>
 
-    {{ form_start(registrationForm) }}
-        <div class="row mt-3">
-            <div class="col-md-6">
-                {{ form_row(registrationForm.fullName) }}
-            </div>
-            <div class="col-md-6">
-                {{ form_row(registrationForm.birthday) }}
+                                    {{ form_start(registrationForm) }}
+                                        <div class="form-outline mb-4">
+                                            {{ form_row(registrationForm.fullName) }}
+                                        </div>
+
+                                        <div class="form-outline mb-4">
+                                            {{ form_row(registrationForm.email) }}
+                                        </div>
+                                       <div class="form-outline mb-4">
+                                           {{ form_row(registrationForm.role) }}
+                                        </div>
+                                    <div class="form-outline mb-4">
+                                        {{ form_row(registrationForm.profession) }}
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 d-flex align-items-center gradient-custom-2" style="margin-top: 8%">
+                                <div class="card-body p-md-5 mx-md-4">
+                                <div class="form-outline mb-4">
+                                    {{ form_row(registrationForm.birthday) }}
+                                </div>
+                                <div class="form-outline mb-4">
+                                    {{ form_row(registrationForm.plainPassword, {
+                                        label: 'Mot de passe',
+                                    }) }}
+                                </div>
+                                <div class="form-outline mb-4">
+                                    {{ form_row(registrationForm.centreInteret) }}
+                                </div>
+                                <div class="mt-3">
+                                    <button type="submit" class="btn btn-success mt-4 " style="float: right">Register</button>
+                                </div>
+                                {{ form_end(registrationForm) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+    </section>
 
-        <div class="row mt-3">
-            <div class="col-md-6">
-                {{ form_row(registrationForm.email) }}
-            </div>
-            <div class="col-md-6">
-                {{ form_row(registrationForm.plainPassword, {
-                    label: 'Mot de passe',
-                }) }}
-            </div>
-        </div>
-
-        <div class="row mt-3">
-            <div class="col-md-6">
-                {{ form_row(registrationForm.profession) }}
-            </div>
-            <div class="col-md-6">
-                {{ form_row(registrationForm.centreInteret) }}
-            </div>
-        </div>
-
-        <div class="row mt-3">
-            <div class="col-md-6">
-                {{ form_row(registrationForm.role) }}
-            </div>
-        </div>
-
-        <div class="mt-3">
-            <button type="submit" class="btn btn-success">Register</button>
-        </div>
-    {{ form_end(registrationForm) }}
-</div>
-</div>
 {% endblock %}

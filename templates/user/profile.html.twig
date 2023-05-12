@@ -5,133 +5,157 @@
     <div class="w3l-breadcrumb py-lg-5">
         <div class="container pt-5 pb-sm-4 pb-2">
             <p style="text-align: right ; float: right">
-                <a href="{{ path('app_logout') }}">Se déconnecter
+                <a href="{{ path('app_logout') }}">Se Déconnecter
                     <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
                 </a>
             </p>
-            <h4 class="inner-text-title text-dark font-weight-bold pt-5">{{ app.user.fullName }}</h4>
+            <h4 class="inner-text-title text-dark font-weight-bold text-capitalize pt-5">{{ app.user.fullName }}</h4>
         </div>
     </div>
     <div class="container">
-        <ul style="width: 70%" class="nav nav-tabs nav-justified mb-3" id="ex1" role="tablist">
-            <li class="nav-item" role="presentation">
-                <a
-                        class="nav-link active text-uppercase font-weight-bold"
-                        id="ex3-tab-1"
-                        data-bs-toggle="tab"
-                        href="#ex3-tabs-1"
-                        role="tab"
-                        aria-controls="ex3-tabs-1"
-                        aria-selected="true"
-                >Infos personnelles</a
-                >
-            </li>
-            <li class="nav-item" role="presentation">
-                <a
-                        class="nav-link text-uppercase text-danger font-weight-bold"
-                        id="ex3-tab-2"
-                        data-bs-toggle="tab"
-                        href="#ex3-tabs-2"
-                        role="tab"
-                        aria-controls="ex3-tabs-2"
-                        aria-selected="false"
-                >Factures</a
-                >
-            </li>
-            {% if "ROLE_ANIMATEUR" in app.user.roles %}
-                <li class="nav-item" role="presentation">
-                    <a
-                            class="nav-link text-uppercase text-danger font-weight-bold"
-                            id="ex3-tab-3"
-                            data-bs-toggle="tab"
-                            href="#ex3-tabs-3"
-                            role="tab"
-                            aria-controls="ex3-tabs-3"
-                            aria-selected="false"
-                    >Demandes</a
+        <div class="card">
+            <div class="card-body">
+                <ul style="width: 70%" class="nav nav-tabs nav-justified mb-3" id="ex1" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a
+                                class="nav-link active text-uppercase font-weight-bold"
+                                id="ex3-tab-1"
+                                data-bs-toggle="tab"
+                                href="#ex3-tabs-1"
+                                role="tab"
+                                aria-controls="ex3-tabs-1"
+                                aria-selected="true"
+                        >Infos personnelles</a
+                        >
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a
+                                class="nav-link text-uppercase text-danger font-weight-bold"
+                                id="ex3-tab-2"
+                                data-bs-toggle="tab"
+                                href="#ex3-tabs-2"
+                                role="tab"
+                                aria-controls="ex3-tabs-2"
+                                aria-selected="false"
+                        >Factures
+                        </a>
+                    </li>
+                    {% if "ROLE_ANIMATEUR" in app.user.roles %}
+                        <li class="nav-item" role="presentation">
+                            <a
+                                    class="nav-link text-uppercase text-danger font-weight-bold"
+                                    id="ex3-tab-3"
+                                    data-bs-toggle="tab"
+                                    href="#ex3-tabs-3"
+                                    role="tab"
+                                    aria-controls="ex3-tabs-3"
+                                    aria-selected="false"
+                            >Demandes</a
+                            >
+                        </li>
+                    {% endif %}
+                </ul>
+                <div class="tab-content" id="ex2-content">
+                    <div
+                            class="tab-pane fade show active"
+                            id="ex3-tabs-1"
+                            role="tabpanel"
+                            aria-labelledby="ex3-tab-1"
                     >
-                </li>
-            {% endif %}
-        </ul>
+                        {{ form_start(form) }}
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                {{ form_row(form.fullName) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.birthday) }}
+                            </div>
+                        </div>
 
-        <div class="tab-content" id="ex2-content">
-            <div
-                    class="tab-pane fade show active"
-                    id="ex3-tabs-1"
-                    role="tabpanel"
-                    aria-labelledby="ex3-tab-1"
-            >
-                {{ form_start(form) }}
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        {{ form_row(form.fullName) }}
-                    </div>
-                    <div class="col-md-6">
-                        {{ form_row(form.birthday) }}
-                    </div>
-                </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                {{ form_row(form.email) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.centreInteret) }}
+                            </div>
+                        </div>
 
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        {{ form_row(form.email) }}
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                {{ form_row(form.profession) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.role,{'attr': {'disabled': 'disabled'}}) }}
+                            </div>
+                        </div>
+                        <div class="mt-3 text-right" style="text-align: right">
+                            <button type="submit" class="btn btn-success" style="width: 14%;">Save</button>
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+                    <div class="tab-pane fade" id="ex3-tabs-2" role="tabpanel" aria-labelledby="ex3-tab-2">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Event</th>
+                                <th>Prix</th>
+                                <th>Date</th>
+                                <th>Statut</th>
+                                <th>Reçu</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for facture in factures %}
+                                <tr>
+                                    <td>{{ facture.event }}</td>
+                                    <td>{{ facture.price }}$</td>
+                                    <td>{{ facture.date|date('d/m/Y') }}</td>
+                                    <td class="text-success text-uppercase">{{ facture.status }}</td>
+                                    <td><a href="{{ facture.receipt }}" target="_blank"><i class="fas fa-eye" aria-hidden="true"></i></a> </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="5" class="text-center">Vous n'avait pas encore des factures à afficher</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="ex3-tabs-3" role="tabpanel" aria-labelledby="ex3-tab-3">
+                        {% if demandes %}
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Event</th>
+                                    <th>Date d'envoi</th>
+                                    <th>Statut</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for demande in demandes %}
+                                    <tr>
+                                        <td><a href="{{ path('app_event_show',{"id":demande.event.id}) }}">{{ demande.event.title }}</a> </td>
+                                        <td>{{ demande.createdAt|date('d/m/Y') }}</td>
+                                        {% if demande.status == "1" %}
+                                            <td class="text-success text-uppercase">Envoyée</td>
+                                        {% else %}
+                                            <td class="text-danger text-uppercase">Supprimée</td>
+                                        {% endif %}
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="5" class="text-center">Vous n'avait pas encore envoyé de demandes de participation à aucun Evenement</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        {% endif %}
                     </div>
                 </div>
-
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        {{ form_row(form.profession) }}
-                    </div>
-                    <div class="col-md-6">
-                        {{ form_row(form.centreInteret) }}
-                    </div>
-                </div>
-
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        {{ form_row(form.role,{'attr': {'disabled': 'disabled'}}) }}
-                    </div>
-                </div>
-                <div class="mt-3 text-right" style="text-align: right">
-                    <button type="submit" class="btn btn-success" style="width: 14%;">Save</button>
-                </div>
-                {{ form_end(form) }}
-            </div>
-            <div class="tab-pane fade" id="ex3-tabs-2" role="tabpanel" aria-labelledby="ex3-tab-2">
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th>Event</th>
-                        <th>Prix</th>
-                        <th>Date</th>
-                        <th>Statut</th>
-                        <th>Reçu</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for facture in factures %}
-                        <tr>
-                            <td>{{ facture.event }}</td>
-                            <td>{{ facture.price }}$</td>
-                            <td>{{ facture.date|date('d/m/Y') }}</td>
-                            <td class="text-success text-uppercase">{{ facture.status }}</td>
-                            <td><a href="{{ facture.receipt }}" target="_blank"><i class="fas fa-eye" aria-hidden="true"></i></a> </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="5" class="text-center">Vous n'avait pas encore des factures à afficher</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <div class="tab-pane fade" id="ex3-tabs-3" role="tabpanel" aria-labelledby="ex3-tab-3">
-                DEMANDES
             </div>
         </div>
-
-
-
-
     </div>
+
 </section>
 {% endblock %}
