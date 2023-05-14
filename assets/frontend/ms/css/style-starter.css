@@ -20730,6 +20730,12 @@ ul.rating-list li a.review-color {
     height: 373px;
     object-fit: cover;
   }
+@media (max-width: 480px) {
+  .gallery_area .cat1 img,.gallery_area .cat3 img,.gallery_area .img_3 img{
+    width: 100% !important;
+    height: 300px !important;
+  }
+}
 .gallery_area .cat3 img{
   width:656px;
   height: 386px;
@@ -20777,6 +20783,13 @@ ul.rating-list li a.review-color {
 .btn-membre a{
   color: var(--primary-color);
 }
+@media (max-width: 480px) {
+  .btn-membre {
+    width: 33% !important;
+    padding: 2%;
+    margin-top: 5%;
+  }
+}
 .share-btn .col-1{
   width: 4.333333% !important;
 }.share-btn i{
@@ -20802,10 +20815,16 @@ ul.rating-list li a.review-color {
     height: 100vh !important;
   }
 }
+.gradient-form label{
+  color: var(--heading-color);
+}
 @media (min-width: 769px) {
   .gradient-custom-2 {
     border-top-right-radius: .3rem;
     border-bottom-right-radius: .3rem;
   }
+}
+.text-login h4, .text-login p{
+    color: var(--heading-color) !important;
 }
  /*login style*/

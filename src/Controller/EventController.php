@@ -242,4 +242,16 @@ class EventController extends AbstractController
             'invoice_pdf' => $invoice ? $invoice->invoice_pdf : null,
         ]);
     }
+    /**
+     * @Route("/search-event", name="search.event", methods={"POST"})
+     */
+    public function search(Request $request,EventRepository $eventRepository): Response
+    {
+        $search = $request->get('search');
+        $events = $eventRepository->searchEvents($search, 20);
+        return $this->render('event/index.html.twig', [
+            'events' => $events,
+            'search' => $search,
+        ]);
+    }
 }

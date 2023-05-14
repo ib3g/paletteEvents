@@ -50,8 +50,8 @@
                         <a class="nav-link" href="{{ path('contact') }}">Contact</a>
                     </li>
                 </ul>
-                <form action="#error" method="GET" class="d-flex search-header ms-lg-2">
-                    <input class="form-control" type="search" placeholder="Enter Keyword..." aria-label="Search"
+                <form action="{{ path('search.event') }}" method="POST" class="d-flex search-header ms-lg-2">
+                    <input class="form-control" type="search" placeholder="Chercher un Event..." aria-label="Search" name="search"
                            required>
                     <button class="btn btn-style" type="submit"><i class="fas fa-search"></i></button>
                 </form>
@@ -107,48 +107,22 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-2 col-6 sub-two-right mt-lg-0 mt-5">
+                <div class="col-lg-4 col-6 sub-two-right text-center mt-lg-0 mt-5">
                     <h6>Links</h6>
                     <ul>
                         <li><a href="{{ path('home') }}">Home</a> </li>
                         <li><a href="{{ path('animators') }}">Animateurs</a> </li>
                         <li><a href="{{ path('events_index') }}">Events</a> </li>
-                        <li><a href="#blog">Blog Posts</a> </li>
                         <li><a href="{{ path('contact') }}">Contact</a></li>
                     </ul>
                 </div>
-                <div class="col-lg-2 col-6 sub-two-right mt-lg-0 mt-5">
+                <div class="col-lg-4 col-6 sub-two-right text-center mt-lg-0 mt-5">
                     <h6>Explore</h6>
                     <ul>
                         <li><a href="#support">Support</a></li>
                         <li><a href="#privacypolicy">Privacy policy</a></li>
                         <li><a href="#offers">Offers</a></li>
-                        <li><a href="#support">Support</a></li>
                         <li><a href="#career">Careers</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-4 sub-one-left mt-lg-0 mt-5">
-                    <h6>Twitter Feed</h6>
-                    <ul>
-                        <li class="w3tweet-holder-grids">
-                            <div class="w3-twitter-icon"><i class="fab fa-twitter"></i></div>
-                            <div class="w3tweet-text">
-                                <a target="_blank" href="#twitter">@Honynilf</a> Hi <a target="_blank"
-                                                                                       href="#twitter">@Honynilf</a> , can you please submit a ticket at <a
-                                        target="_blank" href="#twitter">https://v.co/ij123A34J45A</a> <br>
-                                1 year ago.
-                            </div>
-                        </li>
-                        <li class="w3tweet-holder-grids">
-                            <div class="w3-twitter-icon"><i class="fab fa-twitter"></i></div>
-                            <div class="w3tweet-text">
-                                <a target="_blank" href="#twitter">@Honynilf</a> Hi <a target="_blank"
-                                                                                       href="#twitter">@Honynilf</a> , can you please submit a ticket at <a
-                                        target="_blank" href="#twitter">https://v.co/ij123A34J45A</a> and one of our
-                                support agent… <a target="_blank" href="#twitter">https://v.co/ij123A34J45A</a>
-                                2 year ago.
-                            </div>
-                        </li>
                     </ul>
                 </div>
             </div>
