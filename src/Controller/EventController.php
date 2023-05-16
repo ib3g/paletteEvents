@@ -188,6 +188,8 @@ class EventController extends AbstractController
         $session = $stripeService->getSession($session_id);
         $price=$prixRepository->findOneBy(["stripe_price_id"=>$priceId]);
         $event=$price->getEvent();
+        $ticket="";
+        $facture="";
         if (!$session) {
             return $this->redirectToRoute('app_event_show', ['id' => $event->getId()]);
         }
@@ -216,6 +218,9 @@ class EventController extends AbstractController
            $entityManager->persist($ticket);
 
            $entityManager->flush();
+
+           $event=$ticket->getPrix()->getEvent();
+           $priceEvent=$ticket->getPrix();
        }
 
         $html = $this->renderView('mail/event/event_payment_succeeded.html.twig', [
@@ -240,6 +245,22 @@ class EventController extends AbstractController
         return $this->render('event/payment-succeeded.html.twig', [
             'receipt_url' => $charge ? $charge->receipt_url : null,
             'invoice_pdf' => $invoice ? $invoice->invoice_pdf : null,
+            'ticket'=>$ticket,
+            'facture'=>$facture,
+            'event'=>$event,
+            'priceEvent'=>$priceEvent,
+        ]);
+    }
+    /**
+     * @Route("/search-event", name="search.event", methods={"POST"})
+     */
+    public function search(Request $request,EventRepository $eventRepository): Response
+    {
+        $search = $request->get('search');
+        $events = $eventRepository->searchEvents($search, 20);
+        return $this->render('event/index.html.twig', [
+            'events' => $events,
+            'search' => $search,
         ]);
     }
 }

@@ -127,6 +127,27 @@ class EventRepository extends ServiceEntityRepository
 
         return $qb->getResult();
     }
+    // search events by query with join on categories, tags and animators
+    public function searchEvents($query, int $max): array
+    {
+        $qb = $this->createQueryBuilder('e')
+            ->leftJoin('e.categories', 'c')
+            ->leftJoin('e.tags', 't')
+            ->leftJoin('e.animators', 'a')
+            ->where('e.title LIKE :query')
+            ->orWhere('e.description LIKE :query')
+            ->orWhere('e.shortDescription LIKE :query')
+            ->orWhere('c.name LIKE :query')
+            ->orWhere('t.name LIKE :query')
+            ->orWhere('a.fullName LIKE :query')
+            ->setParameter('query', '%'.$query.'%')
+            ->orderBy('e.id', 'DESC')
+            ->setMaxResults($max)
+            ->getQuery();
+
+        return $qb->getResult();
+    }
+
 //    /**
 //     * @return Event[] Returns an array of Event objects
 //     */

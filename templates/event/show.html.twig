@@ -62,7 +62,7 @@
                     {% if event.tags is not empty %}
                         <div class="row mt-4 tags-list">
                             {% for tag in event.tags %}
-                                <div class="col-2 text-center">
+                                <div class="col-3 col-lg-2 text-center mr-2">
                                     <a href="{{ path("similar_events_tag",{"tagName":tag.name}) }}" class="bg-transparent">#{{ tag.name }}</a>
                                 </div>
                             {% endfor %}
@@ -217,7 +217,7 @@
                         {% set class="col-xl-4 col-lg-6 mt-3 cat2 mb-2 img_5" %}
                     {% endif %}
 
-                <div class="grid-item  col-md-6 {{ class }}">
+                <div class="grid-item  col-md-6  {{ class }}">
                     <div class="single-gallery mb-30">
                         <div class="portfolio-img">
                             {% set url = "/uploads/" ~ media.realName %}
@@ -335,10 +335,10 @@
     {% endif %}
     <div class="container py-lg-5 py-md-4 py-2">
         <div class="row share-btn">
-            <div class="offset-md-3 col-3"><h5 class="">Partager l'évenement</h5></div>
-            <div class="col-1 text-center"> <a href="https://facebook.com/sharer/sharer.php?u={{app.request.uri}}" target="_blank"><i class="fab fa-facebook-f"></i></a></div>
-            <div class="col-1 text-left"> <a href="https://twitter.com/share?text={{event.title}}&url={{app.request.uri}}" target="_blank"><i class="fab fa-twitter"></i></a></div>
-            <div class="col-1 text-left"> <a href="whatsapp://send?text={{ app.request.uri }}" data-action="share/whatsapp/share" target="_blank"><i class="fab fa-whatsapp"></i></a></div>
+            <div class="offset-md-3 col-md-3 col-4"><h5 class="">Partager l'évenement</h5></div>
+            <div class="col-md-1 col-2 text-center"> <a href="https://facebook.com/sharer/sharer.php?u={{app.request.uri}}" target="_blank"><i class="fab fa-facebook-f"></i></a></div>
+            <div class="col-md-1 col-2 text-left"> <a href="https://twitter.com/share?text={{event.title}}&url={{app.request.uri}}" target="_blank"><i class="fab fa-twitter"></i></a></div>
+            <div class="col-md-1 col-2 text-left"> <a href="whatsapp://send?text={{ app.request.uri }}" data-action="share/whatsapp/share" target="_blank"><i class="fab fa-whatsapp"></i></a></div>
         </div>
         </div>
     </section>

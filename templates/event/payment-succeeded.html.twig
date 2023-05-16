@@ -7,6 +7,72 @@
         <div class="col-12">
             <h3>Merci pour votre achat ! Veuillez vérifier votre boite mail.</h3>
 
+            <h5 class="mt-5 mb-3 text-center">Aperçu de votre Ticket</h5>
+
+{#            TICKET#}
+            <div class="d-ticket">
+            <div class="ticket">
+                <div class="left">
+                    {% set url = "/build/images/placeholder.png" %}
+                    {% if event.medias is not empty %}
+                        {% set url = "/uploads/" ~ event.medias[0].realName %}
+                    {% endif %}
+                    <div class="image" style="background: url({{ url }})">
+                        <p class="admit-one">
+                            <span>{{ priceEvent.type|upper }}</span>
+                            <span>{{ priceEvent.type|upper }}</span>
+                            <span>{{ priceEvent.type|upper }}</span>
+                        </p>
+                        <div class="ticket-number">
+                            <p>
+                                #20030220
+                            </p>
+                        </div>
+                    </div>
+                    <div class="ticket-info">
+                        <p class="date">
+                            <span>{{ event.dateEvent|date('l') }}</span>
+                            <span class="june-29" style="font-size: 15px">{{ event.dateEvent|date("F") }} {{ event.dateEvent|date('d') }}</span>
+                            <span>{{ event.dateEvent|date('Y') }}</span>
+                        </p>
+                        <div class="show-name">
+                            <h1>{{ event.title }}</h1>
+                            <h2>{{ event.owner.fullName }}</h2>
+                        </div>
+                        <div class="time">
+                            <p>{{ event.lieu }}</p>
+                            <p>SPONSORS <span>:</span> {{ event.sponsors }}</p>
+                        </div>
+                        <p class="location"><span>Ticket généré par </span>
+                            <span class="separator"> <img style="width: 50px;height: 50px" src="{{  asset("build/images/logo.png")  }}" alt="not found"/>
+                        PaletteEvents</span>
+                    </div>
+                </div>
+                <div class="right">
+                    <p class="admit-one">
+                        <span>{{ priceEvent.type|upper }}</span>
+                        <span>{{ priceEvent.type|upper }}</span>
+                        <span>{{ priceEvent.type|upper}}</span>
+                    </p>
+                    <div class="right-info-container">
+                        <div class="show-name">
+                            <h1>{{ priceEvent.somme }}$</h1>
+                        </div>
+                        <div class="barcode">
+                            <img src="https://external-preview.redd.it/cg8k976AV52mDvDb5jDVJABPrSZ3tpi1aXhPjgcDTbw.png?auto=webp&s=1c205ba303c1fa0370b813ea83b9e1bddb7215eb" alt="QR code">
+                        </div>
+                        <div class="time">
+                            <p style="font-size: 11px">
+                                CODE #{{ ticket.code }}
+                            </p>
+                            <p style="font-size: 11px">Rang : {{ ticket.rang }} <br>
+                                Position : {{ ticket.position }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+{#            TICKET#}
             <div class="row text-center mt-5 ml-auto">
                 <div class="m-auto">
                         <a target="_blank" href="{{ receipt_url }}" class="btn btn-black mr-3">Voir mon reçu</a>
