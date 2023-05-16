@@ -109,6 +109,10 @@ class UserFixtures extends AppFixtures
             $user->setPassword($this->userPasswordHasher->hashPassword($user, strtolower($prefix)));
             $user->setRole($role);
 
+            $user->setFacebook('https://facebook.com/' . strtolower($prefix));
+            $user->setTwitter('https://twitter.com/' . strtolower($prefix));
+            $user->setLinkedin('https://linkedin.com/in/' . strtolower($prefix));
+
             $this->generateImage($user);
 
             $role->addUser($user);
@@ -136,6 +140,10 @@ class UserFixtures extends AppFixtures
             $user->setRole($role);
 
             $this->generateImage($user);
+
+            $user->setFacebook('https://facebook.com/' . $faker->firstName);
+            $user->setTwitter('https://twitter.com/' . $faker->firstName);
+            $user->setLinkedin('https://linkedin.com/in/' . $faker->firstName);
 
             $role->addUser($user);
             $manager->persist($user);

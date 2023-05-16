@@ -40,6 +40,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
          - { path: ^/admin/event, roles: [ROLE_ORGANISATEUR] }
+         - { path: ^/admin/draft/event, roles: [ROLE_ORGANISATEUR] }
          - { path: ^/admin/prix, roles: [ROLE_ORGANISATEUR] }
          - { path: ^/admin/demande, roles: [ROLE_ORGANISATEUR] }
          - { path: ^/admin/category, roles: ROLE_ADMIN }

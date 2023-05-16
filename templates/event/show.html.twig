@@ -2,10 +2,12 @@
 
 {% block title %}Event{% endblock %}
  {% block og_meta %}
-     <meta property="og:image" content="{{ "/uploads/" ~ event.medias[0].realName }}" />
-     <meta property="og:image:secure_url" content="{{ "/uploads/" ~ event.medias[0].realName }}" />
-     <link rel="image_src" href="{{ "/uploads/" ~ event.medias[0].realName }}" />
-     <meta property="og:image:type" content="{{ event.medias[0].mimeType }}" />
+     {% if event.medias|length %}
+         <meta property="og:image" content="{{ "/uploads/" ~ event.medias[0].realName }}" />
+         <meta property="og:image:secure_url" content="{{ "/uploads/" ~ event.medias[0].realName }}" />
+         <link rel="image_src" href="{{ "/uploads/" ~ event.medias[0].realName }}" />
+         <meta property="og:image:type" content="{{ event.medias[0].mimeType }}" />
+     {% endif %}
  {% endblock %}
 {% block content %}
 

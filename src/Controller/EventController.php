@@ -8,6 +8,7 @@ use App\Entity\Role;
 use App\Entity\Ticket;
 use App\Form\EventType;
 use App\Manager\CustomMailer;
+use App\Manager\UserManager;
 use App\Repository\CategoryRepository;
 use App\Repository\EventRepository;
 use App\Repository\PrixRepository;
@@ -20,15 +21,46 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Twig\Environment;
 
-class EventController extends AbstractController
+class EventController extends BaseController
 {
+
+    private CustomMailer $mailer;
+    private Environment $twig;
+    private UrlGeneratorInterface $urlGenerator;
+
+    /**
+     * @param CustomMailer $mailer
+     * @param Environment $twig
+     * @param UrlGeneratorInterface $urlGenerator
+     */
+    public function __construct(CustomMailer $mailer, Environment $twig, UrlGeneratorInterface $urlGenerator)
+    {
+        $this->mailer = $mailer;
+        $this->twig = $twig;
+        $this->urlGenerator = $urlGenerator;
+    }
+
     #[Route('/admin/event', name: 'admin_events_index', methods: ['GET'])]
     public function adminIndex(EventRepository $eventRepository): Response
     {
         $user = $this->getUser();
-        $events = $this->isGranted(Role::ROLE_ADMIN) ? $eventRepository->findAll() : $eventRepository->allEventsByOwner($user, 100);
+        $events = $this->isGranted(Role::ROLE_ADMIN) ? $eventRepository->allUndraftedEvents() : $eventRepository->allEventsByOwner($user, 100);
+        $draftedEvents =  $this->isGranted(Role::ROLE_ADMIN) ? $eventRepository->findBy(['status' => Event::STATUS_DRAFT]) : $eventRepository->allDraftEventsByOwner($user, 100);
         return $this->render('event/admin/index.html.twig', [
+            'events' => $events,
+            'draftedEventsCount' => count($draftedEvents),
+        ]);
+    }
+
+    #[Route('/admin/draft/event', name: 'admin_draft_events_index', methods: ['GET'])]
+    public function enAttenteIndex(EventRepository $eventRepository): Response
+    {
+        $user = $this->getUser();
+        $events = $this->isGranted(Role::ROLE_ADMIN) ? $eventRepository->findBy(['status' => Event::STATUS_DRAFT]) : $eventRepository->allDraftEventsByOwner($user, 100);
+        return $this->render('event/admin/en_attente.html.twig', [
             'events' => $events,
         ]);
     }
@@ -51,6 +83,17 @@ class EventController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $event->setOwner($this->getUser());
             $eventRepository->save($event, true);
+
+            $url = $this->urlGenerator->generate('admin_draft_events_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
+            $htmlContents = $this->twig->render('mail/new_event_created.html.twig', [
+                'event' => $event,
+                'url' => $url
+            ]);
+
+            $this->mailer->send("Nouvel événement en attente de validation", $htmlContents, 'admin@paletteEvents.com');
+            $this->addSuccessFlash();
+            $this->addInfoFlash('Votre événement est en attente de validation par un administrateur, 
+                            vous recevrez un mail dès que celui-ci sera validé. vous pouvez le voir et le modifier en attendant.');
 
             return $this->redirectToRoute('admin_events_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -108,6 +151,41 @@ class EventController extends AbstractController
 
         return $this->redirectToRoute('admin_events_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/admin/event/{id}/approbation', name: 'admin_event_approbation', methods: ['GET'])]
+    public function approuveOrReject(Request $request, Event $event, EventRepository $eventRepository, UserManager $userManager): Response
+    {
+        if ($event->getStatus() != Event::STATUS_DRAFT) {
+            $this->addWarningFlash('Cet événement a déjà été traité');
+            return $this->redirectToRoute('admin_draft_events_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        $status = $request->query->get('status');
+
+        if ($status == 'approved') {
+            $event->setStatus(Event::STATUS_NEW);
+            $userManager->sendAnimatorInvitationsEmail($event);
+        } else if ($status == 'rejected') {
+            $event->setStatus(Event::STATUS_REFUSED);
+        }
+
+        $eventRepository->save($event, true);
+
+        $url = $this->urlGenerator->generate('app_event_show', ['id' => $event->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
+        $htmlContents = $this->twig->render('mail/event_approbation_status_updated.html.twig', [
+            'event' => $event,
+            'url' => $url
+        ]);
+
+        $title = $event->getTitle();
+
+        $this->mailer->send("La création de votre évènement '$title' été mise à jour", $htmlContents, $event->getOwner()->getEmail());
+        $this->addSuccessFlash('L\'événement a été traité avec succès');
+
+        return $this->redirectToRoute('admin_draft_events_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+
     #[Route('/event/{categoryName}/category', name: 'similar_events_category', methods: ['GET'])]
     public function similarEventsByCategory($categoryName,Request $request, EventRepository $eventRepository,CategoryRepository $categoryRepository): Response
     {

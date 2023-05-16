@@ -47,6 +47,18 @@ class UserType extends AbstractType
                 'label' => 'Rôle',
                 'required' => true,
             ])
+            ->add('facebook',TextType::class, [
+                'label' => 'Lien Facebook',
+                'required' => false,
+            ])
+            ->add('twitter',TextType::class, [
+                'label' => 'Lien Twitter',
+                'required' => false,
+            ])
+            ->add('linkedin',TextType::class, [
+                'label' => 'Lien Linkedin',
+                'required' => false,
+            ])
         ;
     }
 

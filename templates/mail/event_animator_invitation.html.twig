@@ -1,0 +1,57 @@
+<table class="body-wrap">
+    <tr>
+        <td></td>
+        <td class="container" width="600">
+            <div class="content">
+                <table class="main" width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td class="content-wrap aligncenter">
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td>
+                                        <div class="text-center"
+                                             style="font-weight: bold; display: flex; align-items: center;">
+                                            <img style="width: 50px;height: 50px"
+                                                 src="{{ absolute_url(asset('build/images/logo.png')) }}"
+                                                 alt="logo not found">
+                                            PaletteEvents
+                                        </div>
+
+                                        <p>Bonjour, {{ animator.fullName }}</p>
+                                        <p>
+                                            J'espère que ce message vous trouve en bonne forme.
+                                            <br>
+                                            <br>
+                                            Je suis ravi de vous informer que vous avez été choisi pour animer notre
+                                            prochain événement <strong>{{ event.title }}</strong>. Votre expertise et votre dynamisme
+                                            sont exactement ce dont nous avons besoin pour cet événement.
+                                            <br>
+                                            <br>
+                                            L'événement aura lieu le <strong>{{ event.dateEvent|date('d/m/Y à H:i') }}</strong>. Plus de
+                                            détails seront fournis prochainement, mais je voulais vous donner
+                                            l'opportunité de réserver cette date dans votre calendrier.
+                                            <br>
+                                            <br>
+                                            Je suis à votre disposition pour répondre à toutes vos questions concernant
+                                            cet événement. J'espère sincèrement que vous pourrez accepter cette invitation.
+                                            <br>
+                                            <br>
+                                            lien de l'événement : <a href="{{ url }}"><strong>{{ event.title }}</strong></a>
+                                            <br>
+                                            <br>
+                                            Cordialement,
+                                            <br>
+                                            {{ event.owner.fullName }}
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+        <td></td>
+    </tr>
+</table>
+

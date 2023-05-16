@@ -1,0 +1,65 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Events en attentes{% endblock %}
+
+{% block _content %}
+
+    <div class="d-flex flex-row justify-content-between align-items-center flex-wrap">
+        <h1 class="action-title">Events en attentes d'être approuvés</h1>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table datatable-basic table-striped table-hover" id="dataTable">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Titre</th>
+                <th>Description</th>
+                <th>Organisateurs</th>
+                <th>Date</th>
+                <th>Tags et Catégories</th>
+                <th>actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for key,event in events %}
+                <tr>
+                    <td>{{ key+1 }}</td>
+                    <td>{{ event.title }}</td>
+                    <td>{{ event.shortDescription }}</td>
+                    <td><a target="_blank"
+                           href="{{ path('app_user_show', {'id': event.owner.id }) }}">{{ event.owner }}</a></td>
+                    <td>{{ event.dateEvent|date('d-m-Y à H:i') }}</td>
+                    <td>
+                        {% for tag in event.tags %}
+                            <span>{{ tag.name }}</span>,
+                        {% endfor %}
+                        {% for category in event.categories %}
+                            <span>{{ category.name }}</span>,
+                        {% endfor %}
+                    </td>
+                    <td>
+                        <div class="d-flex flex-row">
+                            <a class="p-1" target="_blank" href="{{ path('admin_event_show', {'id': event.id}) }}">
+                                <i class="icon-eye text-paletteEvent" title="Voir"></i>
+                            </a>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a class="p-1" href="{{ path('admin_event_approbation', {'id': event.id, 'status': 'approved'}) }}">
+                                    <i class="icon-check text-success" title="Accepter"></i>
+                                </a>
+                                <a class="p-1" href="{{ path('admin_event_approbation', {'id': event.id, 'status': 'rejected'}) }}">
+                                    <i class="icon-x text-danger" title="Refuser"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

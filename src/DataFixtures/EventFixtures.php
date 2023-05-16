@@ -92,7 +92,7 @@ class EventFixtures extends AppFixtures implements DependentFixtureInterface
                 $event = new Event();
                 $event->setTitle($faker->randomElement($evenements));
                 $event->setOwner($organisateur);
-                $event->setStatus($faker->randomElement([Event::STATUS_NEW, Event::STATUS_IN_PROGRESS, Event::STATUS_FINISHED]));
+                $event->setStatus($faker->randomElement([Event::STATUS_DRAFT, Event::STATUS_NEW, Event::STATUS_IN_PROGRESS, Event::STATUS_FINISHED]));
                 $event->setShortDescription($faker->realText(100).'...');
                 $event->setDescription($faker->realText(520));
                 $event->setDateEvent($faker->dateTimeBetween('now', '+6 months'));

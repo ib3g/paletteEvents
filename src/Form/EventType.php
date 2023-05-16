@@ -72,7 +72,7 @@ class EventType extends AbstractType
             ->add('tags')
         ;
 
-        if ($builder->getData()->getId() != null) {
+        if ($builder->getData()->getId() != null && $builder->getData()->getStatus() != Event::STATUS_DRAFT) {
             $builder->add('status', ChoiceType::class, [
                 'label' => 'Statut de l\'événement',
                 'choices' => [

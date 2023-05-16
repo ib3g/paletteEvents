@@ -83,8 +83,37 @@ class EventRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('e')
             ->where('e.owner = :owner')
-            ->setParameter('owner', $owner)
+            ->andWhere('e.status != :status')
             ->orderBy('e.id', 'DESC')
+            ->setParameter('owner', $owner)
+            ->setParameter('status', Event::STATUS_DRAFT)
+            ->setMaxResults($max)
+            ->getQuery();
+
+        return $qb->getResult();
+    }
+
+    // events with the same owner as  passed in parameter
+    public function allUndraftedEvents(): array
+    {
+        $qb = $this->createQueryBuilder('e')
+            ->andWhere('e.status != :status')
+            ->orderBy('e.id', 'DESC')
+            ->setParameter('status', Event::STATUS_DRAFT)
+            ->getQuery();
+
+        return $qb->getResult();
+    }
+
+    // events with the same owner as  passed in parameter
+    public function allDraftEventsByOwner($owner, int $max): array
+    {
+        $qb = $this->createQueryBuilder('e')
+            ->where('e.owner = :owner')
+            ->andWhere('e.status = :status')
+            ->orderBy('e.id', 'DESC')
+            ->setParameter('owner', $owner)
+            ->setParameter('status', Event::STATUS_DRAFT)
             ->setMaxResults($max)
             ->getQuery();
 

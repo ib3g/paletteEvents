@@ -68,6 +68,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $stripe_customer_id;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $facebook = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $twitter = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $linkedIn = null;
     public function __construct()
     {
         $this->demandes = new ArrayCollection();
@@ -383,6 +392,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setStripeCustomerId($stripe_customer_id): void
     {
         $this->stripe_customer_id = $stripe_customer_id;
+    }
+
+    public function getFacebook(): ?string
+    {
+        return $this->facebook;
+    }
+
+    public function setFacebook(?string $facebook): self
+    {
+        $this->facebook = $facebook;
+
+        return $this;
+    }
+
+    public function getTwitter(): ?string
+    {
+        return $this->twitter;
+    }
+
+    public function setTwitter(?string $twitter): self
+    {
+        $this->twitter = $twitter;
+
+        return $this;
+    }
+
+    public function getLinkedIn(): ?string
+    {
+        return $this->linkedIn;
+    }
+
+    public function setLinkedIn(?string $linkedIn): self
+    {
+        $this->linkedIn = $linkedIn;
+
+        return $this;
     }
 
 }

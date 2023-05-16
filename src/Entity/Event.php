@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 class Event
 {
     // les status de l'event sont : new, en cours, terminé, annulé, reporté
+    const STATUS_DRAFT = 'draft';
+    const STATUS_REFUSED = 'refused';
     const STATUS_NEW = 'new';
     const STATUS_IN_PROGRESS = 'in_progress';
     const STATUS_FINISHED = 'finished';
@@ -76,7 +78,7 @@ class Event
         $this->tags = new ArrayCollection();
         $this->medias = new ArrayCollection();
         $this->prix = new ArrayCollection();
-        $this->status = self::STATUS_NEW;
+        $this->status = self::STATUS_DRAFT;
     }
 
     public function __toString(): string

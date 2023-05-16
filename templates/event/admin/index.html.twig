@@ -6,8 +6,18 @@
 
     <div class="d-flex flex-row justify-content-between align-items-center flex-wrap">
         <h1 class="action-title">Events</h1>
+        <span>
+            <a href="{{ path('admin_draft_events_index') }}" class="btn btn-info radius mr-2 mb-2">
+                <i class="icon-hour-glass"></i> Events en attentes
+                {% if draftedEventsCount %}
+                    <span class="badge rounded-pill badge-danger p-1 text-white font-size-xs font-weight-bold">
+                    {{ draftedEventsCount }}
+                </span>
+                {% endif %}
+            </a>
         <a href="{{ path('app_event_new') }}" class="btn btn-paletteEvent radius mr-2 mb-2">Nouveau Event <i
                     class="icon-plus2"></i></a>
+        </span>
     </div>
 
     <div class="table-responsive">
@@ -30,7 +40,8 @@
                     <td>{{ key+1 }}</td>
                     <td>{{ event.title }}</td>
                     <td>{{ event.shortDescription }}</td>
-                    <td><a target="_blank" href="{{ path('app_user_show', {'id': event.owner.id }) }}">{{ event.owner }}</a></td>
+                    <td><a target="_blank"
+                           href="{{ path('app_user_show', {'id': event.owner.id }) }}">{{ event.owner }}</a></td>
                     <td>{{ event.dateEvent|date('d-m-Y à H:i') }}</td>
                     <td>
                         {% if event.status == "new" %}
@@ -41,6 +52,8 @@
                             <span class="badge badge-success"> Terminé </span>
                         {% elseif event.status == 'canceled' %}
                             <span class="badge badge-danger"> Annulé </span>
+                        {% elseif event.status == 'refused' %}
+                            <span class="badge badge-danger"> Non autorisé </span>
                         {% elseif event.status == 'postponed' %}
                             <span class="badge badge-secondary"> Reporté </span>
                         {% endif %}
