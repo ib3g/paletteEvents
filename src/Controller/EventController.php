@@ -202,24 +202,23 @@ class EventController extends AbstractController
         $invoice = $stripeService->getLastInvoice($user);
         $invoices = $stripeService->getInvoices($user);
        if($charge->receipt_url) {
-//           $ticket=new Ticket();
-//           $ticket->setCode('T'.rand(1,$price->getPlaceMax()));
-//           $ticket->setPosition(rand(1,$price->getPlaceMax()));
-//           $ticket->setRang(rand(1,$price->getPlaceMax()));
-//           $ticket->setPrix($price);
-//           $ticket->setUser($user);
-//           $entityManager->persist($ticket);
-//
-//           $facture = new Facture();
-//           $facture->setTicket($ticket);
-//           $facture->setStatus("payéé");
-//           $facture->setCreatedAt(new \DateTime());
-//           $facture->setCode($charge->receipt_url);
-//           $entityManager->persist($ticket);
-//
-//           $entityManager->flush();
-           $facture=$entityManager->getRepository(Facture::class)->find(51);
-           $ticket=$entityManager->getRepository(Ticket::class)->find(50);
+           $ticket=new Ticket();
+           $ticket->setCode('T'.rand(1,$price->getPlaceMax()));
+           $ticket->setPosition(rand(1,$price->getPlaceMax()));
+           $ticket->setRang(rand(1,$price->getPlaceMax()));
+           $ticket->setPrix($price);
+           $ticket->setUser($user);
+           $entityManager->persist($ticket);
+
+           $facture = new Facture();
+           $facture->setTicket($ticket);
+           $facture->setStatus("payéé");
+           $facture->setCreatedAt(new \DateTime());
+           $facture->setCode($charge->receipt_url);
+           $entityManager->persist($ticket);
+
+           $entityManager->flush();
+
            $event=$ticket->getPrix()->getEvent();
            $priceEvent=$ticket->getPrix();
        }
