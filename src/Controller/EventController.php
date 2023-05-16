@@ -188,6 +188,8 @@ class EventController extends AbstractController
         $session = $stripeService->getSession($session_id);
         $price=$prixRepository->findOneBy(["stripe_price_id"=>$priceId]);
         $event=$price->getEvent();
+        $ticket="";
+        $facture="";
         if (!$session) {
             return $this->redirectToRoute('app_event_show', ['id' => $event->getId()]);
         }
@@ -200,22 +202,26 @@ class EventController extends AbstractController
         $invoice = $stripeService->getLastInvoice($user);
         $invoices = $stripeService->getInvoices($user);
        if($charge->receipt_url) {
-           $ticket=new Ticket();
-           $ticket->setCode('T'.rand(1,$price->getPlaceMax()));
-           $ticket->setPosition(rand(1,$price->getPlaceMax()));
-           $ticket->setRang(rand(1,$price->getPlaceMax()));
-           $ticket->setPrix($price);
-           $ticket->setUser($user);
-           $entityManager->persist($ticket);
-
-           $facture = new Facture();
-           $facture->setTicket($ticket);
-           $facture->setStatus("payéé");
-           $facture->setCreatedAt(new \DateTime());
-           $facture->setCode($charge->receipt_url);
-           $entityManager->persist($ticket);
-
-           $entityManager->flush();
+//           $ticket=new Ticket();
+//           $ticket->setCode('T'.rand(1,$price->getPlaceMax()));
+//           $ticket->setPosition(rand(1,$price->getPlaceMax()));
+//           $ticket->setRang(rand(1,$price->getPlaceMax()));
+//           $ticket->setPrix($price);
+//           $ticket->setUser($user);
+//           $entityManager->persist($ticket);
+//
+//           $facture = new Facture();
+//           $facture->setTicket($ticket);
+//           $facture->setStatus("payéé");
+//           $facture->setCreatedAt(new \DateTime());
+//           $facture->setCode($charge->receipt_url);
+//           $entityManager->persist($ticket);
+//
+//           $entityManager->flush();
+           $facture=$entityManager->getRepository(Facture::class)->find(51);
+           $ticket=$entityManager->getRepository(Ticket::class)->find(50);
+           $event=$ticket->getPrix()->getEvent();
+           $priceEvent=$ticket->getPrix();
        }
 
         $html = $this->renderView('mail/event/event_payment_succeeded.html.twig', [
@@ -240,6 +246,10 @@ class EventController extends AbstractController
         return $this->render('event/payment-succeeded.html.twig', [
             'receipt_url' => $charge ? $charge->receipt_url : null,
             'invoice_pdf' => $invoice ? $invoice->invoice_pdf : null,
+            'ticket'=>$ticket,
+            'facture'=>$facture,
+            'event'=>$event,
+            'priceEvent'=>$priceEvent,
         ]);
     }
     /**
