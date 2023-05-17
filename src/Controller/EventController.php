@@ -290,7 +290,7 @@ class EventController extends BaseController
 
            $facture = new Facture();
            $facture->setTicket($ticket);
-           $facture->setStatus("payéé");
+           $facture->setStatus("payée");
            $facture->setCreatedAt(new \DateTime());
            $facture->setCode($charge->receipt_url);
            $entityManager->persist($ticket);

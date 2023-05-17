@@ -18829,7 +18829,7 @@ div#small-dialog iframe {
 .navbar .navbar-brand {
   margin: 0;
   padding: 0;
-  font-size: 32px;
+  font-size: 23px;
   font-weight: bold;
   color: #fff;
 }
@@ -20827,4 +20827,8 @@ ul.rating-list li a.review-color {
 .text-login h4, .text-login p{
     color: var(--heading-color) !important;
 }
+.profile-name{
+    color:var(--heading-color) !important;
+}
+
  /*login style*/
