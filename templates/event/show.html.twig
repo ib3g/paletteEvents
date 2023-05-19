@@ -368,15 +368,18 @@
                 </div>
             {% endif %}
             <div class="row mt-4">
+                <div class="offset-md-2 col-md-8 col-12 p-3">
                 {% if event.comments is not empty  %}
                 <h5 class=" text-danger mb-3 ">Derniers commentaires</h5>
-                {% endif %}
-                {% for comment in event.comments %}
+
+                    <div style="border:1px solid darkred">
+                    {% for comment in event.comments %}
                     {% if not comment.deletedAt %}
-                        <div class="coment-bottom bg-white p-1 px-4">
+                        <div class="coment-bottom bg-white p-1 px-4" >
                             <div class="commented-section">
                                 <div class="d-flex flex-row align-items-center commented-user">
                                     <h5 class="mr-5">{{ comment.user.fullName }}</h5>
+                                    {% set time = '' %}
                                     {% set today ='now'|date('Y-m-d H:i:s')  %}
                                     {% set difference = date(comment.createdAt|date('Y-m-d H:i:s')).diff(date(today)) %}
                                     {% if difference.days > 0 %}
@@ -409,7 +412,7 @@
                                         {% endif %}
                                     </span>
                                     </div>
-                                    <small class="ml-4 mb-1 ml-2" style="margin-left: 1.5%;position: absolute;right: 19%;">{{ time }}</small>
+                                    <small class="ml-4 mb-1 ml-2 time-date">{{ time }}</small>
                                 </div>
                                 <div class=" comment-text-sm" style="margin: 1%"><span>{{ comment.message }}</span>  </div>
                                 {% if not loop.last %}<hr>{% endif %}
@@ -417,6 +420,9 @@
                         </div>
                     {% endif %}
                 {% endfor %}
+                    </div>
+                {% endif %}
+                </div>
             </div>
         </div>
     </section>

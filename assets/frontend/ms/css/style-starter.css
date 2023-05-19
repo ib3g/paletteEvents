@@ -20836,6 +20836,11 @@ ul.rating-list li a.review-color {
   font-size: 14px;
   margin-left: 1%;
 }
+.time-date{
+  margin-left: 1.5%;
+  position: absolute;
+  right: 36%;
+}
 @media only screen and (max-width: 768px) {
   .ticket {
     width: 100% !important;
@@ -20854,6 +20859,10 @@ ul.rating-list li a.review-color {
   .btn-after-pay{
     width: 40% !important;
     padding: 1%;
+  }
+  .time-date{
+    right: 11%!important;
+    margin-top: 30%;
   }
 }
 
