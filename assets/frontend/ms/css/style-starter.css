@@ -20830,5 +20830,31 @@ ul.rating-list li a.review-color {
 .profile-name{
     color:var(--heading-color) !important;
 }
+.btn-after-pay{
+  width: 10%;
+   padding: 0.5%;
+  font-size: 14px;
+  margin-left: 1%;
+}
+@media only screen and (max-width: 768px) {
+  .ticket {
+    width: 100% !important;
+    margin: 1% !important;
+    display: block !important;
+  }
+  .success-paiment{
+    margin-top: 32% !important;
+  }
+  .d-ticket{
+    height: auto !important;
+  }
+  .ticket .left{
+    display: block;
+  }
+  .btn-after-pay{
+    width: 40% !important;
+    padding: 1%;
+  }
+}
 
  /*login style*/
