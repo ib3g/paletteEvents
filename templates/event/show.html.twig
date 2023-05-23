@@ -26,6 +26,34 @@
                 </ul>
             </div>
         </div>
+        <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-12 "><h5 class="text-danger text-countdown" style="font-style: italic;line-height: 30px">Compter chaque seconde <br> Jusqu'à l'événement</h5></div>
+            <div class="col-12 col-md-6 ">
+            <div class="countdown-date mt-5">
+                <div class="date mt-5 text-danger">
+                    <div class="bloc-date">
+                        <p class="bg-danger" id="days" data-date="{{ event.dateEvent|date('Y-m-d') }}" data-event="{{ event.id }}"></p>
+                        <br> <small id="daysText"></small>
+                    </div>
+                    <div class="bloc-date">
+                        <p class="bg-danger" id="hours"></p>
+                        <br> <small  id="hoursText"></small>
+                    </div>
+                    <div class="bloc-date">
+                        <p class="bg-danger" id="mins"></p>
+                        <br><small  id="minsText"></small>
+                    </div>
+                    <div class="bloc-date">
+                        <p class="bg-danger" id="secs"></p>
+                        <br><small  id="secsText"></small>
+                    </div>
+                    <h2 id="end"></h2>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
     </section>
     <!-- //inner banner -->
 
@@ -516,4 +544,48 @@
     <!-- //button with content section -->
 
 
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        var days=document.getElementById("days")
+        var countDownDate=days.getAttribute('data-date')
+            // Run myfunc every second
+            var timer = setInterval(function() {
+                var now = new Date();
+                var date = new Date(countDownDate).getTime();
+                var timeleft = date - now;
+
+                // Calculating the days, hours, minutes and seconds left
+                var days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
+
+                // Result is output to the specific element
+                document.getElementById("days").innerHTML = days
+                document.getElementById("daysText").innerHTML ="Days"
+                document.getElementById("hours").innerHTML = hours
+                document.getElementById("hoursText").innerHTML ="Hrs"
+                document.getElementById("mins").innerHTML = minutes
+                document.getElementById("minsText").innerHTML ="Mins"
+                document.getElementById("secs").innerHTML = seconds
+                document.getElementById("secsText").innerHTML ="Secs"
+
+                // Display the message when countdown is over
+                if (timeleft < 0) {
+                    clearInterval(myfunc);
+                    document.getElementById("days").innerHTML = ""
+                    document.getElementById("daysText").innerHTML =""
+                    document.getElementById("hours").innerHTML = ""
+                    document.getElementById("hoursText").innerHTML =""
+                    document.getElementById("mins").innerHTML = ""
+                    document.getElementById("minsText").innerHTML =""
+                    document.getElementById("secs").innerHTML = ""
+                    document.getElementById("secsText").innerHTML =""
+                    document.getElementById("end").innerHTML = "TIME UP!!";
+                    document.getElementById("end").addclass = "bg-danger p-2 mr-1";
+                }
+            }, 1000);
+    </script>
 {% endblock %}
