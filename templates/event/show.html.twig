@@ -374,10 +374,10 @@
         <div class="container py-lg-5 py-md-4 py-2">
             {% if app.user %}
                 <div class="row share-btn">
-                    <div class="offset-md-3 col-md-6 col-12 p-3" style="border:1px solid darkred">
+                    <div class="offset-md-2 col-md-8 col-12 p-3" style="border:1px solid #efefef">
                         <h6 class="mb-3 mt-2">Que pensez vous de cet event ?</h6>
                         <form action="{{ path('add-comment') }}" method="post">
-                            <div class="form-group">
+                            <div class="form-group" style="padding: 3%;">
                                 <label for="exampleFormControlTextarea1">Votre note</label>
                                 <select class="form-select form-select-lg mb-3"  name="note">
                                     <option value="1">1</option>
@@ -400,7 +400,7 @@
                 {% if event.comments is not empty  %}
                 <h5 class=" text-danger mb-3 ">Derniers commentaires</h5>
 
-                    <div style="border:1px solid darkred">
+                    <div style="border:1px solid #efefef;padding: 3%;" >
                     {% for comment in event.comments %}
                     {% if not comment.deletedAt %}
                         <div class="coment-bottom bg-white p-1 px-4" >
