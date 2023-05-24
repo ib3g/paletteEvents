@@ -47,8 +47,11 @@
                         <a class="nav-link" href="{{ path('events_index') }}">Events</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('contact') }}">Contact</a>
+                        <a class="nav-link" href="{{ path('event.calendar') }}">Calendrier</a>
                     </li>
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="{{ path('contact') }}">Contact</a>#}
+{#                    </li>#}
                 </ul>
                 <form action="{{ path('search.event') }}" method="POST" class="d-flex search-header ms-lg-2">
                     <input class="form-control" type="search" placeholder="Chercher un Event..." aria-label="Search" name="search"
