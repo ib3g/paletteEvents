@@ -111,78 +111,10 @@
     </section>
     <!-- //about section -->
 
-    <!-- timeline -->
-    <section class="w3l-timeline-1 py-5" id="timeline">
-        <div class="timeline">
-            <div class="container py-lg-5 py-md-4 py-2">
-                <ul class="timeline">
-                    <li class="timeline-item">
-                        <figure class="timeline-icon">
-                            <span></span>
-                        </figure>
-                        <div class="dir-r radius-3">
-                            <p> We Founded the Melody Music School After Gathering a Team of Professional Music Teachers
-                            </p>
-                        </div>
-                        <div class="date-l">
-                            January 1995</div>
-                    </li>
-                    <li class="timeline-item">
-                        <figure class="timeline-icon">
-                        </figure>
-                        <div class="dir-l radius-3">
-                            <img src="assets/images/about1.jpg" class="img-fluid radius-image" alt="">
-                        </div>
-                        <div class="date-r">
-                            March 2004</div>
-                    </li>
-                    <li class="timeline-item">
-                        <figure class="timeline-icon">
-                            <span></span>
-                        </figure>
-                        <div class="dir-r radius-3">
-
-                            <p>Introduction of a New Course: DJ and Beatmaking; Organizing First Public Events</p>
-                        </div>
-                        <div class="date-l">
-                            April 2010</div>
-                    </li>
-                    <li class="timeline-item">
-                        <figure class="timeline-icon">
-                            <span></span>
-                        </figure>
-                        <div class="dir-l radius-3">
-                            <div class="timeline_video">
-                                <iframe src="https://www.youtube.com/embed/gzjasvooSG8"
-                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                        allowfullscreen></iframe>
-                            </div>
-                        </div>
-                        <div class="date-r">
-                            July 2016</div>
-                    </li>
-                    <li class="timeline-item">
-                        <figure class="timeline-icon">
-                            <span></span>
-                        </figure>
-                        <div class="dir-r radius-3 mb-0">
-
-                            <p class="font-italic">Getting Nationally Recognized: Our First Awards from US Music
-                                Teachers Committee</p>
-                        </div>
-                        <div class="date-l">
-                            May 2021</div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </section>
-    <!-- //timeline -->
-
     <!-- team section -->
     {% set animators=event.animators.values %}
     {% if animators %}
-        <div class="team-area pt-5" id="team">
+        <div class="team-area pt-1" id="team">
             <div class="container py-md-5 py-md-4 py-2">
                 <h3 class="title-style text-capitalize text-center">Nos  <span>Animateurs</span>
                 </h3>
@@ -366,15 +298,29 @@
         <div class="container py-lg-5 py-md-4 py-2">
             <div class="row share-btn">
                 <div class="offset-md-3 col-md-3 col-4"><h5 class="">Partager l'évenement</h5></div>
-                <div class="col-md-1 col-2 text-center"> <a href="https://facebook.com/sharer/sharer.php?u={{app.request.uri}}" target="_blank"><i class="fab fa-facebook-f"></i></a></div>
-                <div class="col-md-1 col-2 text-left"> <a href="https://twitter.com/share?text={{event.title}}&url={{app.request.uri}}" target="_blank"><i class="fab fa-twitter"></i></a></div>
-                <div class="col-md-1 col-2 text-left"> <a href="whatsapp://send?text={{ app.request.uri }}" data-action="share/whatsapp/share" target="_blank"><i class="fab fa-whatsapp"></i></a></div>
+                <div class="col-md-1 col-2 text-center">
+                    <a href="https://facebook.com/sharer/sharer.php?u={{app.request.uri}}" target="_blank">
+                        <img src="{{  asset("build/images/facebook.png")  }}"  width="40" height="40">
+                    </a>
+                </div>
+                <div class="col-md-1 col-2 text-center">
+                    <a href="https://twitter.com/share?text={{event.title}}&url={{app.request.uri}}" target="_blank">
+                        <img src="{{  asset("build/images/twitter.png")  }}"  width="40" height="40">
+                    </a>
+                </div>
+                <div class="col-md-1 col-2 text-center">
+                    <a href="whatsapp://send?text={{ app.request.uri }}" data-action="share/whatsapp/share" target="_blank">
+                        <img src="{{  asset("build/images/whattsap.png")  }}" width="40" height="40">
+                    </a>
+                </div>
             </div>
         </div>
-        <div class="container py-lg-5 py-md-4 py-2">
+    </section>
+    <section class="pricing-w3l py-5" id="avis-comment">
+        <div class="container py-lg-5 py-md-4 py-2" >
             {% if app.user %}
                 <div class="row share-btn">
-                    <div class="offset-md-2 col-md-8 col-12 p-3" style="border:1px solid #efefef">
+                    <div class="offset-md-2 col-md-8 col-12 p-3" style="border:1px solid #efefef;background: #fbfbfb">
                         <h6 class="mb-3 mt-2">Que pensez vous de cet event ?</h6>
                         <form action="{{ path('add-comment') }}" method="post">
                             <div class="form-group" style="padding: 3%;">
@@ -397,64 +343,63 @@
             {% endif %}
             <div class="row mt-4">
                 <div class="offset-md-2 col-md-8 col-12 p-3">
-                {% if event.comments is not empty  %}
-                <h5 class=" text-danger mb-3 ">Derniers commentaires</h5>
+                    {% if event.comments is not empty  %}
+                        <h5 class=" text-danger mb-3 ">Derniers commentaires</h5>
 
-                    <div style="border:1px solid #efefef;padding: 3%;" >
-                    {% for comment in event.comments %}
-                    {% if not comment.deletedAt %}
-                        <div class="coment-bottom bg-white p-1 px-4" >
-                            <div class="commented-section">
-                                <div class="d-flex flex-row align-items-center commented-user">
-                                    <h5 class="mr-5">{{ comment.user.fullName }}</h5>
-                                    {% set time = '' %}
-                                    {% set today ='now'|date('Y-m-d H:i:s')  %}
-                                    {% set difference = date(comment.createdAt|date('Y-m-d H:i:s')).diff(date(today)) %}
-                                    {% if difference.days > 0 %}
-                                        {% set time = difference.days ~ ' days ago' %}
-                                    {% elseif difference.h > 0 %}
-                                        {% set time = difference.h ~ ' hours ago' %}
-                                    {% elseif difference.i > 0 %}
-                                        {% set time = difference.i ~ ' minutes ago' %}
-                                    {% elseif difference.s > 0 %}
-                                        {% set time = difference.s ~ ' seconds ago' %}
-                                    {% endif %}
-                                    {% set note = comment.note %}
-                                    <div class="comment-text-sm" style="margin: 1%;float: right">
-                                    <span>
-                                        {% if note==0 %}
-                                            {% for i in 1..5 %}
-                                                <i class="fas fa-star" style="color: #E6E7E8"></i>
-                                            {% endfor %}
-                                        {% elseif note==5 %}
-                                            {% for i in 1..5 %}
-                                                <i class="fas fa-star" style="color: #F2C037"></i>
-                                            {% endfor %}
-                                        {% else %}
-                                            {% for i in 1..note %}
-                                                <i class="fas fa-star" style="color: #F2C037"></i>
-                                            {% endfor %}
-                                        {% for i in 1..(5-note) %}
-                                                <i class="fas fa-star" style="color: #E6E7E8"></i>
-                                            {% endfor %}
-                                        {% endif %}
-                                    </span>
+                        <div style="border:1px solid #efefef;padding: 3%;background: #fbfbfb;" >
+                            {% for comment in event.comments %}
+                                {% if not comment.deletedAt %}
+                                    <div class="coment-bottom p-1 px-4" style="background: #fbfbfb;" >
+                                        <div class="commented-section">
+                                            <div class="d-flex flex-row align-items-center commented-user">
+                                                <h5 class="mr-5">{{ comment.user.fullName }}</h5>
+                                                {% set time = '' %}
+                                                {% set today ='now'|date('Y-m-d H:i:s')  %}
+                                                {% set difference = date(comment.createdAt|date('Y-m-d H:i:s')).diff(date(today)) %}
+                                                {% if difference.days > 0 %}
+                                                    {% set time = difference.days ~ ' days ago' %}
+                                                {% elseif difference.h > 0 %}
+                                                    {% set time = difference.h ~ ' hours ago' %}
+                                                {% elseif difference.i > 0 %}
+                                                    {% set time = difference.i ~ ' minutes ago' %}
+                                                {% elseif difference.s > 0 %}
+                                                    {% set time = difference.s ~ ' seconds ago' %}
+                                                {% endif %}
+                                                {% set note = comment.note %}
+                                                <div class="comment-text-sm" style="margin: 1%;float: right">
+                                        <span>
+                                            {% if note==0 %}
+                                                {% for i in 1..5 %}
+                                                    <i class="fas fa-star" style="color: #E6E7E8"></i>
+                                                {% endfor %}
+                                            {% elseif note==5 %}
+                                                {% for i in 1..5 %}
+                                                    <i class="fas fa-star" style="color: #F2C037"></i>
+                                                {% endfor %}
+                                            {% else %}
+                                                {% for i in 1..note %}
+                                                    <i class="fas fa-star" style="color: #F2C037"></i>
+                                                {% endfor %}
+                                            {% for i in 1..(5-note) %}
+                                                    <i class="fas fa-star" style="color: #E6E7E8"></i>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </span>
+                                                </div>
+                                                <small class="ml-4 mb-1 ml-2 time-date">{{ time }}</small>
+                                            </div>
+                                            <div class=" comment-text-sm" style="margin: 1%"><span>{{ comment.message }}</span>  </div>
+                                            {% if not loop.last %}<hr>{% endif %}
+                                        </div>
                                     </div>
-                                    <small class="ml-4 mb-1 ml-2 time-date">{{ time }}</small>
-                                </div>
-                                <div class=" comment-text-sm" style="margin: 1%"><span>{{ comment.message }}</span>  </div>
-                                {% if not loop.last %}<hr>{% endif %}
-                            </div>
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     {% endif %}
-                {% endfor %}
-                    </div>
-                {% endif %}
                 </div>
             </div>
         </div>
     </section>
-
     <!--  events Same Owner -->
     {% if eventsSameOwner  %}
         <div class="team-area pt-5" id="eventsSameOwner">
@@ -521,7 +466,7 @@
     {% endif %}
 
     <!-- button with content section -->
-    <section class="w3l-button-sec py-5">
+    <section class="w3l-button-sec py-5" id="newsletter">
         <div class="container py-5">
             <div class="w3-midhny-sec p-5">
                 <div class="row align-items-center p-md-4">
