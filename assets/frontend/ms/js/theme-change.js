@@ -21,6 +21,7 @@ function switchTheme(e) {
 
 toggleSwitch.addEventListener('change', switchTheme, false);
 $('.paiment-btn').click(function(){
+
     var route = $(this).data('endpoint');
     var type = $(this).data('type');
     var event = $(this).data('event');

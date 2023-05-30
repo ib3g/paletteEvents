@@ -1,15 +1,21 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-
         <div class="container-fluid text-center py-5 success-paiment" style="margin-top: 10%;margin-bottom: 3%">
         <div class="row">
         <div class="col-12">
             <h3>Merci pour votre achat ! Veuillez vérifier votre boite mail.</h3>
-
+            <div class="row text-center mt-5 ml-auto">
+                <div class="m-auto col-12">
+                    <a target="_blank" href="{{ receipt_url }}" class="btn btn-style btn-style-3 bg-transparent btn-after-pay text-danger" >Voir mon reçu</a>
+                    <a href="{{ path('events_index') }}" class="btn btn-style btn-style-3 bg-transparent text-dark btn-after-pay" >Retour aux Events</a>
+                </div>
+            </div>
             <h5 class="mt-5 mb-3 text-center">Aperçu de votre Ticket</h5>
 
 {#            TICKET#}
+            <div class="row">
+            <div class="col-12">
             <div class="d-ticket">
             <div class="ticket">
                 <div class="left">
@@ -72,16 +78,10 @@
                 </div>
             </div>
             </div>
-{#            TICKET#}
-            <div class="row text-center mt-5 ml-auto">
-                <div class="m-auto">
-                        <a target="_blank" href="{{ receipt_url }}" class="btn btn-black mr-3">Voir mon reçu</a>
-                    <a href="{{ path('events_index') }}" class="btn abonne-btn">Retour aux Events</a>
-                </div>
             </div>
+            </div>
+{#            TICKET#}
         </div>
         </div>
         </div>
-
-
 {% endblock %}

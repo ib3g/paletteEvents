@@ -32,6 +32,7 @@ class EventType extends AbstractType
             ])
             ->add('description',CKEditorType::class, [
                 'label' => 'Description complète de l\'événement',
+                'attr' => ['class' => "d-block w-100"],
                 'required' => true,
             ])
             ->add('dateEvent', DateType::class, [

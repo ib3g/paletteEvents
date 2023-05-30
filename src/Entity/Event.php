@@ -70,6 +70,9 @@ class Event
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $stripe_event_id;
+
+    #[ORM\OneToMany(mappedBy: 'event', targetEntity: Comment::class)]
+    private Collection $comments;
     public function __construct()
     {
         $this->demandes = new ArrayCollection();
@@ -79,6 +82,7 @@ class Event
         $this->medias = new ArrayCollection();
         $this->prix = new ArrayCollection();
         $this->status = self::STATUS_DRAFT;
+        $this->comments = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -369,6 +373,36 @@ class Event
     public function setStripeEventId($stripe_event_id): void
     {
         $this->stripe_event_id = $stripe_event_id;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getEvent() === $this) {
+                $comment->setEvent(null);
+            }
+        }
+
+        return $this;
     }
 
 }

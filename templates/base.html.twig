@@ -47,8 +47,11 @@
                         <a class="nav-link" href="{{ path('events_index') }}">Events</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('contact') }}">Contact</a>
+                        <a class="nav-link" href="{{ path('event.calendar') }}">Calendrier</a>
                     </li>
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href="{{ path('contact') }}">Contact</a>#}
+{#                    </li>#}
                 </ul>
                 <form action="{{ path('search.event') }}" method="POST" class="d-flex search-header ms-lg-2">
                     <input class="form-control" type="search" placeholder="Chercher un Event..." aria-label="Search" name="search"
@@ -96,18 +99,6 @@
                 <div class="col-lg-4 sub-one-left pe-lg-5">
                     <h6>About </h6>
                     <p class="footer-phny"><b>PaletteEvents</b> est un outil de planification d'événements qui permet de créer, de partager et de promouvoir des événements .</p>
-                    <div class="columns-2 mt-lg-5 mt-4">
-                        <ul class="social">
-                            <li><a href="#facebook"><span class="fab fa-facebook-f"></span></a>
-                            </li>
-                            <li><a href="#linkedin"><span class="fab fa-linkedin-in"></span></a>
-                            </li>
-                            <li><a href="#twitter"><span class="fab fa-twitter"></span></a>
-                            </li>
-                            <li><a href="#google"><span class="fab fa-google-plus-g"></span></a>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
                 <div class="col-lg-4 col-6 sub-two-right text-center mt-lg-0 mt-5">
                     <h6>Links</h6>
@@ -119,12 +110,15 @@
                     </ul>
                 </div>
                 <div class="col-lg-4 col-6 sub-two-right text-center mt-lg-0 mt-5">
-                    <h6>Explore</h6>
-                    <ul>
-                        <li><a href="#support">Support</a></li>
-                        <li><a href="#privacypolicy">Privacy policy</a></li>
-                        <li><a href="#offers">Offers</a></li>
-                        <li><a href="#career">Careers</a></li>
+                    <ul class="social ">
+                        <li><a href="#facebook" class="text-white"><span class="fab fa-facebook-f"></span></a>
+                        </li>
+                        <li><a href="#linkedin" class="text-white"><span class="fab fa-linkedin-in"></span></a>
+                        </li>
+                        <li><a href="#twitter" class="text-white"><span class="fab fa-twitter"></span></a>
+                        </li>
+                        <li><a href="#google" class="text-white"><span class="fab fa-google-plus-g"></span></a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -142,13 +136,13 @@
     <span class="fas fa-level-up-alt" aria-hidden="true"></span>
 </button>
 <script src="https://js.stripe.com/v3/"></script>
+<script type="application/javascript" src="{{ asset('build/frontend/ms/js/ms.js') }}"></script>
 <script type="application/javascript" src="{{ asset('build/js/jquery.min.js') }}"></script>
 <script type="application/javascript" src="{{ asset('build/js/bootstrap.bundle.min.js') }}"></script>
 <script type="application/javascript" src="{{ asset('build/js/all.min.js') }}"></script>
 <script type="application/javascript" src="{{ asset('build/js/datepicker/datepicker.min.js') }}"></script>
 <script type="application/javascript" src="{{ asset('build/js/selects/selects.min.js') }}"></script>
 <script type="application/javascript" src="{{ asset('build/js/echarts/echarts.min.js') }}"></script>
-<script type="application/javascript" src="{{ asset('build/frontend/ms/js/ms.js') }}"></script>
 
 <script>
     // When the user scrolls down 20px from the top of the document, show the button
@@ -310,6 +304,7 @@
 <!-- bootstrap -->
 <!-- //bootstrap -->
 <!-- //Js scripts -->
+{% block javascripts %}{% endblock %}
 </body>
 
 </html>

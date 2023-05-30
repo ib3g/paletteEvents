@@ -26,6 +26,34 @@
                 </ul>
             </div>
         </div>
+        <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-12 "><h5 class="text-danger text-countdown" style="font-style: italic;line-height: 30px">Compter chaque seconde <br> Jusqu'à l'événement</h5></div>
+            <div class="col-12 col-md-6 ">
+            <div class="countdown-date mt-5">
+                <div class="date mt-5 text-danger">
+                    <div class="bloc-date">
+                        <p class="bg-danger" id="days" data-date="{{ event.dateEvent|date('Y-m-d') }}" data-event="{{ event.id }}"></p>
+                        <br> <small id="daysText"></small>
+                    </div>
+                    <div class="bloc-date">
+                        <p class="bg-danger" id="hours"></p>
+                        <br> <small  id="hoursText"></small>
+                    </div>
+                    <div class="bloc-date">
+                        <p class="bg-danger" id="mins"></p>
+                        <br><small  id="minsText"></small>
+                    </div>
+                    <div class="bloc-date">
+                        <p class="bg-danger" id="secs"></p>
+                        <br><small  id="secsText"></small>
+                    </div>
+                    <h2 id="end"></h2>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
     </section>
     <!-- //inner banner -->
 
@@ -37,20 +65,20 @@
                     <h3 class="title-style">Bienvenue à <span>{{ event.title }}</span></h3>
                     <div class="row mt-3">
                         <div class="col-8">
-                         <a href="{{ path('events_same_owner',{"ownerName":event.owner.fullName|lower}) }}">
-                            <h6>Organisé par <b style="color: #f50537">
-                                    {{ event.owner.fullName|upper }}
-                                </b>
-                            </h6>
-                         </a>
+                            <a href="{{ path('events_same_owner',{"ownerName":event.owner.fullName|lower}) }}">
+                                <h6>Organisé par <b style="color: #f50537">
+                                        {{ event.owner.fullName|upper }}
+                                    </b>
+                                </h6>
+                            </a>
                         </div>
                         <div class="col-4 text-right">
                             <h6>  <i class="fas fa-calendar-alt"></i>&nbsp;{{ event.dateEvent|date('d M Y') }}
                         </div>
                     </div>
-                        {% if event.lieu %}
-                            <h6>  <div class="mt-3" style="font-weight: 300"><b>Adresse </b><i>{{ event.lieu }}</i></div></h6>
-                        {% endif %}
+                    {% if event.lieu %}
+                        <h6>  <div class="mt-3" style="font-weight: 300"><b>Adresse </b><i>{{ event.lieu }}</i></div></h6>
+                    {% endif %}
                     {% if event.categories is not empty %}
                         <div class="row">
                             {% for category in event.categories %}
@@ -83,112 +111,44 @@
     </section>
     <!-- //about section -->
 
-    <!-- timeline -->
-    <section class="w3l-timeline-1 py-5" id="timeline">
-        <div class="timeline">
-            <div class="container py-lg-5 py-md-4 py-2">
-                <ul class="timeline">
-                    <li class="timeline-item">
-                        <figure class="timeline-icon">
-                            <span></span>
-                        </figure>
-                        <div class="dir-r radius-3">
-                            <p> We Founded the Melody Music School After Gathering a Team of Professional Music Teachers
-                            </p>
-                        </div>
-                        <div class="date-l">
-                            January 1995</div>
-                    </li>
-                    <li class="timeline-item">
-                        <figure class="timeline-icon">
-                        </figure>
-                        <div class="dir-l radius-3">
-                            <img src="assets/images/about1.jpg" class="img-fluid radius-image" alt="">
-                        </div>
-                        <div class="date-r">
-                            March 2004</div>
-                    </li>
-                    <li class="timeline-item">
-                        <figure class="timeline-icon">
-                            <span></span>
-                        </figure>
-                        <div class="dir-r radius-3">
-
-                            <p>Introduction of a New Course: DJ and Beatmaking; Organizing First Public Events</p>
-                        </div>
-                        <div class="date-l">
-                            April 2010</div>
-                    </li>
-                    <li class="timeline-item">
-                        <figure class="timeline-icon">
-                            <span></span>
-                        </figure>
-                        <div class="dir-l radius-3">
-                            <div class="timeline_video">
-                                <iframe src="https://www.youtube.com/embed/gzjasvooSG8"
-                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                        allowfullscreen></iframe>
-                            </div>
-                        </div>
-                        <div class="date-r">
-                            July 2016</div>
-                    </li>
-                    <li class="timeline-item">
-                        <figure class="timeline-icon">
-                            <span></span>
-                        </figure>
-                        <div class="dir-r radius-3 mb-0">
-
-                            <p class="font-italic">Getting Nationally Recognized: Our First Awards from US Music
-                                Teachers Committee</p>
-                        </div>
-                        <div class="date-l">
-                            May 2021</div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </section>
-    <!-- //timeline -->
-
     <!-- team section -->
     {% set animators=event.animators.values %}
     {% if animators %}
-    <div class="team-area pt-5" id="team">
-        <div class="container py-md-5 py-md-4 py-2">
-            <h3 class="title-style text-capitalize text-center">Nos  <span>Animateurs</span>
-            </h3>
+        <div class="team-area pt-1" id="team">
+            <div class="container py-md-5 py-md-4 py-2">
+                <h3 class="title-style text-capitalize text-center">Nos  <span>Animateurs</span>
+                </h3>
 
-            <div class="row mt-lg-5 mt-4">
-                {% for animator in animators %}
-                <div class="col-lg-4 col-sm-6">
-                    <div class="single-team">
-                        <div class="img-area">
-                            {% set url = "/build/images/placeholder.png" %}
-                            {% if animator.avatar is not empty %}
-                                {% set url = "/uploads/" ~ animator.avatar.realName %}
-                            {% endif %}
-                            <img src="{{ url }}" class="img-fluid img-animator radius-image" alt="">
-                            <div class="social">
-                                <ul class="list-inline">
-                                    <li><a href="#url"><i class="fab fa-facebook-f"></i></a></li>
-                                    <li><a href="#url"><i class="fab fa-twitter"></i></a></li>
-                                    <li><a href="#url"><i class="fab fa-linkedin-in"></i></a></li>
-                                </ul>
+                <div class="row mt-lg-5 mt-4">
+                    {% for animator in animators %}
+                        <div class="col-lg-4 col-sm-6">
+                            <div class="single-team">
+                                <div class="img-area">
+                                    {% set url = "/build/images/placeholder.png" %}
+                                    {% if animator.avatar is not empty %}
+                                        {% set url = "/uploads/" ~ animator.avatar.realName %}
+                                    {% endif %}
+                                    <img src="{{ url }}" class="img-fluid img-animator radius-image" alt="">
+                                    <div class="social">
+                                        <ul class="list-inline">
+                                            <li><a href="#url"><i class="fab fa-facebook-f"></i></a></li>
+                                            <li><a href="#url"><i class="fab fa-twitter"></i></a></li>
+                                            <li><a href="#url"><i class="fab fa-linkedin-in"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="img-text">
+                                    <a href="{{ path('events_same_animator', {'animatorName': animator.fullName}) }}">
+                                        <h4>{{ animator.fullName }}</h4>
+                                        <p>{{ animator.profession }}</p>
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                        <div class="img-text">
-                            <a href="{{ path('events_same_animator', {'animatorName': animator.fullName}) }}">
-                                <h4>{{ animator.fullName }}</h4>
-                                <p>{{ animator.profession }}</p>
-                            </a>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
             </div>
         </div>
-    </div>
     {% endif %}
     <!-- //team section -->
 
@@ -219,19 +179,19 @@
                         {% set class="col-xl-4 col-lg-6 mt-3 cat2 mb-2 img_5" %}
                     {% endif %}
 
-                <div class="grid-item  col-md-6  {{ class }}">
-                    <div class="single-gallery mb-30">
-                        <div class="portfolio-img">
-                            {% set url = "/uploads/" ~ media.realName %}
-                            <img src="{{ url }}" alt="">
-                        </div>
-                        <div class="gallery_hover">
-                            <a  class="popup-image hover_inner">
-                                <i class="ti-plus"></i>
-                            </a>
+                    <div class="grid-item  col-md-6  {{ class }}">
+                        <div class="single-gallery mb-30">
+                            <div class="portfolio-img">
+                                {% set url = "/uploads/" ~ media.realName %}
+                                <img src="{{ url }}" alt="">
+                            </div>
+                            <div class="gallery_hover">
+                                <a  class="popup-image hover_inner">
+                                    <i class="ti-plus"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
                 {% endfor %}
             </div>
         </div>
@@ -239,60 +199,60 @@
     <!--/ gallery -->
     <!-- pricing block -->
 
-<section class="pricing-w3l py-5" id="prices">
-    {% set prices=event.prix.values %}
-    {% if prices %}
-        <div class="container py-lg-5 py-md-4 py-2">
-            <div class="row align-items-center py-2">
-                <div class="col-lg-4">
-                    <h3 class="title-style">Notre <span>Plan</span> Tarifaire</h3>
-                    <p class="mt-3">Aptent taciti sociosqu ad litora
-                        conubia nostra, per inceptos himenaeos. Aenean volutpat elementum ante, id eleifend eros
-                        luctus sit.</p>
-                </div>
-                <div class="col-lg-8 ps-xl-5 mt-lg-0 mt-sm-5 mt-4">
-                    <div class="row">
-                        {% for key,price in prices|sort((a, b) => a.somme <=> b.somme) %}
-                        <div class="col-md-6 {% if key == 1 %}mt-md-0 mt-4{% endif %}">
-                            <div class="box-pricing featured">
-                                <h3 class="text-price">{{ price.type|upper }} <span style="font-weight: 100">Plan</span></h3>
-                                <h4>${{ price.somme }}</h4>
-                                    <ul>
-                                    <li><i class="fas fa-check-circle"></i> <b>{{ price.placeRestantes }}</b> Places Restantes</li>
-                                     {% if 'regular' == price.type %}
-                                         <li class="na">
-                                             <span><i class="fas fa-check-circle"></i> Jazz Basics</span>
-                                         </li>
-                                         <li class="na">
-                                             <span><i class="fas fa-check-circle"></i> Effective Mixing</span>
-                                         </li>
-                                     {% else %}
-                                         <li><i class="fas fa-check-circle"></i> Jazz Basics</li>
-                                         <li>
-                                             <span><i class="fas fa-check-circle"></i> Effective Mixing</span>
-                                         </li>
-                                     {% endif %}
-                                </ul>
-                                {% if price.placeRestantes == price.placeMax %}
-                                    <button class="btn btn-style mt-4" disabled>Guichet Fermé</button>
-                                {% else %}
-                                <button
-                                        data-endpoint="{{ path('event.paiement',{'event':event.id,'type':price.type}) }}"
-                                        data-type="{{ price.type }}"
-                                        data-event="{{ event.id }}"
-                                        data-redirect="{{ path('app_login') }}"
-                                        data-stripe="{{ stripe_public }}"
-                                        class="paiment-btn btn btn-style mt-4"
-                                >Payer</button>
-                                    {% endif %}
-                            </div>
+    <section class="pricing-w3l py-5" id="prices">
+        {% set prices=event.prix.values %}
+        {% if prices %}
+            <div class="container py-lg-5 py-md-4 py-2">
+                <div class="row align-items-center py-2">
+                    <div class="col-lg-4">
+                        <h3 class="title-style">Notre <span>Plan</span> Tarifaire</h3>
+                        <p class="mt-3">Aptent taciti sociosqu ad litora
+                            conubia nostra, per inceptos himenaeos. Aenean volutpat elementum ante, id eleifend eros
+                            luctus sit.</p>
+                    </div>
+                    <div class="col-lg-8 ps-xl-5 mt-lg-0 mt-sm-5 mt-4">
+                        <div class="row">
+                            {% for key,price in prices|sort((a, b) => a.somme <=> b.somme) %}
+                                <div class="col-md-6 {% if key == 1 %}mt-md-0 mt-4{% endif %}">
+                                    <div class="box-pricing featured">
+                                        <h3 class="text-price">{{ price.type|upper }} <span style="font-weight: 100">Plan</span></h3>
+                                        <h4>${{ price.somme }}</h4>
+                                        <ul>
+                                            <li><i class="fas fa-check-circle"></i> <b>{{ price.placeRestantes }}</b> Places Restantes</li>
+                                            {% if 'regular' == price.type %}
+                                                <li class="na">
+                                                    <span><i class="fas fa-check-circle"></i> Jazz Basics</span>
+                                                </li>
+                                                <li class="na">
+                                                    <span><i class="fas fa-check-circle"></i> Effective Mixing</span>
+                                                </li>
+                                            {% else %}
+                                                <li><i class="fas fa-check-circle"></i> Jazz Basics</li>
+                                                <li>
+                                                    <span><i class="fas fa-check-circle"></i> Effective Mixing</span>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                                        {% if price.placeRestantes == price.placeMax %}
+                                            <button class="btn btn-style mt-4" disabled>Guichet Fermé</button>
+                                        {% else %}
+                                            <button
+                                                    data-endpoint="{{ path('event.paiement',{'event':event.id,'type':price.type}) }}"
+                                                    data-type="{{ price.type }}"
+                                                    data-event="{{ event.id }}"
+                                                    data-redirect="{{ path('app_login') }}"
+                                                    data-stripe="{{ stripe_public }}"
+                                                    class="paiment-btn btn btn-style mt-4"
+                                            >Payer</button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
                     </div>
                 </div>
             </div>
-        </div>
-    {% else %}
+        {% else %}
             <div class="container py-lg-5 py-md-4 py-2">
                 <div class="row align-items-center py-2">
                     <div class="col-lg-4">
@@ -334,84 +294,179 @@
                     </div>
                 </div>
             </div>
-    {% endif %}
-    <div class="container py-lg-5 py-md-4 py-2">
-        <div class="row share-btn">
-            <div class="offset-md-3 col-md-3 col-4"><h5 class="">Partager l'évenement</h5></div>
-            <div class="col-md-1 col-2 text-center"> <a href="https://facebook.com/sharer/sharer.php?u={{app.request.uri}}" target="_blank"><i class="fab fa-facebook-f"></i></a></div>
-            <div class="col-md-1 col-2 text-left"> <a href="https://twitter.com/share?text={{event.title}}&url={{app.request.uri}}" target="_blank"><i class="fab fa-twitter"></i></a></div>
-            <div class="col-md-1 col-2 text-left"> <a href="whatsapp://send?text={{ app.request.uri }}" data-action="share/whatsapp/share" target="_blank"><i class="fab fa-whatsapp"></i></a></div>
-        </div>
-        </div>
-    </section>
-
-    <!--  events Same Owner -->
-    {% if eventsSameOwner  %}
-    <div class="team-area pt-5" id="eventsSameOwner">
-        <div class="container py-md-5 py-md-4 py-2">
-            <h3 class="title-style text-capitalize text-center">
-                Plus d'events  <span>du même organisateur</span>
-            </h3>
-
-            <div class="row mt-lg-5 mt-4">
-                {% for evt in eventsSameOwner %}
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="single-team">
-                            <div class="img-area">
-                                {% set url = "/build/images/placeholder.png" %}
-                                {% if evt.medias is not empty %}
-                                    {% set url = "/uploads/" ~ evt.medias.values[0].realName %}
-                                {% endif %}
-                                <a href="{{ path('app_event_show',{"id":evt.id}) }}">
-                                    <img src="{{ url }}" class="img-fluid img-animator radius-image" alt="">
-                                </a>
-                            </div>
-                            <div class="img-text">
-                                <h4><a href="#team">{{ evt.title }}</a></h4>
-                                <p>{{ evt.shortDescription }}</p>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
+        {% endif %}
+        <div class="container py-lg-5 py-md-4 py-2">
+            <div class="row share-btn">
+                <div class="offset-md-3 col-md-3 col-4"><h5 class="">Partager l'évenement</h5></div>
+                <div class="col-md-1 col-2 text-center">
+                    <a href="https://facebook.com/sharer/sharer.php?u={{app.request.uri}}" target="_blank">
+                        <img src="{{  asset("build/images/facebook.png")  }}"  width="40" height="40">
+                    </a>
+                </div>
+                <div class="col-md-1 col-2 text-center">
+                    <a href="https://twitter.com/share?text={{event.title}}&url={{app.request.uri}}" target="_blank">
+                        <img src="{{  asset("build/images/twitter.png")  }}"  width="40" height="40">
+                    </a>
+                </div>
+                <div class="col-md-1 col-2 text-center">
+                    <a href="whatsapp://send?text={{ app.request.uri }}" data-action="share/whatsapp/share" target="_blank">
+                        <img src="{{  asset("build/images/whattsap.png")  }}" width="40" height="40">
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
+    <section class="pricing-w3l py-5" id="avis-comment">
+        <div class="container py-lg-5 py-md-4 py-2" >
+            {% if app.user %}
+                <div class="row share-btn">
+                    <div class="offset-md-2 col-md-8 col-12 p-3" style="border:1px solid #efefef;background: #fbfbfb">
+                        <h6 class="mb-3 mt-2">Que pensez vous de cet event ?</h6>
+                        <form action="{{ path('add-comment') }}" method="post">
+                            <div class="form-group" style="padding: 3%;">
+                                <label for="exampleFormControlTextarea1">Votre note</label>
+                                <select class="form-select form-select-lg mb-3"  name="note">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                                <label>Votre avis<span class="text-danger">*</span> </label>
+                                <textarea class="form-control" id="message" name="message" rows="3" required></textarea>
+                                <input type="hidden" value="{{ event.id }}" name="event_id">
+                                <input type="submit" value="Publier" class="btn btn-danger text-white mt-3" style="float: right">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="row mt-4">
+                <div class="offset-md-2 col-md-8 col-12 p-3">
+                    {% if event.comments is not empty  %}
+                        <h5 class=" text-danger mb-3 ">Derniers commentaires</h5>
+
+                        <div style="border:1px solid #efefef;padding: 3%;background: #fbfbfb;" >
+                            {% for comment in event.comments %}
+                                {% if not comment.deletedAt %}
+                                    <div class="coment-bottom p-1 px-4" style="background: #fbfbfb;" >
+                                        <div class="commented-section">
+                                            <div class="d-flex flex-row align-items-center commented-user">
+                                                <h5 class="mr-5">{{ comment.user.fullName }}</h5>
+                                                {% set time = '' %}
+                                                {% set today ='now'|date('Y-m-d H:i:s')  %}
+                                                {% set difference = date(comment.createdAt|date('Y-m-d H:i:s')).diff(date(today)) %}
+                                                {% if difference.days > 0 %}
+                                                    {% set time = difference.days ~ ' days ago' %}
+                                                {% elseif difference.h > 0 %}
+                                                    {% set time = difference.h ~ ' hours ago' %}
+                                                {% elseif difference.i > 0 %}
+                                                    {% set time = difference.i ~ ' minutes ago' %}
+                                                {% elseif difference.s > 0 %}
+                                                    {% set time = difference.s ~ ' seconds ago' %}
+                                                {% endif %}
+                                                {% set note = comment.note %}
+                                                <div class="comment-text-sm" style="margin: 1%;float: right">
+                                        <span>
+                                            {% if note==0 %}
+                                                {% for i in 1..5 %}
+                                                    <i class="fas fa-star" style="color: #E6E7E8"></i>
+                                                {% endfor %}
+                                            {% elseif note==5 %}
+                                                {% for i in 1..5 %}
+                                                    <i class="fas fa-star" style="color: #F2C037"></i>
+                                                {% endfor %}
+                                            {% else %}
+                                                {% for i in 1..note %}
+                                                    <i class="fas fa-star" style="color: #F2C037"></i>
+                                                {% endfor %}
+                                            {% for i in 1..(5-note) %}
+                                                    <i class="fas fa-star" style="color: #E6E7E8"></i>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </span>
+                                                </div>
+                                                <small class="ml-4 mb-1 ml-2 time-date">{{ time }}</small>
+                                            </div>
+                                            <div class=" comment-text-sm" style="margin: 1%"><span>{{ comment.message }}</span>  </div>
+                                            {% if not loop.last %}<hr>{% endif %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--  events Same Owner -->
+    {% if eventsSameOwner  %}
+        <div class="team-area pt-5" id="eventsSameOwner">
+            <div class="container py-md-5 py-md-4 py-2">
+                <h3 class="title-style text-capitalize text-center">
+                    Plus d'events  <span>du même organisateur</span>
+                </h3>
+
+                <div class="row mt-lg-5 mt-4">
+                    {% for evt in eventsSameOwner %}
+                        <div class="col-lg-4 col-sm-6">
+                            <div class="single-team">
+                                <div class="img-area">
+                                    {% set url = "/build/images/placeholder.png" %}
+                                    {% if evt.medias is not empty %}
+                                        {% set url = "/uploads/" ~ evt.medias.values[0].realName %}
+                                    {% endif %}
+                                    <a href="{{ path('app_event_show',{"id":evt.id}) }}">
+                                        <img src="{{ url }}" class="img-fluid img-animator radius-image" alt="">
+                                    </a>
+                                </div>
+                                <div class="img-text">
+                                    <h4><a href="#team">{{ evt.title }}</a></h4>
+                                    <p>{{ evt.shortDescription }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     {% endif %}
 
     <!-- events similaires -->
     {% if moreEvents %}
-    <div class="team-area pt-5" id="moreEvents">
-        <div class="container py-md-5 py-md-4 py-2">
-            <h3 class="title-style text-capitalize text-center">Autres Events   <span>que vous pourriez aimer</span>
-            </h3>
+        <div class="team-area pt-5" id="moreEvents">
+            <div class="container py-md-5 py-md-4 py-2">
+                <h3 class="title-style text-capitalize text-center">Autres Events   <span>que vous pourriez aimer</span>
+                </h3>
 
-            <div class="row mt-lg-5 mt-4">
-                {% for evt in moreEvents %}
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="single-team">
-                            <div class="img-area">
-                                {% set url = "/build/images/placeholder.png" %}
-                                {% if evt.medias is not empty %}
-                                    {% set url = "/uploads/" ~ evt.medias.values[0].realName %}
-                                {% endif %}
-                                <a href="{{ path('app_event_show',{"id":evt.id}) }}">
-                                   <img src="{{ url }}" class="img-fluid img-animator radius-image" alt="">
-                                </a>
-                            </div>
-                            <div class="img-text">
-                                <h4><a href="#team">{{ evt.title }}</a></h4>
-                                <p>{{ evt.shortDescription }}</p>
+                <div class="row mt-lg-5 mt-4">
+                    {% for evt in moreEvents %}
+                        <div class="col-lg-4 col-sm-6">
+                            <div class="single-team">
+                                <div class="img-area">
+                                    {% set url = "/build/images/placeholder.png" %}
+                                    {% if evt.medias is not empty %}
+                                        {% set url = "/uploads/" ~ evt.medias.values[0].realName %}
+                                    {% endif %}
+                                    <a href="{{ path('app_event_show',{"id":evt.id}) }}">
+                                        <img src="{{ url }}" class="img-fluid img-animator radius-image" alt="">
+                                    </a>
+                                </div>
+                                <div class="img-text">
+                                    <h4><a href="#team">{{ evt.title }}</a></h4>
+                                    <p>{{ evt.shortDescription }}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
-    </div>
     {% endif %}
 
     <!-- button with content section -->
-    <section class="w3l-button-sec py-5">
+    <section class="w3l-button-sec py-5" id="newsletter">
         <div class="container py-5">
             <div class="w3-midhny-sec p-5">
                 <div class="row align-items-center p-md-4">
@@ -434,4 +489,48 @@
     <!-- //button with content section -->
 
 
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        var days=document.getElementById("days")
+        var countDownDate=days.getAttribute('data-date')
+            // Run myfunc every second
+            var timer = setInterval(function() {
+                var now = new Date();
+                var date = new Date(countDownDate).getTime();
+                var timeleft = date - now;
+
+                // Calculating the days, hours, minutes and seconds left
+                var days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
+
+                // Result is output to the specific element
+                document.getElementById("days").innerHTML = days
+                document.getElementById("daysText").innerHTML ="Days"
+                document.getElementById("hours").innerHTML = hours
+                document.getElementById("hoursText").innerHTML ="Hrs"
+                document.getElementById("mins").innerHTML = minutes
+                document.getElementById("minsText").innerHTML ="Mins"
+                document.getElementById("secs").innerHTML = seconds
+                document.getElementById("secsText").innerHTML ="Secs"
+
+                // Display the message when countdown is over
+                if (timeleft < 0) {
+                    clearInterval(myfunc);
+                    document.getElementById("days").innerHTML = ""
+                    document.getElementById("daysText").innerHTML =""
+                    document.getElementById("hours").innerHTML = ""
+                    document.getElementById("hoursText").innerHTML =""
+                    document.getElementById("mins").innerHTML = ""
+                    document.getElementById("minsText").innerHTML =""
+                    document.getElementById("secs").innerHTML = ""
+                    document.getElementById("secsText").innerHTML =""
+                    document.getElementById("end").innerHTML = "TIME UP!!";
+                    document.getElementById("end").addclass = "bg-danger p-2 mr-1";
+                }
+            }, 1000);
+    </script>
 {% endblock %}

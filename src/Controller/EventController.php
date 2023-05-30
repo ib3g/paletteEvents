@@ -290,7 +290,7 @@ class EventController extends BaseController
 
            $facture = new Facture();
            $facture->setTicket($ticket);
-           $facture->setStatus("payéé");
+           $facture->setStatus("payée");
            $facture->setCreatedAt(new \DateTime());
            $facture->setCode($charge->receipt_url);
            $entityManager->persist($ticket);
@@ -339,6 +339,27 @@ class EventController extends BaseController
         return $this->render('event/index.html.twig', [
             'events' => $events,
             'search' => $search,
+        ]);
+    }
+
+    /**
+     * @Route("/event-calendar", name="event.calendar", methods={"GET"})
+     */
+    public function calendar(Request $request,EventRepository $eventRepository): Response
+    {
+        $events = $eventRepository->findAll();
+        $calendar=[];
+        /** @var Event $event */
+        foreach ($events as $event){
+            $calendar[]=[
+                'title'=>$event->getTitle(),
+                'start'=>$event->getDateEvent()->format('Y-m-d'),
+                'url'=>"/event/".$event->getId(),
+            ];
+        }
+        return $this->render('event/calendar.html.twig', [
+            'events' => $events,
+            'calendar' => $calendar,
         ]);
     }
 }
