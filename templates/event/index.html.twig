@@ -112,8 +112,13 @@
                     {% if tagName is defined or categoryName is defined or owner is defined or animator is defined %}
                         <div class="col-12">
                             <div class="text-center">
-                               <i class="black-text"> Nous n'avons rien trouvé,
-                                   Ajustez vos filtres et réessayez</i><br>
+                               <i class="black-text">
+                                   {% if animator %} <b>{{ animator|capitalize }}</b> n'a pas encore animé un événement
+                                   {% else %}
+                                       Nous n'avons rien trouvé, Ajustez vos filtres et réessayez
+                                   {% endif %}
+                               </i>
+                                <br>
                                 <a href="{{ path("events_index") }}" class="btn btn-style mt-lg-5 mt-4">Tous les Events</a>
                             </div>
                         </div>
