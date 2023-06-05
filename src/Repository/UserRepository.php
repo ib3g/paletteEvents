@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Event;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -73,6 +74,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user->setCentreInteret($data->getCentreInteret());
         $user->setRole($role);
         $user->setBirthday($data->getBirthday());
+    }
+
+    public function findByEvent(Event $event) {
+        return $this->createQueryBuilder('u')
+            ->leftJoin('u.tickets', 'tickets')
+            ->leftJoin('tickets.prix', 'prix')
+            ->leftJoin('u.animatedEvents', 'animatedEvents')
+            ->andWhere('prix.event = :event OR animatedEvents.id = :event')
+            ->setParameter('event', $event->getId())
+            ->getQuery()
+            ->getResult();
     }
 
 

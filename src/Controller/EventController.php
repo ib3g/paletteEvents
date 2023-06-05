@@ -6,6 +6,7 @@ use App\Entity\Event;
 use App\Entity\Facture;
 use App\Entity\Role;
 use App\Entity\Ticket;
+use App\Entity\User;
 use App\Form\EventType;
 use App\Manager\CustomMailer;
 use App\Manager\UserManager;
@@ -125,13 +126,29 @@ class EventController extends BaseController
     }
 
     #[Route('/admin/event/{id}/edit', name: 'app_event_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Event $event, EventRepository $eventRepository): Response
+    public function edit(Request $request, Event $event, EventRepository $eventRepository, UserRepository $userRepository): Response
     {
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $eventRepository->save($event, true);
+            $users = $userRepository->findByEvent($event);
+
+            /** @var User $user */
+            foreach ($users as $user) {
+                $url = $this->urlGenerator->generate('app_event_show', ['id' => $event->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
+                $htmlContents = $this->twig->render('mail/event_updated.html.twig', [
+                    'event' => $event,
+                    'url' => $url,
+                    'user' => $user,
+                ]);
+
+                $this->mailer->send("Il y'a du nouveau sur l'évènement : ". $event->getTitle(), $htmlContents, $user->getEmail());
+            }
+
+            $this->addSuccessFlash();
+
 
             return $this->redirectToRoute('admin_events_index', [], Response::HTTP_SEE_OTHER);
         }
