@@ -10,7 +10,7 @@
      {% endif %}
  {% endblock %}
 {% block content %}
-
+    {% set eventPass = event.dateEvent|date('Y-m-d') < 'now'|date('Y-m-d') %}
     <!-- inner banner -->
     {% set url = "/build/images/placeholder.png" %}
     {% if event.medias is not empty %}
@@ -28,11 +28,17 @@
         </div>
         <div class="container">
         <div class="row">
-            <div class="col-md-6 col-12 "><h5 class="text-danger text-countdown" style="font-style: italic;line-height: 30px">Compter chaque seconde <br> Jusqu'à l'événement</h5></div>
+            <div class="col-md-6 col-12 ">
+                <h5 class="text-danger text-countdown {% if not eventPass %}d-none {% endif %}"
+                    id="text-countdown"
+                    style="font-style: italic;line-height: 30px">
+                    {% if eventPass %}Evénement Passé{% else %}Compter chaque seconde <br> Jusqu'à l'événement{% endif %}
+                </h5>
+            </div>
             <div class="col-12 col-md-6 ">
             <div class="countdown-date mt-5">
-                <div class="date mt-5 text-danger">
-                    <div class="bloc-date">
+                <div class="date mt-5 text-danger d-none" id="dateEvent">
+                    <div class="bloc-date" >
                         <p class="bg-danger" id="days" data-date="{{ event.dateEvent|date('Y-m-d') }}" data-event="{{ event.id }}"></p>
                         <br> <small id="daysText"></small>
                     </div>
@@ -206,9 +212,7 @@
                 <div class="row align-items-center py-2">
                     <div class="col-lg-4">
                         <h3 class="title-style">Notre <span>Plan</span> Tarifaire</h3>
-                        <p class="mt-3">Aptent taciti sociosqu ad litora
-                            conubia nostra, per inceptos himenaeos. Aenean volutpat elementum ante, id eleifend eros
-                            luctus sit.</p>
+                        <p class="mt-3">Choississez votre plan préféré</p>
                     </div>
                     <div class="col-lg-8 ps-xl-5 mt-lg-0 mt-sm-5 mt-4">
                         <div class="row">
@@ -236,7 +240,7 @@
                                         {% if price.placeRestantes == price.placeMax %}
                                             <button class="btn btn-style mt-4" disabled>Guichet Fermé</button>
                                         {% else %}
-                                            <button
+                                            <button {% if eventPass %} disabled style="opacity: 0.3" {% endif %}
                                                     data-endpoint="{{ path('event.paiement',{'event':event.id,'type':price.type}) }}"
                                                     data-type="{{ price.type }}"
                                                     data-event="{{ event.id }}"
@@ -257,37 +261,34 @@
                 <div class="row align-items-center py-2">
                     <div class="col-lg-4">
                         <h3 class="title-style">Notre <span>Plan</span> Tarifaire</h3>
-                        <p class="mt-3">Aptent taciti sociosqu ad litora
-                            conubia nostra, per inceptos himenaeos. Aenean volutpat elementum ante, id eleifend eros
-                            luctus sit.</p>
+                        <p class="mt-3">Choississez votre plan préféré.</p>
                     </div>
                     <div class="col-lg-8 ps-xl-5 mt-lg-0 mt-sm-5 mt-4">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="box-pricing featured">
-                                    <h3 class="text-price">Standard Plan</h3>
-                                    <h4>$39<span>per month</span></h4>
-                                    <ul>
-                                        <li><i class="fas fa-check-circle"></i> Basic Techniques</li>
-                                        <li><i class="fas fa-check-circle"></i> Types of Music</li>
-                                        <li><i class="fas fa-check-circle"></i> Jazz Basics</li>
-                                        <li class="na"><span><i class="fas fa-check-circle"></i> Effective Mixing</span>
-                                        </li>
-                                    </ul>
-                                    <a href="#pricing" class="btn btn-style mt-4">Choose Plan</a>
-                                </div>
-                            </div>
-                            <div class="col-md-6 mt-md-0 mt-4">
-                                <div class="box-pricing">
-                                    <h3 class="text-price">Extended Plan</h3>
-                                    <h4>$69<span>per month</span></h4>
+                                    <h3 class="text-price">PREMIUM Plan</h3>
+                                    <h4>$39</h4>
                                     <ul>
                                         <li><i class="fas fa-check-circle"></i> Basic Techniques</li>
                                         <li><i class="fas fa-check-circle"></i> Types of Music</li>
                                         <li><i class="fas fa-check-circle"></i> Jazz Basics</li>
                                         <li><i class="fas fa-check-circle"></i> Effective Mixing</li>
                                     </ul>
-                                    <a href="#pricing" class="btn btn-style mt-4">Payer</a>
+                                    <a href="#pricing" class="btn btn-style mt-4"{% if eventPass %} disabled style="opacity: 0.3"{% endif %}>Payer</a>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mt-md-0 mt-4">
+                                <div class="box-pricing">
+                                    <h3 class="text-price">REGULAR Plan</h3>
+                                    <h4>$69</h4>
+                                    <ul>
+                                        <li><i class="fas fa-check-circle"></i> Basic Techniques</li>
+                                        <li><i class="fas fa-check-circle"></i> Types of Music</li>
+                                        <li><i class="fas fa-check-circle"></i> Jazz Basics</li>
+                                        <li class="na"><span><i class="fas fa-check-circle"></i> Effective Mixing</span></li>
+                                    </ul>
+                                    <a href="#pricing" class="btn btn-style mt-4"  {% if eventPass %} disabled style="opacity: 0.3"{% endif %}>Payer</a>
                                 </div>
                             </div>
                         </div>
@@ -495,42 +496,29 @@
     <script>
         var days=document.getElementById("days")
         var countDownDate=days.getAttribute('data-date')
-            // Run myfunc every second
-            var timer = setInterval(function() {
-                var now = new Date();
-                var date = new Date(countDownDate).getTime();
+        var now = new Date();
+        var date = new Date(countDownDate).getTime();
+        var timeleft = date - now;
+            if (timeleft > 0) {
+                document.getElementById("dateEvent").classList.remove("d-none");
+                document.getElementById("text-countdown").classList.remove("d-none");
+            var timer = setInterval(function () {
                 var timeleft = date - now;
-
-                // Calculating the days, hours, minutes and seconds left
                 var days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
                 var hours = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 var minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
                 var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
-
-                // Result is output to the specific element
-                document.getElementById("days").innerHTML = days
-                document.getElementById("daysText").innerHTML ="Days"
-                document.getElementById("hours").innerHTML = hours
-                document.getElementById("hoursText").innerHTML ="Hrs"
-                document.getElementById("mins").innerHTML = minutes
-                document.getElementById("minsText").innerHTML ="Mins"
-                document.getElementById("secs").innerHTML = seconds
-                document.getElementById("secsText").innerHTML ="Secs"
-
-                // Display the message when countdown is over
-                if (timeleft < 0) {
-                    clearInterval(myfunc);
-                    document.getElementById("days").innerHTML = ""
-                    document.getElementById("daysText").innerHTML =""
-                    document.getElementById("hours").innerHTML = ""
-                    document.getElementById("hoursText").innerHTML =""
-                    document.getElementById("mins").innerHTML = ""
-                    document.getElementById("minsText").innerHTML =""
-                    document.getElementById("secs").innerHTML = ""
-                    document.getElementById("secsText").innerHTML =""
-                    document.getElementById("end").innerHTML = "TIME UP!!";
-                    document.getElementById("end").addclass = "bg-danger p-2 mr-1";
+                if (timeleft > 0) {
+                    document.getElementById("days").innerHTML = days
+                    document.getElementById("daysText").innerHTML = "Days"
+                    document.getElementById("hours").innerHTML = hours
+                    document.getElementById("hoursText").innerHTML = "Hrs"
+                    document.getElementById("mins").innerHTML = minutes
+                    document.getElementById("minsText").innerHTML = "Mins"
+                    document.getElementById("secs").innerHTML = seconds
+                    document.getElementById("secsText").innerHTML = "Secs"
                 }
             }, 1000);
+        }
     </script>
 {% endblock %}
