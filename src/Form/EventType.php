@@ -11,6 +11,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -71,6 +72,16 @@ class EventType extends AbstractType
             ])
             ->add('categories')
             ->add('tags')
+            ->add('medias', FileType::class, [
+                'label' => 'Images de l\'événement',
+                'required' => false,
+                'multiple' => true,
+                'mapped' => false,
+                'help' => '<div class="col-12">
+                            <span class="text-info font-size-lg"> L\'image doit être au format JPG ou PNG et ne doit pas dépasser 2Mo</span>
+                           </div>',
+                'help_html' => true
+            ])
         ;
 
         if ($builder->getData()->getId() != null && $builder->getData()->getStatus() != Event::STATUS_DRAFT) {
