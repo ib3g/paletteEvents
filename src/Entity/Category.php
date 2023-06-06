@@ -21,6 +21,9 @@ class Category
     #[ORM\ManyToMany(targetEntity: Event::class, inversedBy: 'categories')]
     private Collection $events;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Media $icon = null;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
@@ -68,6 +71,18 @@ class Category
     public function removeEvent(Event $event): self
     {
         $this->events->removeElement($event);
+
+        return $this;
+    }
+
+    public function getIcon(): ?Media
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(?Media $icon): self
+    {
+        $this->icon = $icon;
 
         return $this;
     }

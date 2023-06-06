@@ -2,17 +2,23 @@
 
 namespace App\Controller;
 
+use App\Entity\Event;
 use App\Entity\Role;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Form\UserType;
+use App\Manager\FileManager;
+use App\Manager\ResettingManager;
+use App\Repository\MediaRepository;
 use App\Repository\TicketRepository;
 use App\Repository\UserRepository;
 use App\Service\StripeService;
+use App\Util\StringUtil;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends BaseController
@@ -21,20 +27,36 @@ class UserController extends BaseController
     public function index(UserRepository $userRepository): Response
     {
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $userRepository->findAllUsers(),
         ]);
     }
 
     #[Route('/admin/users/new', name: 'app_user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, UserRepository $userRepository): Response
+    public function new(Request $request, UserRepository $userRepository,
+                        FileManager $fileManager,
+                        EntityManagerInterface $entityManager,
+                        UserPasswordHasherInterface $userPasswordHasher, ResettingManager $resettingManager): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $userRepository->save($user, true);
 
+            $file = $request->files->get('user')['avatar'];
+            if ($file) {
+                $uploadedFile = $fileManager->uploadFile($file, false);
+                $entityManager->persist($uploadedFile);
+                $user->setAvatar($uploadedFile);
+            }
+
+            $randomPassword = StringUtil::generateRandomString();
+            $user->setPassword($userPasswordHasher->hashPassword($user, $randomPassword));
+
+            $userRepository->save($user, true);
+            $resettingManager->sendJoinLink($user->getEmail());
+
+            $this->addSuccessFlash('L\'utilisateur a bien été créé');
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -53,14 +75,24 @@ class UserController extends BaseController
     }
 
     #[Route('/admin/users/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, User $user, UserRepository $userRepository): Response
+    public function edit(Request $request, User $user, UserRepository $userRepository,
+                         FileManager $fileManager,
+                         EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $file = $request->files->get('user')['avatar'];
+            if ($file) {
+                $uploadedFile = $fileManager->uploadFile($file, false);
+                $entityManager->persist($uploadedFile);
+                $user->setAvatar($uploadedFile);
+            }
             $userRepository->save($user, true);
 
+            $this->addSuccessFlash();
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -119,5 +151,22 @@ class UserController extends BaseController
             'factures' => $factures,
             'demandes' => $demandes,
         ]);
+    }
+
+    #[Route('/admin/users/{id}/media/{mediaId}', name: 'app_user_media_delete', methods: ['GET'])]
+    public function mediaDelete(Request $request, User $user, MediaRepository $mediaRepository, EntityManagerInterface $entityManager): Response
+    {
+        $mediaId = $request->attributes->get('mediaId');
+        $media = $mediaRepository->find($mediaId);
+        if ($media and $user->getAvatar() === $media) {
+            $user->setAvatar(null);
+            $mediaRepository->remove($media);
+            $entityManager->flush();
+            $this->addSuccessFlash();
+            return $this->redirectToRoute('app_user_edit', ['id' => $user->getId()]);
+        }
+
+        $this->addWarningFlash('Vous ne pouvez pas supprimer ce média');
+        return $this->redirectToRoute('app_user_edit', ['id' => $user->getId()], Response::HTTP_SEE_OTHER);
     }
 }

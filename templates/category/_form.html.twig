@@ -1,6 +1,20 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
 
+    {% if category.icon %}
+        <div style="width: fit-content">
+            <p>
+                <strong>Icon actuelle</strong>
+            </p>
+            <div class="d-flex position-relative p-3">
+                <a href="{{ path('app_category_media_delete', {'id': category.id, 'mediaId': category.icon.id}) }}">
+                    <i class="icon-x icon-3x text-danger position-absolute right-0 p-3"></i>
+                </a>
+                <img src="{{ app_file_resolve_url(category.icon) }}" alt="image de l'événement" class="img-thumbnail image-relative p-3 border-0" width="350" height="350">
+            </div>
+        </div>
+    {% endif %}
+
     <a class="btn btn-chellal btn-secondary" href="{{ path('app_category_index') }}">Retour à la liste</a>
     <button type="submit" class="btn btn-chellal btn-paletteEvent">{{ button_label|default('Sauvegarder') }}</button>
 {{ form_end(form) }}
