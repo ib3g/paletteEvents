@@ -38,6 +38,27 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.avatar) }}
+        </div>
+    </div>
+
+
+    {% if user.avatar %}
+        <div style="width: fit-content">
+            <p>
+                <strong>Image actuelle</strong>
+            </p>
+            <div class="d-flex position-relative p-3">
+                <a href="{{ path('app_user_media_delete', {'id': user.id, 'mediaId': user.avatar.id}) }}">
+                    <i class="icon-x icon-3x text-danger position-absolute right-0 p-3"></i>
+                </a>
+                <img src="{{ app_file_resolve_url(user.avatar) }}" alt="image de l'événement" class="img-thumbnail image-relative p-3 border-0" width="350" height="350">
+            </div>
+        </div>
+    {% endif %}
+
     {{ form_row(form._token) }}
 
     <a class="btn btn-chellal btn-secondary" href="{{ path('app_user_index') }}">Retour à la liste</a>

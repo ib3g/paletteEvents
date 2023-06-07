@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -29,6 +30,12 @@ class UserType extends AbstractType
                 'label' => 'Date de  naissance',
                 'widget' => 'single_text',
                 'required' => true,
+            ])
+            ->add('avatar',FileType::class, [
+                'label' => 'Avatar de l\'utilisateur',
+                'required' => false,
+                'multiple' => false,
+                'mapped' => false
             ])
             ->add('profession',TextType::class, [
                 'label' => 'Profession',

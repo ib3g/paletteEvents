@@ -1,6 +1,23 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
 
+    {% if event and event.medias|length %}
+        <div class="d-flex flex-column my-3">
+            <p>
+                Liste des images actuelles
+            </p>
+            <div class="mt-2" style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: start; padding: 0;">
+                {% for media in event.medias %}
+                    <div class="d-flex flex-column position-relative p-3">
+                        <a href="{{ path('app_event_media_delete', {'id': event.id, 'mediaId': media.id}) }}">
+                            <i class="icon-x icon-3x text-danger position-absolute right-0 p-3"></i>
+                        </a>
+                        <img src="{{ app_file_resolve_url(media) }}" alt="image de l'événement" class="img-thumbnail image-relative p-3 border-0" width="350" height="350">
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
     <a class="btn btn-chellal btn-secondary" href="{{ path('admin_events_index') }}">Retour à la liste</a>
     <button type="submit" class="btn btn-chellal btn-paletteEvent">{{ button_label|default('Sauvegarder') }}</button>
 {{ form_end(form) }}

@@ -2,21 +2,27 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Event;
 use App\Entity\Facture;
+use App\Entity\Media;
 use App\Entity\Role;
+use App\Entity\Tag;
 use App\Entity\Ticket;
 use App\Entity\User;
 use App\Form\EventType;
 use App\Manager\CustomMailer;
+use App\Manager\FileManager;
 use App\Manager\UserManager;
 use App\Repository\CategoryRepository;
 use App\Repository\EventRepository;
+use App\Repository\MediaRepository;
 use App\Repository\PrixRepository;
 use App\Repository\TagRepository;
 use App\Repository\UserRepository;
 use App\Service\Mailer;
 use App\Service\StripeService;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,17 +37,15 @@ class EventController extends BaseController
     private CustomMailer $mailer;
     private Environment $twig;
     private UrlGeneratorInterface $urlGenerator;
+    private EntityManagerInterface $entityManager;
 
-    /**
-     * @param CustomMailer $mailer
-     * @param Environment $twig
-     * @param UrlGeneratorInterface $urlGenerator
-     */
-    public function __construct(CustomMailer $mailer, Environment $twig, UrlGeneratorInterface $urlGenerator)
+
+    public function __construct(CustomMailer $mailer, Environment $twig, UrlGeneratorInterface $urlGenerator, EntityManagerInterface $entityManager)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
         $this->urlGenerator = $urlGenerator;
+        $this->entityManager = $entityManager;
     }
 
     #[Route('/admin/event', name: 'admin_events_index', methods: ['GET'])]
@@ -75,7 +79,10 @@ class EventController extends BaseController
     }
 
     #[Route('/admin/event/new', name: 'app_event_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EventRepository $eventRepository): Response
+    public function new(Request $request,
+                        EventRepository $eventRepository,
+                        FileManager $fileManager,
+                        EntityManagerInterface $entityManager): Response
     {
         $event = new Event();
         $form = $this->createForm(EventType::class, $event);
@@ -83,6 +90,22 @@ class EventController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $event->setOwner($this->getUser());
+
+            $files = $request->files->get('event')['medias'];
+            foreach ($files as $file) {
+                $uploadedFile = $fileManager->uploadFile($file, false);
+                $entityManager->persist($uploadedFile);
+                $event->addMedia($uploadedFile);
+            }
+
+            foreach ($event->getCategories() as $category) {
+                $category->addEvent($event);
+            }
+
+            foreach ($event->getTags() as $tag) {
+                $tag->addEvent($event);
+            }
+
             $eventRepository->save($event, true);
 
             $url = $this->urlGenerator->generate('admin_draft_events_index', [], UrlGeneratorInterface::ABSOLUTE_URL);
@@ -126,12 +149,40 @@ class EventController extends BaseController
     }
 
     #[Route('/admin/event/{id}/edit', name: 'app_event_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Event $event, EventRepository $eventRepository, UserRepository $userRepository): Response
+    public function edit(Request $request, Event $event,
+                         EventRepository $eventRepository,
+                         UserRepository $userRepository,
+                         FileManager $fileManager,
+                         EntityManagerInterface $entityManager): Response
     {
+        $oldCategories = [];
+        foreach ($event->getCategories() as $category) {
+            $oldCategories[] = $category;
+        }
+
+        $oldTags = [];
+        foreach ($event->getTags() as $tag) {
+            $oldTags[] = $tag;
+        }
+
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $files = $request->files->get('event')['medias'];
+            foreach ($files as $file) {
+                $uploadedFile = $fileManager->uploadFile($file, false);
+                $entityManager->persist($uploadedFile);
+                $event->addMedia($uploadedFile);
+            }
+
+            $newCategories = $form->getData()->getCategories()->toArray();
+            $newTags = $form->getData()->getTags()->toArray();
+
+            $this->updateCategories($event, $oldCategories, $newCategories);
+            $this->updateTags($event, $oldTags, $newTags);
+
             $eventRepository->save($event, true);
             $users = $userRepository->findByEvent($event);
 
@@ -157,6 +208,49 @@ class EventController extends BaseController
             'event' => $event,
             'form' => $form,
         ]);
+    }
+
+    private function updateCategories(Event $event, $oldCategories, $newCategories) {
+
+        // check witch categories are added
+        /** @var Category $newCategory */
+        foreach ($newCategories as $newCategory) {
+            if (!in_array($newCategory, $oldCategories)) {
+                $newCategory->addEvent($event);
+                $this->entityManager->persist($newCategory);
+            }
+        }
+
+        // check if witch categories are removed
+        /** @var Category $oldCategory */
+        foreach ($oldCategories as $oldCategory) {
+            if (!in_array($oldCategory, $newCategories)) {
+                $oldCategory->removeEvent($event);
+            }
+        }
+
+        return $event;
+    }
+
+    private function updateTags(Event $event, $oldTags, $newTags) {
+        // check witch tags are added
+        /** @var Tag $newTag */
+        foreach ($newTags as $newTag) {
+            if (!in_array($newTag, $oldTags)) {
+                $newTag->addEvent($event);
+                $this->entityManager->persist($newTag);
+            }
+        }
+
+        // check if witch tags are removed
+        /** @var Tag $oldTag */
+        foreach ($oldTags as $oldTag) {
+            if (!in_array($oldTag, $newTags)) {
+                $oldTag->removeEvent($event);
+            }
+        }
+
+        return $event;
     }
 
     #[Route('/admin/event/{id}', name: 'app_event_delete', methods: ['POST'])]
@@ -378,5 +472,24 @@ class EventController extends BaseController
             'events' => $events,
             'calendar' => $calendar,
         ]);
+    }
+
+
+
+    #[Route('/admin/event/{id}/media/{mediaId}', name: 'app_event_media_delete', methods: ['GET'])]
+    public function mediaDelete(Request $request, Event $event, MediaRepository $mediaRepository, EntityManagerInterface $entityManager): Response
+    {
+        if ($event->getOwner() === $this->getUser() || $this->isGranted(Role::ROLE_ADMIN)) {
+            $mediaId = $request->attributes->get('mediaId');
+            $media = $mediaRepository->find($mediaId);
+            if ($media) {
+                $mediaRepository->remove($media);
+                $entityManager->flush();
+                $this->addSuccessFlash();
+                return $this->redirectToRoute('app_event_edit', ['id' => $event->getId()]);
+            }
+        }
+        $this->addWarningFlash('Vous ne pouvez pas supprimer ce média');
+        return $this->redirectToRoute('app_event_edit', ['id' => $event->getId()], Response::HTTP_SEE_OTHER);
     }
 }
