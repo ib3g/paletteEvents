@@ -20925,3 +20925,15 @@ height: 100px;
 .portfolio-img img {
   transition: all 0.4s ease 0s;
 }
+@media (max-width: 750px) {
+  #ex3-tabs-2 {
+    width: 100%;
+    overflow-y: hidden;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+  }#ex3-tabs-2 table {
+     width: 100%;
+   }
+}
+#ex3-tab-1:focus, #ex3-tab-2:focus{
+  color:#0d6efd !important;
+}

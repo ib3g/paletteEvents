@@ -80,6 +80,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class)]
     private Collection $comments;
+
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Contact::class, orphanRemoval: true)]
+    private Collection $contacts;
     public function __construct()
     {
         $this->demandes = new ArrayCollection();
@@ -87,6 +90,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->animatedEvents = new ArrayCollection();
         $this->tickets = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->contacts = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -458,6 +462,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($comment->getUser() === $this) {
                 $comment->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Contact>
+     */
+    public function getContacts(): Collection
+    {
+        return $this->contacts;
+    }
+
+    public function addContact(Contact $contact): self
+    {
+        if (!$this->contacts->contains($contact)) {
+            $this->contacts->add($contact);
+            $contact->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContact(Contact $contact): self
+    {
+        if ($this->contacts->removeElement($contact)) {
+            // set the owning side to null (unless already changed)
+            if ($contact->getAuthor() === $this) {
+                $contact->setAuthor(null);
             }
         }
 

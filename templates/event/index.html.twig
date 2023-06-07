@@ -113,7 +113,7 @@
                         <div class="col-12">
                             <div class="text-center">
                                <i class="black-text">
-                                   {% if animator %} <b>{{ animator|capitalize }}</b> n'a pas encore animé un événement
+                                   {% if animator is defined and animator  %} <b>{{ animator|capitalize }}</b> n'a pas encore animé un événement
                                    {% else %}
                                        Nous n'avons rien trouvé, Ajustez vos filtres et réessayez
                                    {% endif %}
