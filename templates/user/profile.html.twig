@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-
+{% block title %}Profile | {{ parent() }}{% endblock %}
 {% block content %}
 <section class="py-5">
     <div class="w3l-breadcrumb py-lg-5">
@@ -101,6 +101,9 @@
                             <div class="col-md-6">
                                 {{ form_row(form.linkedin) }}
                             </div>
+                            <div class="col-md-6">
+                                {{ form_row(form.avatar) }}
+                            </div>
                         </div>
                         <div class="mt-3 text-right" style="text-align: right">
                             <button type="submit" class="btn btn-success" style="width: 17%;">Save</button>
@@ -122,7 +125,7 @@
                             <tbody>
                             {% for facture in factures %}
                                 <tr>
-                                    <td>{{ facture.event }}</td>
+                                    <td><a class="text-dark" href="{{ path('app_event_show',{'id':facture.eventId}) }}" >{{ facture.event }}</a></td>
                                     <td>{{ facture.price }}$</td>
                                     <td class="text-center">{{ facture.date|date('d/m/Y') }}</td>
                                     <td class="text-center"><a href="{{ path('ticket.show',{'id':facture.ticket.id})  }}" target="_blank"><i class="fas fa-eye" aria-hidden="true"></i></a> </td>

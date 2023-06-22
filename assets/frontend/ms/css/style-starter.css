@@ -20728,6 +20728,13 @@ ul.rating-list li a.review-color {
 #avis-comment,#moreEvents{
     background-color: var(--bg-grey);
 }
+#avis-comment-white{
+   background-color: var(--bg-lightgrey);
+}
+#avis-comment{
+  padding-top: 3rem!important;
+  padding-bottom: 3rem!important;
+}
 .gallery_area .cat1 img{
     width: 445px;
     height: 373px;

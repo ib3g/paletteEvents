@@ -19,6 +19,7 @@ use App\Repository\EventRepository;
 use App\Repository\MediaRepository;
 use App\Repository\PrixRepository;
 use App\Repository\TagRepository;
+use App\Repository\TicketRepository;
 use App\Repository\UserRepository;
 use App\Service\Mailer;
 use App\Service\StripeService;
@@ -129,14 +130,19 @@ class EventController extends BaseController
     }
 
     #[Route('/event/{id}', name: 'app_event_show', methods: ['GET'])]
-    public function show(Event $event,EventRepository $eventRepository): Response
+    public function show(Event $event,EventRepository $eventRepository,TicketRepository $ticketRepository): Response
     {
+        $eventVisited=false;
+        $user= $this->getUser();
+        // get user tickets for this event
+        $eventVisited = $user ? $ticketRepository->findTicketsByEventAndUser($user,$event) : null;
         $events = $eventRepository->findEventsWithSharedCategories($event,3);
         $eventsSameOwner = $eventRepository->findEventsWithSameOwner($event,3);
         return $this->render('event/show.html.twig', [
             'event' => $event,
             'moreEvents' => $events,
             'eventsSameOwner' => $eventsSameOwner,
+            'eventVisited' => $eventVisited,
         ]);
     }
 
@@ -446,6 +452,7 @@ class EventController extends BaseController
     public function search(Request $request,EventRepository $eventRepository): Response
     {
         $search = $request->get('search');
+        $search = trim($search);
         $events = $eventRepository->searchEvents($search, 20);
         return $this->render('event/index.html.twig', [
             'events' => $events,

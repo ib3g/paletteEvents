@@ -139,6 +139,7 @@ class UserController extends BaseController
             $factures[]=[
                 'facture'=>$ticket->getFacture()->getId(),
                 'event'=>$ticket->getPrix()->getEvent()->getTitle(),
+                'eventId'=>$ticket->getPrix()->getEvent()->getId(),
                 'price'=>$ticket->getPrix()->getSomme(),
                 'date'=>$ticket->getFacture()->getCreatedAt(),
                 'status'=>$ticket->getFacture()->getStatus(),

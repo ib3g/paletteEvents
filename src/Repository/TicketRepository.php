@@ -38,6 +38,17 @@ class TicketRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function findTicketsByEventAndUser($user,$event){
+        return  $this->createQueryBuilder('t')
+            ->andWhere('t.user = :user')
+            ->join('t.prix','p')
+            ->andWhere('p.event = :event')
+            ->setParameter('user', $user)
+            ->setParameter('event', $event)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 
 //    /**
 //     * @return Ticket[] Returns an array of Ticket objects
