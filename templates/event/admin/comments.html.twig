@@ -1,0 +1,58 @@
+{% extends 'admin.html.twig' %}
+
+{% block title %}Event index{% endblock %}
+
+{% block _content %}
+
+    <div class="d-flex flex-row justify-content-between align-items-center flex-wrap">
+        <h1 class="action-title">Commentaires</h1>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table datatable-basic table-striped table-hover" id="dataTable">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Commentaire</th>
+                <th>Note</th>
+                <th>Auteur</th>
+                <th>Date de publication</th>
+                <th>Date de suppression</th>
+                <th>actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for key,comment in comments %}
+                <tr>
+                    <td>{{ key+1 }}</td>
+                    <td>{{ comment.message }}</td>
+                    <td>{{ comment.note }}</td>
+                    <td><a target="_blank"
+                           href="{{ path('app_user_show', {'id': comment.user.id }) }}">{{ comment.user }}</a></td>
+                    <td>{{ comment.createdAt|date('d-m-Y à H:i') }}</td>
+                    <td>
+                        {% if comment.deletedAt %}
+                            <span class="text-danger">{{ comment.deletedAt|date('d-m-Y à H:i') }}</span>
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="d-flex flex-row">
+                            <a class="p-1" href="{{ path('app_comment_republier', {'id': comment.id }) }}">
+                                <i class="icon-check text-success" title="Publier"></i>
+                            </a>
+                            {{ include('event/admin/_delete_comment_form.html.twig') }}
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a class="btn btn-chellal btn-secondary" href="{{ path('admin_event_show', {'id': event.id}) }}">Retour</a>
+    </div>
+{% endblock %}

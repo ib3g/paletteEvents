@@ -17,6 +17,7 @@
                     <th>Id</th>
                     <th>Name</th>
                     <th>Events</th>
+                    <th>Icone</th>
                     <th>actions</th>
                 </tr>
             </thead>
@@ -26,6 +27,11 @@
                     <td>{{ category.id }}</td>
                     <td>{{ category.name }}</td>
                     <td>{{ category.events|length }}</td>
+                    <td>
+                        {% if category.icon %}
+                            <img src="/uploads/{{ category.icon.realName }}" alt="Icon {{ category.name }} not found" width="80">
+                        {% endif %}
+                    </td>
                     <td>
                         <a href="{{ path('app_category_edit', {'id': category.id}) }}">
                             <i class="icon-pencil text-paletteEvent-dark" title="Modifier"></i>
