@@ -75,4 +75,15 @@ class TicketController extends AbstractController
 
         return $this->redirectToRoute('app_ticket_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/details/{id}', name: 'ticket.show', methods: ['GET'])]
+    public function ticket(Request $request, $id, TicketRepository $ticketRepository): Response
+    {
+        $ticket=$ticketRepository->find($id);
+        return $this->renderForm('ticket/details.html.twig', [
+            'ticket'=>$ticket,
+            'event'=>$ticket->getPrix()->getEvent(),
+            'priceEvent'=>$ticket->getPrix(),
+        ]);
+    }
 }

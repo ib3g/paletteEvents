@@ -137,11 +137,14 @@ class UserController extends BaseController
         $factures=[];
         foreach ($tickets as $ticket){
             $factures[]=[
+                'facture'=>$ticket->getFacture()->getId(),
                 'event'=>$ticket->getPrix()->getEvent()->getTitle(),
+                'eventId'=>$ticket->getPrix()->getEvent()->getId(),
                 'price'=>$ticket->getPrix()->getSomme(),
                 'date'=>$ticket->getFacture()->getCreatedAt(),
                 'status'=>$ticket->getFacture()->getStatus(),
-                'receipt'=>$ticket->getFacture()->getCode()
+                'receipt'=>$ticket->getFacture()->getCode(),
+                'ticket' => $ticket,
             ];
         }
         $demandes=$user->getDemandes();
@@ -150,6 +153,7 @@ class UserController extends BaseController
             'form' => $form->createView(),
             'factures' => $factures,
             'demandes' => $demandes,
+
         ]);
     }
 

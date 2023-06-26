@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Event{% endblock %}
+{% block title %}{{ event.title|capitalize }} | {{ parent() }}{% endblock %}
  {% block og_meta %}
      {% if event.medias|length %}
          <meta property="og:image" content="{{ "/uploads/" ~ event.medias[0].realName }}" />
@@ -104,8 +104,11 @@
                             {% endfor %}
                         </div>
                     {% endif %}
-                    <a href="#prices" class="btn btn-style mt-5"> Acheter un Ticket</a>
-
+                    {% if event.dateEvent|date('Y-m-d') < 'now'|date('Y-m-d') %}
+                        <button class="btn btn-style mt-5" disabled>Guichet Fermé</button>
+                    {% else %}
+                        <a href="#prices" class="btn btn-style mt-5"> Acheter un Ticket</a>
+                    {% endif %}
                 </div>
                 <div class="col-lg-6 history-info mt-lg-0 mt-5 pt-md-4 pt-2">
                     <div class="position-relative img-border">
@@ -237,7 +240,7 @@
                                                 </li>
                                             {% endif %}
                                         </ul>
-                                        {% if price.placeRestantes == price.placeMax %}
+                                        {% if (price.placeRestantes == 0 ) or (event.dateEvent|date('Y-m-d') < 'now'|date('Y-m-d')) %}
                                             <button class="btn btn-style mt-4" disabled>Guichet Fermé</button>
                                         {% else %}
                                             <button {% if eventPass %} disabled style="opacity: 0.3" {% endif %}
@@ -252,45 +255,6 @@
                                     </div>
                                 </div>
                             {% endfor %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% else %}
-            <div class="container py-lg-5 py-md-4 py-2">
-                <div class="row align-items-center py-2">
-                    <div class="col-lg-4">
-                        <h3 class="title-style">Notre <span>Plan</span> Tarifaire</h3>
-                        <p class="mt-3">Choississez votre plan préféré.</p>
-                    </div>
-                    <div class="col-lg-8 ps-xl-5 mt-lg-0 mt-sm-5 mt-4">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="box-pricing featured">
-                                    <h3 class="text-price">PREMIUM Plan</h3>
-                                    <h4>$39</h4>
-                                    <ul>
-                                        <li><i class="fas fa-check-circle"></i> Basic Techniques</li>
-                                        <li><i class="fas fa-check-circle"></i> Types of Music</li>
-                                        <li><i class="fas fa-check-circle"></i> Jazz Basics</li>
-                                        <li><i class="fas fa-check-circle"></i> Effective Mixing</li>
-                                    </ul>
-                                    <a href="#pricing" class="btn btn-style mt-4"{% if eventPass %} disabled style="opacity: 0.3"{% endif %}>Payer</a>
-                                </div>
-                            </div>
-                            <div class="col-md-6 mt-md-0 mt-4">
-                                <div class="box-pricing">
-                                    <h3 class="text-price">REGULAR Plan</h3>
-                                    <h4>$69</h4>
-                                    <ul>
-                                        <li><i class="fas fa-check-circle"></i> Basic Techniques</li>
-                                        <li><i class="fas fa-check-circle"></i> Types of Music</li>
-                                        <li><i class="fas fa-check-circle"></i> Jazz Basics</li>
-                                        <li class="na"><span><i class="fas fa-check-circle"></i> Effective Mixing</span></li>
-                                    </ul>
-                                    <a href="#pricing" class="btn btn-style mt-4"  {% if eventPass %} disabled style="opacity: 0.3"{% endif %}>Payer</a>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -317,9 +281,11 @@
             </div>
         </div>
     </section>
-    <section class="pricing-w3l py-5" id="avis-comment">
+    <section class="pricing-w3l" id="{% if ((app.user and not eventVisited) or( not app.user) ) and (event.comments is  empty) %}avis-comment-white{% else %}avis-comment{% endif %}">
         <div class="container py-lg-5 py-md-4 py-2" >
-            {% if app.user %}
+{#            compare  dateevent with today #}
+
+            {% if app.user and eventVisited and event.dateEvent|date('Y-m-d') < 'now'|date('Y-m-d')  %}
                 <div class="row share-btn">
                     <div class="offset-md-2 col-md-8 col-12 p-3" style="border:1px solid #efefef;background: #fbfbfb">
                         <h6 class="mb-3 mt-2">Que pensez vous de cet event ?</h6>
@@ -342,10 +308,10 @@
                     </div>
                 </div>
             {% endif %}
+            {% if event.comments is not empty  %}
             <div class="row mt-4">
                 <div class="offset-md-2 col-md-8 col-12 p-3">
-                    {% if event.comments is not empty  %}
-                        <h5 class=" text-danger mb-3 ">Derniers commentaires</h5>
+                        <h5 class=" text-danger mb-3 ">Découvrez ce que les participants pensent de l'Event</h5>
 
                         <div style="border:1px solid #efefef;padding: 3%;background: #fbfbfb;" >
                             {% for comment in event.comments %}
@@ -396,14 +362,15 @@
                                 {% endif %}
                             {% endfor %}
                         </div>
-                    {% endif %}
                 </div>
             </div>
+            {% endif %}
+
         </div>
     </section>
     <!--  events Same Owner -->
     {% if eventsSameOwner  %}
-        <div class="team-area pt-5" id="eventsSameOwner">
+        <div class="team-area pt-2" id="eventsSameOwner"><hr>
             <div class="container py-md-5 py-md-4 py-2">
                 <h3 class="title-style text-capitalize text-center">
                     Plus d'events  <span>du même organisateur</span>
@@ -481,7 +448,11 @@
                         </div>
                     </div>
                     <div class="col-xl-4 col-lg-3 mt-lg-0 mt-sm-5 mt-4 text-lg-end">
-                        <a href="#prices" class="btn btn-style ">Get Ticket</a>
+                        {% if event.dateEvent|date('Y-m-d') < 'now'|date('Y-m-d') %}
+                            <button class="btn btn-style" disabled>Guichet Fermé</button>
+                        {% else %}
+                            <a href="#prices" class="btn btn-style ">Get Ticket</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

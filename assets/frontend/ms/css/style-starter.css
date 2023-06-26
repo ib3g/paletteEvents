@@ -20728,6 +20728,13 @@ ul.rating-list li a.review-color {
 #avis-comment,#moreEvents{
     background-color: var(--bg-grey);
 }
+#avis-comment-white{
+   background-color: var(--bg-lightgrey);
+}
+#avis-comment{
+  padding-top: 3rem!important;
+  padding-bottom: 3rem!important;
+}
 .gallery_area .cat1 img{
     width: 445px;
     height: 373px;
@@ -20924,4 +20931,16 @@ height: 100px;
 }
 .portfolio-img img {
   transition: all 0.4s ease 0s;
+}
+@media (max-width: 750px) {
+  #ex3-tabs-2 {
+    width: 100%;
+    overflow-y: hidden;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+  }#ex3-tabs-2 table {
+     width: 100%;
+   }
+}
+#ex3-tab-1:focus, #ex3-tab-2:focus{
+  color:#0d6efd !important;
 }
