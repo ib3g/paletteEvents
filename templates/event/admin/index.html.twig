@@ -68,6 +68,12 @@
                     </td>
                     <td>
                         <div class="d-flex flex-row">
+                            <a class="p-1" href="{{ path('admin_event_comment', {'id': event.id}) }}">
+                                <i class="icon-comments text-primary" title="Commentaires"></i>
+                            </a>
+                            <a class="p-1" href="{{ path('app_prix_index', {'id': event.id}) }}">
+                                <i class="icon-coin-dollar text-secondary" title="Prix"></i>
+                            </a>
                             <a class="p-1" href="{{ path('admin_event_show', {'id': event.id}) }}">
                                 <i class="icon-eye text-paletteEvent" title="Voir"></i>
                             </a>

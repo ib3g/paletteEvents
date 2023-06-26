@@ -7,6 +7,8 @@
     <div class="d-flex flex-row justify-content-between align-items-center flex-wrap">
         <h1 class="action-title">Event : {{ event.title }}</h1>
         <div>
+            <a href="{{ path('admin_event_comment', {'id': event.id}) }}"
+               class="btn btn-primary radius mr-2 mb-2">Voir les commentaires</a>
             <a href="{{ path('app_prix_index', {'id': event.id}) }}"
                class="btn btn-secondary radius mr-2 mb-2">Gérer les prix</a>
             <a href="{{ path('app_event_edit', {'id': event.id}) }}"
@@ -26,7 +28,7 @@
         </div>
         <div>
             <p class="font-weight-bold my-0"> Description </p>
-            <p> {{ event.description }}</p>
+            <p> {{ event.description|raw }}</p>
         </div>
         <div>
             <p class="font-weight-bold my-0"> Catégories </p>

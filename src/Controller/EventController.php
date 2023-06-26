@@ -166,6 +166,15 @@ class EventController extends BaseController
         ]);
     }
 
+    #[Route('/admin/event/{id}/comments', name: 'admin_event_comment', methods: ['GET'])]
+    public function adminEventComments(Event $event,EventRepository $eventRepository): Response
+    {
+        return $this->render('event/admin/comments.html.twig', [
+            'comments' => $event->getComments(),
+            'event' => $event,
+        ]);
+    }
+
     #[Route('/admin/event/{id}/edit', name: 'app_event_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Event $event,
                          EventRepository $eventRepository,
