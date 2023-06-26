@@ -181,11 +181,13 @@
 
     const nextSlide = () => {
         const current = document.querySelector(".current");
-        current.classList.remove("current");
-        if (current.nextElementSibling) {
-            current.nextElementSibling.classList.add("current");
-        } else {
-            slides[0].classList.add("current");
+        if(current) {
+            current.classList.remove("current");
+            if (current.nextElementSibling) {
+                current.nextElementSibling.classList.add("current");
+            } else {
+                slides[0].classList.add("current");
+            }
         }
     };
 
@@ -199,20 +201,24 @@
         }
     };
 
-    nextButton.addEventListener("click", () => {
-        nextSlide();
-        if (auto) {
-            clearInterval(slideInterval);
-            slideInterval = setInterval(nextSlide, intervalTime);
-        }
-    });
-    prevButton.addEventListener("click", () => {
-        prevSlide();
-        if (auto) {
-            clearInterval(slideInterval);
-            slideInterval = setInterval(nextSlide, intervalTime);
-        }
-    });
+    if(nextButton) {
+        nextButton.addEventListener("click", () => {
+            nextSlide();
+            if (auto) {
+                clearInterval(slideInterval);
+                slideInterval = setInterval(nextSlide, intervalTime);
+            }
+        });
+    }
+    if(prevButton) {
+        prevButton.addEventListener("click", () => {
+            prevSlide();
+            if (auto) {
+                clearInterval(slideInterval);
+                slideInterval = setInterval(nextSlide, intervalTime);
+            }
+        });
+    }
 
     if (auto) {
         slideInterval = setInterval(nextSlide, intervalTime);

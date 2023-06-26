@@ -459,27 +459,22 @@
         </div>
     </section>
     <!-- //button with content section -->
-
-
 {% endblock %}
-
 {% block javascripts %}
     <script>
         var days=document.getElementById("days")
         var countDownDate=days.getAttribute('data-date')
-        var now = new Date();
         var date = new Date(countDownDate).getTime();
-        var timeleft = date - now;
-            if (timeleft > 0) {
-                document.getElementById("dateEvent").classList.remove("d-none");
-                document.getElementById("text-countdown").classList.remove("d-none");
-            var timer = setInterval(function () {
+        var timer = setInterval(function () {
+                var now = new Date();
                 var timeleft = date - now;
-                var days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
-                var hours = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                var minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
-                var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
                 if (timeleft > 0) {
+                    document.getElementById("dateEvent").classList.remove("d-none");
+                    document.getElementById("text-countdown").classList.remove("d-none");
+                    var days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
+                    var hours = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    var minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
                     document.getElementById("days").innerHTML = days
                     document.getElementById("daysText").innerHTML = "Days"
                     document.getElementById("hours").innerHTML = hours
@@ -490,6 +485,5 @@
                     document.getElementById("secsText").innerHTML = "Secs"
                 }
             }, 1000);
-        }
     </script>
 {% endblock %}
