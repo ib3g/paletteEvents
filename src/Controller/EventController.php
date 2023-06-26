@@ -15,6 +15,7 @@ use App\Manager\CustomMailer;
 use App\Manager\FileManager;
 use App\Manager\UserManager;
 use App\Repository\CategoryRepository;
+use App\Repository\CommentRepository;
 use App\Repository\EventRepository;
 use App\Repository\MediaRepository;
 use App\Repository\PrixRepository;
@@ -72,10 +73,19 @@ class EventController extends BaseController
     }
 
     #[Route('/event', name: 'events_index', methods: ['GET'])]
-    public function index(EventRepository $eventRepository): Response
+    public function index(EventRepository $eventRepository,CommentRepository $commentRepository): Response
     {
+        $averageEvents=[];
+        $events=$eventRepository->findAll();
+        foreach ($events as $event){
+            $average=$commentRepository->findAverage($event);
+            if($average){
+                $averageEvents[$event->getId()]=round($average);
+            }
+        }
         return $this->render('event/index.html.twig', [
-            'events' => $eventRepository->findAll(),
+            'events' => $events,
+            'averageEvents' => $averageEvents,
         ]);
     }
 
@@ -130,7 +140,7 @@ class EventController extends BaseController
     }
 
     #[Route('/event/{id}', name: 'app_event_show', methods: ['GET'])]
-    public function show(Event $event,EventRepository $eventRepository,TicketRepository $ticketRepository): Response
+    public function show(Event $event,EventRepository $eventRepository,TicketRepository $ticketRepository,CommentRepository $commentRepository): Response
     {
         $eventVisited=false;
         $user= $this->getUser();
@@ -138,11 +148,13 @@ class EventController extends BaseController
         $eventVisited = $user ? $ticketRepository->findTicketsByEventAndUser($user,$event) : null;
         $events = $eventRepository->findEventsWithSharedCategories($event,3);
         $eventsSameOwner = $eventRepository->findEventsWithSameOwner($event,3);
+        $average=round($commentRepository->findAverage($event));
         return $this->render('event/show.html.twig', [
             'event' => $event,
             'moreEvents' => $events,
             'eventsSameOwner' => $eventsSameOwner,
             'eventVisited' => $eventVisited,
+            'average' => $average,
         ]);
     }
 

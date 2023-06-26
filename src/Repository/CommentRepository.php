@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Comment;
+use App\Entity\Event;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -39,6 +40,20 @@ class CommentRepository extends ServiceEntityRepository
         }
     }
 
+    // moyenne des notes des commentaire d'un event passé en parametre
+
+    public function findAverage(Event $event): float|null
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select('(AVG(c.note))')
+            ->where('c.event = :event')
+            ->setParameter('event', $event)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+
+        return $qb;
+    }
 //    /**
 //     * @return Comment[] Returns an array of Comment objects
 //     */
