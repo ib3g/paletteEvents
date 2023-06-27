@@ -40,15 +40,21 @@
             </h3>
             <div class="row justify-content-center">
                 {% for event in events|sort((a,b) => a.dateEvent|date('Y-m-d') > b.dateEvent|date('Y-m-d')) %}
+                    {% set dateEvent =event.dateEvent|date('Y-m-d')  %}
+                    {% set today ='now'|date('Y-m-d')  %}
+                    {% set difference = date(today).diff(date(dateEvent)) %}
+                    {% set leftDays = difference.days %}
                 <div class="col-lg-4 col-md-6">
                     <div class="blog-card-single">
-                        <div class="grids5-info position-relative">
+                        <div class="grids5-info position-relative" style="{% if dateEvent < today %}background:grey;border:4px solid darkred{% endif %}">
+
+
                             {% set url = "/build/images/placeholder.png" %}
                             {% if event.medias is not empty %}
                                 {% set url = "/uploads/" ~ event.medias[0].realName %}
                             {% endif %}
                             <a href="{{ path('app_event_show',{"id":event.id}) }}">
-                            <img src="{{ asset(url) }}" alt="" class="main-image img-fluid" />
+                            <img src="{{ asset(url) }}" alt="" class="main-image img-fluid" style="{% if dateEvent < today %}opacity:0.2;{% endif %}" />
                             </a>
                             <div class="course-price-item">
                                 {% if event.prix is not empty %}
@@ -67,10 +73,7 @@
                                     {% if event.categories is not empty %}
                                         <li> <i class="fas fa-music"></i>{{ event.categories[0].name }}</li>
                                     {% endif %}
-                                     {% set dateEvent =event.dateEvent|date('Y-m-d')  %}
-                                     {% set today ='now'|date('Y-m-d')  %}
-                                    {% set difference = date(today).diff(date(dateEvent)) %}
-                                    {% set leftDays = difference.days %}
+
                                     {% if dateEvent > today %}
                                         {% if leftDays == 0 %}
                                             {% set days = 'Today' %}
@@ -82,7 +85,7 @@
 
                                         <li> <i class="fas fa-calendar-alt"></i> {{ days}}</li>
                                     {% else %}
-                                        <li> <i class="fas fa-calendar-alt"></i> Passé</li>
+                                        <li> <i class="fas fa-calendar-alt "></i> <span class="text-danger" >Passé</span></li>
                                     {% endif %}
                                 </ul>
                             </div>
@@ -90,20 +93,21 @@
                                 <h4> {{ event.title }}</h4>
                                 <p>{{ event.shortDescription  }}</p>
                             </a>
-                            <div class="top-content-border d-flex align-items-center justify-content-between mt-5 pt-4">
-                                <ul class="rating-list">
-                                    <li><a href="#rate"><i class="fas fa-star" aria-hidden="true"></i>
-                                        </a></li>
-                                    <li><a href="#rate"><i class="fas fa-star" aria-hidden="true"></i>
-                                        </a></li>
-                                    <li><a href="#rate"><i class="fas fa-star" aria-hidden="true"></i>
-                                        </a></li>
-                                    <li><a href="#rate"><i class="fas fa-star" aria-hidden="true"></i>
-                                        </a></li>
-                                    <li><a href="#rate"><i class="fas fa-star" aria-hidden="true"></i>
-                                        </a></li>
-                                </ul>
-                                <a class="btn btn-style" href="{{ path('app_event_show',{"id":event.id}) }}">Details</a>
+                            <div class="row mt-5 pt-4">
+                                <div class="col-6">
+                                    {% if averageEvents[event.id] is defined %}
+                                        {% set c=averageEvents[event.id] %}
+                                        <ul class="rating-list">
+                                            {% for i in 1..c %}
+                                                <li><a href="#rate"><i class="fas fa-star" aria-hidden="true"></i>
+                                                    </a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </div>
+                                <div class="col-6">
+                                    <a class="btn btn-style" style="text-align: right;float: right" href="{{ path('app_event_show',{"id":event.id}) }}">Details</a>
+                                </div>
                             </div>
                         </div>
                     </div>

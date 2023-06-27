@@ -70,6 +70,16 @@
                 <div class="col-lg-6 section-width pe-xl-5 pt-lg-4">
                     <h3 class="title-style">Bienvenue à <span>{{ event.title }}</span></h3>
                     <div class="row mt-3">
+                        {% if average is defined %}
+                        <div class="col-8 mb-3">
+                                <ul class="rating-list">
+                                    {% for i in 1..average %}
+                                        <li><a href="#rate"><i class="fas fa-star" aria-hidden="true"></i>
+                                            </a></li>
+                                    {% endfor %}
+                                </ul>
+                        </div>
+                        {% endif %}
                         <div class="col-8">
                             <a href="{{ path('events_same_owner',{"ownerName":event.owner.fullName|lower}) }}">
                                 <h6>Organisé par <b style="color: #f50537">
@@ -78,6 +88,7 @@
                                 </h6>
                             </a>
                         </div>
+
                         <div class="col-4 text-right">
                             <h6>  <i class="fas fa-calendar-alt"></i>&nbsp;{{ event.dateEvent|date('d M Y') }}
                         </div>
@@ -459,27 +470,22 @@
         </div>
     </section>
     <!-- //button with content section -->
-
-
 {% endblock %}
-
 {% block javascripts %}
     <script>
         var days=document.getElementById("days")
         var countDownDate=days.getAttribute('data-date')
-        var now = new Date();
         var date = new Date(countDownDate).getTime();
-        var timeleft = date - now;
-            if (timeleft > 0) {
-                document.getElementById("dateEvent").classList.remove("d-none");
-                document.getElementById("text-countdown").classList.remove("d-none");
-            var timer = setInterval(function () {
+        var timer = setInterval(function () {
+                var now = new Date();
                 var timeleft = date - now;
-                var days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
-                var hours = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                var minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
-                var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
                 if (timeleft > 0) {
+                    document.getElementById("dateEvent").classList.remove("d-none");
+                    document.getElementById("text-countdown").classList.remove("d-none");
+                    var days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
+                    var hours = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    var minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
                     document.getElementById("days").innerHTML = days
                     document.getElementById("daysText").innerHTML = "Days"
                     document.getElementById("hours").innerHTML = hours
@@ -490,6 +496,5 @@
                     document.getElementById("secsText").innerHTML = "Secs"
                 }
             }, 1000);
-        }
     </script>
 {% endblock %}
