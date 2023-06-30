@@ -62,9 +62,25 @@
         </div>
     </section>
     <!-- //inner banner -->
+    <div class="container mt-5">
+        <div class="row align-items-center">
+            {% block flash_messages %}
+                {% for type, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ type }} border-0 alert-dismissible mx-3 my-3" style="display: inherit">
+                            <div class="row align-items-center" style="width: 100%">
+                                <div class="col-6">  <div class="alert-message">{{ message|raw }}</div></div>
+                                <div class="col-6" style="float: right;text-align: right">  <button type="button" class="close" style="background: transparent" data-dismiss="alert"><span>×</span></button></div>
 
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endblock %}
+        </div>
+    </div>
     <!-- about section -->
-    <section class="w3l-about py-5" id="about">
+    <section class="w3l-about py-1" id="about">
         <div class="container py-lg-5 py-md-4 py-2">
             <div class="row align-items-center">
                 <div class="col-lg-6 section-width pe-xl-5 pt-lg-4">
@@ -120,6 +136,14 @@
                     {% else %}
                         <a href="#prices" class="btn btn-style mt-5"> Acheter un Ticket</a>
                     {% endif %}
+                    {% if app.user and "ROLE_ANIMATEUR" in app.user.roles and event.dateEvent|date('Y-m-d') > 'now'|date('Y-m-d') and app.user not in  event.animators.values %}
+                        <a href="{{ path('participateEvent',{'event':event.id}) }}" class="mt-5 btn btn-style" style="background: #0a58ca;border: #0a58ca;margin-left: 2.5%;display: inline-block;">Participer à l'event</a>
+                    {% endif %}
+                    {% if app.user and "ROLE_ANIMATEUR" in app.user.roles and event.dateEvent|date('Y-m-d') > 'now'|date('Y-m-d') and app.user  in  event.animators.values %}
+                    <div class="row mt-4 tags-list">
+                        <p><i class="mt-5 text-danger">Vous animez cet Event</i></p>
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="col-lg-6 history-info mt-lg-0 mt-5 pt-md-4 pt-2">
                     <div class="position-relative img-border">
@@ -159,7 +183,7 @@
                                 </div>
                                 <div class="img-text">
                                     <a href="{{ path('events_same_animator', {'animatorName': animator.fullName}) }}">
-                                        <h4>{{ animator.fullName }}</h4>
+                                        <h4>{{ animator.fullName|capitalize }}</h4>
                                         <p>{{ animator.profession }}</p>
                                     </a>
                                 </div>
@@ -444,6 +468,7 @@
         </div>
     {% endif %}
 
+
     <!-- button with content section -->
     <section class="w3l-button-sec py-5" id="newsletter">
         <div class="container py-5">
@@ -455,14 +480,24 @@
                                 <a class="mt-md-0 mt-2" href="tel:+ 12 123 456 789">+ 12 123 456 789</a> </h3>
                             {% if event.owner %}
                                 <p> {{ event.owner.fullName|upper }}</p>
+                                <p class="small"> <i>{{ event.owner.email }}</i></p>
                             {% endif %}
                         </div>
                     </div>
+
                     <div class="col-xl-4 col-lg-3 mt-lg-0 mt-sm-5 mt-4 text-lg-end">
                         {% if event.dateEvent|date('Y-m-d') < 'now'|date('Y-m-d') %}
                             <button class="btn btn-style" disabled>Guichet Fermé</button>
                         {% else %}
                             <a href="#prices" class="btn btn-style ">Get Ticket</a>
+                        {% endif %}
+                        {% if app.user and "ROLE_ANIMATEUR" in app.user.roles and event.dateEvent|date('Y-m-d') > 'now'|date('Y-m-d') and app.user not in  event.animators.values %}
+                            <a href="{{ path('participateEvent',{'event':event.id}) }}" class="mt-5 btn btn-style" style="background: #0a58ca;border: #0a58ca;margin-left: 2.5%;display: inline-block;">Participer à l'event</a>
+                        {% endif %}
+                        {% if app.user and "ROLE_ANIMATEUR" in app.user.roles and event.dateEvent|date('Y-m-d') > 'now'|date('Y-m-d') and app.user  in  event.animators.values %}
+                            <div class="row mt-4 tags-list">
+                                <p><i class="mt-5 text-danger">Vous animez cet Event</i></p>
+                            </div>
                         {% endif %}
                     </div>
                 </div>

@@ -1,0 +1,46 @@
+<table class="body-wrap">
+    <tr>
+        <td></td>
+        <td class="container" width="600">
+            <div class="content">
+                <table class="main" width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td class="content-wrap aligncenter">
+                            <table width="100%" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td>
+                                        <div class="text-center"
+                                             style="font-weight: bold; display: flex; align-items: center;">
+                                            <img style="width: 50px;height: 50px"
+                                                 src="{{ absolute_url(asset('build/images/logo.png')) }}"
+                                                 alt="logo not found">
+                                            PaletteEvents
+                                        </div>
+
+                                        <p>Bonjour, {{ user.fullName }}</p>
+                                        <p>
+                                            L'animateur(trice)  <strong>{{ animateur.fullName }}</strong> a demandé
+                                            la participation à votre event {{ event.title }} qui aura lieu le
+                                            {{ event.dateEvent|date('d/m/Y H:i') }} .
+                                            <br>
+                                            <p>Vous pouvez accepter ou refuser sa demande en visitant votre espace membre.</p>
+                                            <br>
+                                            <a href="{{ url }}">Lien vers l'évènement</a>
+                                            <br>
+                                            <br>
+                                            Cordialement,
+                                            <br> <br>
+                                            L'équipe PaletteEvents
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+        <td></td>
+    </tr>
+</table>
+

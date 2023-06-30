@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Form\DemandeType;
 use App\Manager\CustomMailer;
 use App\Repository\DemandeRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -56,13 +57,20 @@ class DemandeController extends BaseController
     #[Route('/{id}/changeStatus', name: 'app_demande_switch_status', methods: ['GET', 'POST'])]
     public function switchStatus(Request $request, Demande $demande,
                                  DemandeRepository $demandeRepository, CustomMailer $mailer,
-                                 Environment $twig, UrlGeneratorInterface $urlGenerator): Response
+                                 Environment $twig, UrlGeneratorInterface $urlGenerator,EntityManagerInterface $manager): Response
     {
         $status = $request->get('status');
         if ($demande->getStatus() == Demande::STATUS_PENDING) {
             $demande->setStatus($status);
             $demandeRepository->save($demande, true);
-
+            $event= $demande->getEvent();
+            $animators= $event->getAnimators()->getValues();
+            $newAnimator= $demande->getUser();
+            if(!in_array($newAnimator, $animators)){
+                $event->addAnimator($newAnimator);
+                $manager->persist($event);
+                $manager->flush();
+            }
             $url = $urlGenerator->generate('app_event_show', ['id' => $demande->getEvent()->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
             $htmlContents = $twig->render('mail/damande_status_update.html.twig', [
                 'demande' => $demande,

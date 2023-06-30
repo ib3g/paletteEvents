@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Event;
+use App\Entity\Media;
 use App\Entity\Role;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
@@ -120,7 +121,7 @@ class UserController extends BaseController
     }
 
     #[Route('/profile/{fullName}', name: 'profile', methods: ['GET','POST'])]
-    public function profile($fullName,Request $request,EntityManagerInterface $manager,UserRepository $userRepository,StripeService $stripeService,TicketRepository $ticketRepository){
+    public function profile($fullName,Request $request,EntityManagerInterface $manager,UserRepository $userRepository,FileManager $fileManager,TicketRepository $ticketRepository){
         $user=$this->getUser();
         if(!$user) return $this->redirectToRoute("app_login");
         $form = $this->createForm(UserType::class, $user);
@@ -128,7 +129,13 @@ class UserController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             $role=($manager->getRepository(Role::class)->roleByUser($user));
             if($role) $role=$role[0];
+           // get file uploaded from form
+            $file = $request->files->get('user')['avatar'];
             $userRepository->update($user,$form->getData(),$role);
+            if($file) {
+                $uploadedFile = $fileManager->uploadFile($file, true);
+                $user->setAvatar($uploadedFile);
+            }
             $manager->persist($user);
             $manager->flush();
             return $this->redirectToRoute('profile',['fullName'=>$user->getFullName()]);

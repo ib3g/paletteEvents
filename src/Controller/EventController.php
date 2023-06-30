@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\Demande;
 use App\Entity\Event;
 use App\Entity\Facture;
 use App\Entity\Media;
@@ -519,5 +520,43 @@ class EventController extends BaseController
         }
         $this->addWarningFlash('Vous ne pouvez pas supprimer ce média');
         return $this->redirectToRoute('app_event_edit', ['id' => $event->getId()], Response::HTTP_SEE_OTHER);
+    }
+    #[Route('participateEvent/{event}', name: 'participateEvent', methods: ['GET', 'POST'])]
+
+    public function participateEvent($event,EventRepository $eventRepository,CustomMailer $mailer,UrlGeneratorInterface $urlGenerator,Environment $twig,EntityManagerInterface $em){
+        $event=$eventRepository->find($event);
+        // search if demande exist
+        $demande = $em->getRepository(Demande::class)->findOneBy(['user' => $this->getUser(), 'event' => $event]);
+        if ($demande) {
+            $this->addWarningFlash('Vous avez déjà fait une demande pour cet événement.');
+            return $this->redirectToRoute('app_event_show', ['id' => $event->getId()]);
+        }
+        // create demande
+        $demande = new Demande();
+        $demande->setEvent($event);
+        $demande->setUser($this->getUser());
+        $demande->setStatus(Demande::STATUS_PENDING);
+        $demande->setCreatedAt(new \DateTime());
+        $demande->setText("Je souhaiterais faire partie de l'équipe d'animation de cet événement.");
+        $em->persist($demande);
+        $em->flush();
+
+        /** @var  Event $event */
+        $organisateur=$event->getOwner();
+        //send email to notify admin
+        $url = $urlGenerator->generate('app_event_show', ['id' => $demande->getEvent()->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
+        $htmlContents = $twig->render('mail/event/demande_animateur_animer_event.twig', [
+            'demande' => $demande,
+            'animateur' => $demande->getUser(),
+            'url' => $url,
+            'event' => $demande->getEvent(),
+            'user' => $organisateur
+        ]);
+
+        // send email to notify user
+        $mailer->send("Demande d'animation de l'event ".$event->getTitle(), $htmlContents, $organisateur->getEmail());
+
+        $this->addSuccessFlash('Votre demande a été envoyée avec succès');
+        return $this->redirectToRoute('app_event_show', ['id' => $event->getId()], Response::HTTP_SEE_OTHER);
     }
 }

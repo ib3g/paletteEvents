@@ -151,14 +151,14 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for demande in demandes %}
+                                {% for demande in demandes|sort((a,b) => a.createdAt|date('Y-m-d') < b.createdAt|date('Y-m-d')) %}
                                     <tr>
                                         <td><a href="{{ path('app_event_show',{"id":demande.event.id}) }}">{{ demande.event.title }}</a> </td>
                                         <td>{{ demande.createdAt|date('d/m/Y') }}</td>
                                         {% if demande.status == "1" %}
-                                            <td class="text-success text-uppercase">Envoyée</td>
+                                            <td class="text-success text-uppercase">Acceptée</td>
                                         {% else %}
-                                            <td class="text-danger text-uppercase">Supprimée</td>
+                                            <td class="text-warning text-uppercase">En attente</td>
                                         {% endif %}
                                     </tr>
                                 {% else %}
