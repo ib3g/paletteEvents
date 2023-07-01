@@ -67,7 +67,7 @@ class CategoryRepository extends ServiceEntityRepository
     {
         // retourner les catégories les plus populaires
         return $this->createQueryBuilder('c')
-            ->select('c.id, c.name, COUNT(e.id) AS nbEvents')
+            ->select('c.id, c.name,IDENTITY(c.icon) as icon, COUNT(e.id) AS nbEvents')
             ->join('c.events', 'e')
             ->groupBy('c.id')
             ->orderBy('nbEvents', 'DESC')

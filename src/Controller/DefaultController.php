@@ -15,6 +15,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Contact;
 use App\Entity\Event;
+use App\Entity\Media;
 use App\Entity\Newsletter;
 use App\Repository\ContactRepository;
 use App\Repository\EventRepository;
@@ -30,12 +31,19 @@ class DefaultController extends AbstractController
      */
     public function index(EventRepository $eventRepository){
         // call findLastEvents from EventRepository
+        $icons=[];
         $events = $eventRepository->findLastEvents(4);
         $categories = $this->getDoctrine()->getRepository(Category::class)->findCategories(6);
-
+        foreach ($categories as $category){
+            if($category['icon'])
+            {
+                $icons[$category['id']]=$this->getDoctrine()->getRepository(Media::class)->find($category['icon']);
+            }
+        }
         return $this->render('home.html.twig',[
             'events' => $events,
             'categories' => $categories,
+            'iconsCategories' => $icons,
         ]);
     }
 

@@ -80,7 +80,12 @@
                     <div class="grids-1 box-wrap p-lg-3">
                         <a href="{{ path("similar_events_category",{"categoryName":category.name}) }}"  class="title-head mt-4 mb-2">
                         <div class="icon">
-                            <i class="fas {{ icons[key] }}"></i>
+                            {% if category.icon and iconsCategories[category.id] is defined%}
+                                {% set c =iconsCategories[category.id] %}
+                                <img src="{{ "/uploads/" ~ c.realName }}" alt="" class="img-fluid img-icon-category">
+                            {% else %}
+                                <i class="fas {{ icons[key] }}"></i>
+                            {% endif %}
                         </div>
                         </a>
                         <h4><a href="{{ path("similar_events_category",{"categoryName":category.name}) }}"  class="title-head mt-4 mb-2">{{ category.name }}</a></h4>

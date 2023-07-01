@@ -44,8 +44,13 @@
                         <i class="icon-cross2 icon-2x"></i>
                     </button>
                 </div>
+                {% if "ROLE_ORGANISATEUR" in app.user.roles %}
+                    {% set url=path("admin_events_index") %}
+                {% else %}
+                    {% set url=path("admin") %}
+                {% endif %}
                 <div class="navbar navbar-dark bg-transparent navbar-static border-0">
-                    <a href="{{ path('admin') }}"
+                    <a href="{{ url }}"
                        class="d-inline-block text-white navbar-brand flex-fill" style="font-size: 18px">
                         <img style="width: 50px;height: 50px" src="{{  asset("build/images/logo.png")  }}" alt="not found"/>
                         PaletteEvents
@@ -112,14 +117,16 @@
                                         <div class="dropdown-content-body dropdown-scrollable">
                                             <ul class="media-list">
                                                 <li class="my-2">
+                                                    <a class="text-decoration-none text-black font-weight-bold">
+                                                        {{ app.user.fullName }}
+                                                    </a>
+                                                </li>
+                                                <li class="dropdown-divider"></li>
+                                                <li class="my-2">
                                                     <a class="text-decoration-none text-black font-weight-bold"
                                                        href="{{ path('home') }}">Vers le site</a>
                                                 </li>
-                                                <li class="my-2">
-                                                    <a class="text-decoration-none text-black font-weight-bold">
-                                                        Profil
-                                                    </a>
-                                                </li>
+
                                                 <li class="mt-4">
                                                     <a href="{{ path('app_logout') }}" class="text-decoration-none">
                                                         <span class="text-danger font-weight-bold">Se déconnecter</span>
