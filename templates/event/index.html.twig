@@ -61,8 +61,6 @@
                                     {% for prix in event.prix.values|sort((a,b) => a.somme > b.somme ) | slice(0,1) %}
                                       <h6>From<br> ${{ prix.somme }}</h6>
                                     {% endfor %}
-                                {% else %}
-                                <h6>$0</h6>
                                 {% endif %}
                             </div>
                         </div>
