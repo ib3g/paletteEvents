@@ -120,13 +120,13 @@
                                                     <a class="text-decoration-none text-black font-weight-bold">
                                                         {{ app.user.fullName }}
                                                     </a>
+                                                    <small>{{ app.user.role.role|replace({'_': '', 'ROLE': ""}) }}</small>
                                                 </li>
                                                 <li class="dropdown-divider"></li>
                                                 <li class="my-2">
                                                     <a class="text-decoration-none text-black font-weight-bold"
                                                        href="{{ path('home') }}">Vers le site</a>
                                                 </li>
-
                                                 <li class="mt-4">
                                                     <a href="{{ path('app_logout') }}" class="text-decoration-none">
                                                         <span class="text-danger font-weight-bold">Se déconnecter</span>
